@@ -15,11 +15,11 @@
     <a class="skip" href="#main">Salta al contenuto</a>
 
     {% block chrome %}
-      {# Header non mostrato in home; mostrato sulle pagine interne. #}
-      {% if page.slug != 'home' %}
-        <div class="scroll-meter" aria-hidden="true"></div>
-        {% include 'partials/header.html.twig' %}
-      {% endif %}
+      {# Header sempre presente. In home l'intro vive come overlay sopra,
+         e quando il suo fade-out finisce l'utente è già sulla home con
+         tutto al posto giusto (header, contenuto, footer). #}
+      <div class="scroll-meter" aria-hidden="true"></div>
+      {% include 'partials/header.html.twig' %}
     {% endblock %}
 
     <main id="main">
@@ -27,7 +27,7 @@
     </main>
 
     {% block chrome_footer %}
-      {% if page.slug != 'home' %}{% include 'partials/footer.html.twig' %}{% endif %}
+      {% include 'partials/footer.html.twig' %}
     {% endblock %}
 
     {% block bottom %}{% endblock %}

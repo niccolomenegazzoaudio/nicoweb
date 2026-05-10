@@ -114,15 +114,17 @@ p{margin:0}
   .site-header.is-open .nav__list{max-height:60vh}
 }
 
-/* ---------- HOME — intro + menu ----------------------------- */
-body[data-page="home"]{ overflow:hidden; }
+/* ---------- HOME — intro overlay sopra la home vera --------- */
+/* Mentre l'intro è on-screen blocca lo scroll della home sotto. */
+body.intro-active{ overflow:hidden; }
 
+/* L'intro è un overlay sopra TUTTO (anche header sticky a z-index 20) */
 .intro{
   position:fixed; inset:0;
   min-height:100dvh;
   padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   display:flex; align-items:center; justify-content:center; flex-direction:column;
-  cursor:pointer; z-index:10;
+  cursor:pointer; z-index:100;
   transition:opacity 1s ease;
   background:var(--bg);
 }
@@ -177,53 +179,65 @@ body[data-page="home"]{ overflow:hidden; }
   50%   { opacity:.85 }
 }
 
-.home-screen{
-  position:fixed; inset:0;
-  min-height:100dvh;
-  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-  display:flex; align-items:center; justify-content:center;
-  background:var(--bg);
-  opacity:0; pointer-events:none;
-  transition:opacity 1.2s ease;
+/* Home — sezioni che vivono SOTTO l'intro. Sono già renderizzate quando
+   la pagina carica; quando l'intro fade out l'utente le vede al loro posto,
+   con header sopra e footer sotto come una pagina normale. */
+.home-hero{
+  padding:88px 0 32px;
 }
-.home-screen.visible{ opacity:1; pointer-events:auto; }
-.home-content{ text-align:center; padding:0 24px; }
-.name{
-  font-size:clamp(2rem, 4.4vw, 2.8rem);
-  font-weight:500; letter-spacing:-.015em;
+.home-hero__name{
+  font-size:clamp(2.4rem, 6.5vw, 4.6rem);
+  font-weight:500; letter-spacing:-.018em;
+  line-height:1.05;
   margin:0;
 }
-.role{
-  margin:14px 0 44px;
+.home-hero__role{
+  margin-top:16px;
   font-family:var(--mono);
-  font-size:.78rem; letter-spacing:.24em;
+  font-size:.82rem; letter-spacing:.24em;
   text-transform:uppercase; color:var(--muted);
 }
-.works ul{
+
+.home-works{
+  padding:48px 0 96px;
+  border-top:1px solid var(--line);
+  margin-top:48px;
+}
+.home-works .eyebrow{margin-bottom:28px; display:block}
+.home-works__list{
   list-style:none; margin:0; padding:0;
-  display:grid; gap:20px;
+  display:grid; gap:0;
 }
-.works a{
-  font-family:var(--mono); font-size:.92rem; letter-spacing:.24em;
+.home-works__list li{
+  border-bottom:1px solid var(--line);
+}
+.home-works__list a{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:22px 0;
+  font-family:var(--mono); font-size:.96rem; letter-spacing:.24em;
   color:var(--text);
-  display:inline-block; padding:6px 0;
-  background-image:linear-gradient(currentColor,currentColor);
-  background-repeat:no-repeat;
-  background-position:0 100%;
-  background-size:0 1px;
-  transition:background-size .35s var(--ease), opacity .25s var(--ease);
+  transition:padding-left .35s var(--ease), color .25s var(--ease);
 }
-.works a:hover{
+.home-works__list a:hover{
   opacity:1;
-  background-size:100% 1px;
+  padding-left:14px;
+  color:var(--text);
 }
-.meta-links{margin-top:56px}
-.meta-links ul{list-style:none; padding:0; margin:0; display:flex; gap:24px; justify-content:center; flex-wrap:wrap}
-.meta-links a{
-  font-family:var(--mono); font-size:.7rem; letter-spacing:.24em;
-  text-transform:uppercase; color:var(--muted);
+.home-works__list a .ext-arrow{
+  color:var(--muted-2);
+  transition:transform .3s var(--ease), color .25s var(--ease);
+  display:inline-block;
 }
-.meta-links a:hover{color:var(--text); opacity:1}
+.home-works__list a:hover .ext-arrow{
+  transform:translateX(6px);
+  color:var(--text);
+}
+
+@media (max-width:580px){
+  .home-hero{padding:64px 0 24px}
+  .home-works{padding:32px 0 64px; margin-top:32px}
+  .home-works__list a{padding:18px 0; font-size:.86rem}
+}
 
 /* ---------- Inner pages (about, contact, work) -------------- */
 .page, .work-page{ padding:80px 0 120px; }
@@ -427,7 +441,8 @@ form button[type="submit"]:active{transform:translateY(0)}
   background:var(--accent);
   transform-origin:left center;
 }
-body[data-page="home"] .scroll-meter{display:none}
+/* Durante l'intro la scroll-bar e il meter non hanno senso (sotto è bloccato). */
+body.intro-active .scroll-meter{display:none}
 
 /* ---------- Reveal-on-scroll (opt-in via class="reveal") ---- */
 .reveal{
@@ -451,12 +466,9 @@ body[data-page="home"] .scroll-meter{display:none}
   .accent{font-size:108px; transform:translate(-50%, -90px) translateY(20px)}
   .symbol.active .accent{transform:translate(-50%, -90px) translateY(0)}
   .slash{width:118px}
-  .role{margin-bottom:40px}
   .brand{gap:10px}
   .brand__mark{font-size:1.5rem}
-  /* Touch targets ≥44px su tutti i link mono */
-  .works a{padding:12px 0}
-  .meta-links a{padding:10px 4px}
+  /* Touch targets ≥44px sui link mono */
   .nav__list a{padding:14px 0}
   .work-page__back{margin-top:64px}
   .work-page__back a{display:inline-block; padding:10px 0}
