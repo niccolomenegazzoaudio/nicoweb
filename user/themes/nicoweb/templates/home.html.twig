@@ -12,24 +12,42 @@
 {% set fEnd     = drone.filter_end|default(2000) %}
 
 {% block content %}
-{# Intro: overlay full-screen sopra la home. Click → drone audio
-   ({{ freqA }}/{{ freqB }} Hz · pan -1→0/+1→0 · lowpass {{ fStart }}→{{ fEnd }} Hz · {{ duration }}s)
-   Dopo {{ duration }}s fade out di {{ fade }}s; sotto c'è già la home normale. #}
-<div id="intro" class="intro" role="button" tabindex="0" aria-label="Avvia presentazione">
+{# Intro: overlay full-screen sopra la home con pannello di test del drone.
+   TEMP: una volta scelta la modalità definitiva ripristinare il single
+   tap-to-get-in-phase e rimuovere .intro__test. #}
+<div id="intro" class="intro">
   <div class="intro-name" aria-hidden="true">
     <span class="intro-name__pre">{{ intro.name_pre|default('Niccol') }}</span>
     <span class="symbol" id="symbol">
-      {# L'"o" è testo Space Grotesk reale (non più SVG): advance e baseline
-         coincidono con le minuscole di "Niccol" / " Menegazzo" senza padding
-         laterali e senza disallineamenti verticali. Slash e accento restano
-         overlay assoluti per mantenere l'animazione di rivelazione. #}
       <span class="o-glyph">o</span>
       <span class="slash" aria-hidden="true"></span>
       <span class="accent" aria-hidden="true">{{ intro.accent|default('̀')|raw }}</span>
     </span>
     <span class="intro-name__post">{{ intro.name_post|default(' Menegazzo') }}</span>
   </div>
-  <p class="intro__hint">tap to get in phase</p>
+
+  <div class="intro__test" role="group" aria-label="Test modalità drone">
+    <p class="intro__hint">scegli il drone · tap per ascoltare · ricliccabile</p>
+    <div class="intro__modes">
+      <button type="button" class="intro__mode" data-mode="beat" aria-label="Battimento 220 e 220.8 Hz">
+        <span class="intro__mode-name">battimento</span>
+        <span class="intro__mode-meta">{{ freqA }} / {{ freqB }} Hz</span>
+      </button>
+      <button type="button" class="intro__mode" data-mode="controfase" aria-label="Controfase pura">
+        <span class="intro__mode-name">controfase pura</span>
+        <span class="intro__mode-meta">{{ freqA }} Hz · 180°</span>
+      </button>
+      <button type="button" class="intro__mode" data-mode="quasi" aria-label="Quasi-controfase">
+        <span class="intro__mode-name">quasi-controfase</span>
+        <span class="intro__mode-meta">{{ freqA }} / {{ freqA + 0.4 }} Hz · 180°</span>
+      </button>
+      <button type="button" class="intro__mode" data-mode="phase90" aria-label="Phase 90 gradi">
+        <span class="intro__mode-name">phase 90°</span>
+        <span class="intro__mode-meta">{{ freqA }} Hz · T/4 delay</span>
+      </button>
+    </div>
+    <button type="button" id="intro-enter" class="intro__enter">entra nel sito →</button>
+  </div>
 </div>
 
 {# Home "vera" che vive sotto l'intro. Quando l'intro sparisce è già qui. #}
@@ -55,17 +73,19 @@
 {% block bottom %}
 <script>
 (() => {
-  const intro = document.getElementById('intro');
-  const symbol = document.getElementById('symbol');
+  const intro     = document.getElementById('intro');
+  const symbol    = document.getElementById('symbol');
+  const enterBtn  = document.getElementById('intro-enter');
+  const modeBtns  = Array.from(document.querySelectorAll('.intro__mode'));
 
   const DURATION = {{ duration }};
   const FADE     = {{ fade }};
+  const FREQ_A   = {{ freqA }};
+  const FREQ_B   = {{ freqB }};
+  const F_START  = {{ fStart }};
+  const F_END    = {{ fEnd }};
 
-  let started = false;
-
-  // Skip dell'intro SOLO quando si arriva da una pagina interna (clic sul brand
-  // dall'header di /about, /contact, /la-ferocia, ecc.). Atterraggi diretti
-  // dall'address bar / link esterni / refresh / nuova tab → l'intro suona.
+  // Skip intro quando si arriva da una pagina interna (header brand).
   const fromInternal = document.referrer
     && new URL(document.referrer, location.href).origin === location.origin
     && new URL(document.referrer, location.href).pathname !== location.pathname;
@@ -75,63 +95,154 @@
     return;
   }
 
-  // Mentre l'intro è on-screen blocca lo scroll della home sotto.
   document.body.classList.add('intro-active');
 
-  const reveal = () => {
-    if (started) return;
-    started = true;
+  let currentCtx = null;
+  let activeBtn  = null;
+
+  // Replay delle CSS transitions su .symbol / .intro-name__pre/post:
+  //  1) .no-anim disabilita transition+animation
+  //  2) togliamo le classi di reveal -> stato iniziale ripristinato istantaneamente
+  //  3) reflow per forzare il commit dello stato iniziale
+  //  4) rimuoviamo .no-anim e rimettiamo le classi -> animazione pulita
+  const replayVisual = () => {
+    intro.classList.add('no-anim');
+    symbol.classList.remove('active');
+    intro.classList.remove('revealed');
+    void intro.offsetWidth;
+    intro.classList.remove('no-anim');
+    void intro.offsetWidth;
     symbol.classList.add('active');
     intro.classList.add('revealed');
+  };
 
-    // Drone audio (Web Audio API).
+  const stopAudio = () => {
+    if (currentCtx) {
+      try { currentCtx.close(); } catch (_) {}
+      currentCtx = null;
+    }
+    if (activeBtn) {
+      activeBtn.classList.remove('is-playing');
+      activeBtn = null;
+    }
+  };
+
+  // playDrone(mode):
+  //   beat        — 220 / 220.8 Hz, due fasi indipendenti -> battimento 0.8 Hz
+  //   controfase  — stessa freq, secondo canale invertito (gain = -gain) -> 180° fissi
+  //   quasi       — stessa freq + 0.4 Hz di detune e inversione -> battimento lento dentro la cancellazione
+  //   phase90     — stessa freq, secondo canale ritardato di T/4 -> shift 90° (Hilbert-like)
+  const playDrone = (mode, btn) => {
+    stopAudio();
+    replayVisual();
+
+    if (btn) {
+      btn.classList.add('is-playing');
+      activeBtn = btn;
+    }
+
+    let ctx;
     try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const o1 = ctx.createOscillator(), o2 = ctx.createOscillator();
-      const g1 = ctx.createGain(),       g2 = ctx.createGain();
-      const p1 = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
-      const p2 = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
-      const filter = ctx.createBiquadFilter();
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (_) {
+      return; // audio non disponibile
+    }
+    currentCtx = ctx;
+    const t = ctx.currentTime;
 
-      o1.type = 'sine'; o2.type = 'sine';
-      o1.frequency.value = {{ freqA }};
-      o2.frequency.value = {{ freqB }};
-      filter.type = 'lowpass';
-      filter.frequency.value = {{ fStart }};
+    const o1 = ctx.createOscillator();
+    const o2 = ctx.createOscillator();
+    const g1 = ctx.createGain();
+    const g2 = ctx.createGain();
+    const p1 = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+    const p2 = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+    const filter = ctx.createBiquadFilter();
 
-      o1.connect(g1); o2.connect(g2);
-      if (p1 && p2) { g1.connect(p1); g2.connect(p2); p1.connect(filter); p2.connect(filter); }
-      else          { g1.connect(filter); g2.connect(filter); }
-      filter.connect(ctx.destination);
+    o1.type = 'sine';
+    o2.type = 'sine';
+    o1.frequency.value = FREQ_A;
+    filter.type = 'lowpass';
+    filter.frequency.value = F_START;
 
-      const t = ctx.currentTime;
-      if (p1 && p2) {
-        p1.pan.setValueAtTime(-1, t); p2.pan.setValueAtTime(1, t);
-        p1.pan.linearRampToValueAtTime(0, t + DURATION);
-        p2.pan.linearRampToValueAtTime(0, t + DURATION);
+    let phaseDelay = null;
+    let g2Sign = 1;
+
+    if (mode === 'beat') {
+      o2.frequency.value = FREQ_B;
+    } else if (mode === 'controfase') {
+      o2.frequency.value = FREQ_A;
+      g2Sign = -1;
+    } else if (mode === 'quasi') {
+      o2.frequency.value = FREQ_A + 0.4;
+      g2Sign = -1;
+    } else if (mode === 'phase90') {
+      o2.frequency.value = FREQ_A;
+      phaseDelay = ctx.createDelay(0.05);
+      phaseDelay.delayTime.value = 1 / (4 * FREQ_A);
+    }
+
+    o1.connect(g1);
+    o2.connect(g2);
+    const o2Tail = phaseDelay ? (g2.connect(phaseDelay), phaseDelay) : g2;
+
+    if (p1 && p2) {
+      g1.connect(p1);
+      o2Tail.connect(p2);
+      p1.connect(filter);
+      p2.connect(filter);
+    } else {
+      g1.connect(filter);
+      o2Tail.connect(filter);
+    }
+    filter.connect(ctx.destination);
+
+    if (p1 && p2) {
+      p1.pan.setValueAtTime(-1, t);
+      p2.pan.setValueAtTime(1, t);
+      p1.pan.linearRampToValueAtTime(0, t + DURATION);
+      p2.pan.linearRampToValueAtTime(0, t + DURATION);
+    }
+    filter.frequency.setValueAtTime(F_START, t);
+    filter.frequency.linearRampToValueAtTime(F_END, t + DURATION);
+
+    const peak = 0.25;
+    g1.gain.setValueAtTime(peak, t);
+    g1.gain.linearRampToValueAtTime(0, t + DURATION);
+    g2.gain.setValueAtTime(peak * g2Sign, t);
+    g2.gain.linearRampToValueAtTime(0, t + DURATION);
+
+    o1.start(t); o2.start(t);
+    o1.stop(t + DURATION + 0.05);
+    o2.stop(t + DURATION + 0.05);
+
+    o2.onended = () => {
+      if (currentCtx === ctx) {
+        try { ctx.close(); } catch (_) {}
+        currentCtx = null;
       }
-      filter.frequency.setValueAtTime({{ fStart }}, t);
-      filter.frequency.linearRampToValueAtTime({{ fEnd }}, t + DURATION);
-      g1.gain.setValueAtTime(0.25, t); g2.gain.setValueAtTime(0.25, t);
-      g1.gain.linearRampToValueAtTime(0, t + DURATION);
-      g2.gain.linearRampToValueAtTime(0, t + DURATION);
-      o1.start(t); o2.start(t);
-      o1.stop(t + DURATION + 0.05);
-      o2.stop(t + DURATION + 0.05);
-    } catch (e) { /* audio non disponibile, prosegui silenzioso */ }
+      if (activeBtn === btn) {
+        if (btn) btn.classList.remove('is-playing');
+        activeBtn = null;
+      }
+    };
+  };
 
-    // Fade out + svelamento home sottostante
-    setTimeout(() => intro.classList.add('out'), DURATION * 1000);
+  modeBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playDrone(btn.dataset.mode, btn);
+    });
+  });
+
+  enterBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    stopAudio();
+    intro.classList.add('out');
     setTimeout(() => {
       intro.style.display = 'none';
       document.body.classList.remove('intro-active');
       document.body.classList.add('intro-done');
-    }, (DURATION + FADE) * 1000);
-  };
-
-  intro.addEventListener('click', reveal);
-  intro.addEventListener('keydown', (ev) => {
-    if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); reveal(); }
+    }, FADE * 1000);
   });
 })();
 </script>
