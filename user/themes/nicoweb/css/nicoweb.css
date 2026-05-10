@@ -466,6 +466,19 @@ form button[type="submit"]:active{transform:translateY(0)}
 }
 .footer__bottom a:hover{color:var(--text); opacity:1}
 
+/* Social icons — outline 1.5px monolinea, currentColor; ereditano `muted` dal
+   parent .footer__bottom e diventano `text` su hover (stessa regola sopra). */
+.footer__social{
+  list-style:none; margin:0; padding:0;
+  display:flex; align-items:center; gap:6px;
+}
+.footer__social a{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:44px; height:44px;
+  color:inherit;
+}
+.footer__social svg{ width:20px; height:20px; display:block }
+
 /* ---------- Scroll meter (top of inner pages, VU-flavored) -- */
 /* Una sottile barra di scroll progress nell'accento warm-tan. */
 /* Solo dove c'è chrome (non in home: body[data-page="home"] disattiva). */

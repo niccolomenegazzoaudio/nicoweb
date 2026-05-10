@@ -10,3 +10,10 @@ metadata:
 contact:
   email: niccolomenegazzoaudio@gmail.com
   location: Italia
+
+# Profili social mostrati come icone nel footer.
+# Lascia una chiave vuota ('') per nascondere la sua icona.
+social:
+  instagram: ''
+  facebook: ''
+  soundcloud: ''
