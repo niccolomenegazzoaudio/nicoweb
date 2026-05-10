@@ -34,14 +34,25 @@
         @dotfiles path_regexp \/\.
         respond @dotfiles 404
 
-        # 2) Cartelle di Grav che non devono mai essere servite via HTTP
+        # 2) Cartelle di Grav che non devono mai essere servite via HTTP.
+        #    NB: `/system/assets/*` (jQuery, CSS dell'admin) DEVE restare
+        #    raggiungibile, perciò blocchiamo solo le sottocartelle private
+        #    di /system/ invece di tutto /system/. Stesso ragionamento per
+        #    /vendor/: gli admin asset di Grav vivono in /vendor/.../assets/.
         @forbidden path \
-            /vendor/* /backup/* /logs/* /tmp/* /cache/* \
-            /system/* /bin/* /tests/* \
+            /backup/* /logs/* /tmp/* /cache/* /bin/* /tests/* \
+            /system/src/* /system/blueprints/* /system/config/* \
+            /system/install.php \
+            /vendor/*/src/* /vendor/*/tests/* \
             /user/accounts/* /user/config/* /user/data/* /user/env/* \
-            /CHANGELOG.md /CONTRIBUTING.md /LICENSE.txt /README.md /SECURITY.md \
-            /CODE_OF_CONDUCT.md /composer.json /composer.lock /now.json
+            /composer.json /composer.lock /CLAUDE.md
         respond @forbidden 404
+
+        # Blocca esplicitamente file con estensione "sensibile" ovunque
+        # (config YAML, source PHP, markdown di sistema): copre i casi
+        # bordo dei due path-matcher sopra senza dover elencare tutto.
+        @sensitive path_regexp \.(twig|yaml|yml|md|sh|bat|cgi|pl|py|lock|ini|env)$
+        respond @sensitive 404
 
         # 3) Asset statici cacheabili dentro temi/plugin/user
         @assets {
