@@ -87,6 +87,27 @@ jobs:
             docker ps --filter name=nicoweb --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
           EOF
 
+      - name: Sync user/ into running container
+        # Il volume nominato nicoweb_user:/app/user persiste tra rebuild, quindi
+        # le modifiche a user/pages, user/themes, user/config NON arriverebbero
+        # in prod via solo "compose up". Qui forziamo il sync col tar pipe in
+        # docker exec, escludendo dati runtime e password email.
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" bash -se <<EOF
+            set -euo pipefail
+            cd '$DEPLOY_PATH'
+            tar --exclude='user/data' \\
+                --exclude='user/accounts' \\
+                --exclude='user/config/plugins/email.yaml' \\
+                -cf - user | docker exec -i nicoweb tar -xf - -C /app/
+            docker exec nicoweb /app/bin/grav clearcache
+          EOF
+
       - name: Smoke test (public)
         env:
           PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
