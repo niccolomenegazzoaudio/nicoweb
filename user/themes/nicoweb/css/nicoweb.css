@@ -9,6 +9,8 @@
 @font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/jetbrains-mono-400.woff2") format("woff2")}
 @font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:500;font-display:swap;src:url("../fonts/jetbrains-mono-500.woff2") format("woff2")}
 
+@view-transition { navigation: auto; }
+
 :root{
   --bg:        #000;
   --line:      rgba(255,255,255,.10);
@@ -16,6 +18,7 @@
   --text:      #f4f1ea;
   --muted:     rgba(244,241,234,.55);
   --muted-2:   rgba(244,241,234,.35);
+  --accent:    #d4a373;            /* warm tan, used for focus/active/CTA */
   --sans:      "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono:      "JetBrains Mono", ui-monospace, monospace;
   --maxw:      900px;
@@ -26,11 +29,13 @@
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
 
-*{box-sizing:border-box}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
   background:var(--bg);
+  background-image:
+    url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
   color:var(--text);
   font-family:var(--sans);
   font-size:17px; line-height:1.6;
@@ -38,6 +43,8 @@ body{
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
+:focus-visible{ outline:1px solid var(--accent); outline-offset:4px; border-radius:2px }
+a:active{ opacity:.5 }
 img,svg,video,audio{display:block;max-width:100%}
 a{color:var(--text); text-decoration:none; transition:opacity .25s var(--ease), color .25s var(--ease)}
 a:hover{opacity:.7}
@@ -65,7 +72,8 @@ p{margin:0}
   font-family:var(--mono); font-size:.78rem; letter-spacing:.16em;
   text-transform:uppercase; color:var(--muted);
 }
-.nav__list a:hover, .nav__list a[aria-current="page"]{color:var(--text); opacity:1}
+.nav__list a:hover{color:var(--text); opacity:1}
+.nav__list a[aria-current="page"]{color:var(--accent); opacity:1}
 
 .nav__toggle{display:none; background:none; border:0; color:var(--text); cursor:pointer; padding:8px}
 .nav__toggle .bars{display:block; width:22px; height:1px; background:currentColor; position:relative}
@@ -96,6 +104,8 @@ body[data-page="home"]{ overflow:hidden; }
 
 .intro{
   position:fixed; inset:0;
+  min-height:100dvh;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   display:flex; align-items:center; justify-content:center; flex-direction:column;
   cursor:pointer; z-index:10;
   transition:opacity 1s ease;
@@ -154,6 +164,8 @@ body[data-page="home"]{ overflow:hidden; }
 
 .home-screen{
   position:fixed; inset:0;
+  min-height:100dvh;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   display:flex; align-items:center; justify-content:center;
   background:var(--bg);
   opacity:0; pointer-events:none;
@@ -202,8 +214,9 @@ body[data-page="home"]{ overflow:hidden; }
 .page, .work-page{ padding:80px 0 120px; }
 .page__head, .work-page__head{ margin-bottom:48px; }
 .page__title, .work-page__title{
-  font-size:clamp(2rem, 5vw, 3.2rem);
-  font-weight:500; letter-spacing:-.015em;
+  font-size:clamp(2.4rem, 6.5vw, 4.6rem);
+  font-weight:500; letter-spacing:-.018em;
+  line-height:1.05;
 }
 .page__sub, .work-page__sub{
   margin-top:16px; max-width:54ch;
@@ -238,18 +251,35 @@ body[data-page="home"]{ overflow:hidden; }
   border-top:1px solid var(--line);
 }
 .kv__row{
-  display:grid; grid-template-columns:140px 1fr; gap:24px;
+  display:grid;
+  grid-template-columns:max-content 1fr max-content;
+  gap:14px;
   padding:18px 0;
   border-bottom:1px solid var(--line);
   align-items:baseline;
 }
 .kv__row dt{
+  grid-column:1;
   font-family:var(--mono); font-size:.72rem; letter-spacing:.16em;
   text-transform:uppercase; color:var(--muted); margin:0;
 }
-.kv__row dd{margin:0; font-size:1rem}
+.kv__row dd{
+  grid-column:3;
+  margin:0; font-size:1rem;
+  text-align:right;
+}
+.kv__row::before{
+  content:"";
+  grid-column:2;
+  height:1px;
+  border-bottom:1px dotted var(--line-2);
+  align-self:end;
+  margin-bottom:5px;
+}
 @media (max-width:580px){
   .kv__row{grid-template-columns:1fr; gap:6px}
+  .kv__row dt, .kv__row dd{grid-column:1; text-align:left}
+  .kv__row::before{display:none}
 }
 
 .credits{
@@ -305,7 +335,7 @@ form button[type="submit"], .button.button{
   cursor:pointer; transition:border-color .2s var(--ease), background .2s var(--ease);
   width:fit-content;
 }
-form button[type="submit"]:hover{border-color:var(--text); background:var(--text); color:var(--bg)}
+form button[type="submit"]:hover{border-color:var(--accent); background:var(--accent); color:var(--bg)}
 
 .alert,.form-messages{
   padding:14px 16px; border-radius:0;
@@ -328,6 +358,39 @@ form button[type="submit"]:hover{border-color:var(--text); background:var(--text
 }
 .footer__bottom a:hover{color:var(--text); opacity:1}
 
+/* ---------- Scroll meter (top of inner pages, VU-flavored) -- */
+/* Una sottile barra di scroll progress nell'accento warm-tan. */
+/* Solo dove c'è chrome (non in home: body[data-page="home"] disattiva). */
+.scroll-meter{
+  position:fixed; top:0; left:0; right:0;
+  height:1px; z-index:30;
+  background:var(--line);
+  pointer-events:none;
+}
+.scroll-meter::after{
+  content:"";
+  display:block;
+  height:100%;
+  width:var(--scroll, 0%);
+  background:var(--accent);
+  transform-origin:left center;
+}
+body[data-page="home"] .scroll-meter{display:none}
+
+/* ---------- Reveal-on-scroll (opt-in via class="reveal") ---- */
+.reveal{
+  opacity:0; transform:translateY(6px);
+  transition:opacity .8s var(--ease), transform .8s var(--ease);
+}
+.reveal.is-visible{opacity:1; transform:none}
+
+/* ---------- Tablet (portrait & landscape mid) -------------- */
+@media (min-width:781px) and (max-width:1024px){
+  .container{padding-inline:24px}
+  .nav{padding-inline:24px}
+  .page__title, .work-page__title{ font-size:clamp(2.4rem, 6vw, 3.8rem) }
+}
+
 /* ---------- Mobile tweaks ---------------------------------- */
 @media (max-width:780px){
   body{font-size:17px}
@@ -337,4 +400,18 @@ form button[type="submit"]:hover{border-color:var(--text); background:var(--text
   .symbol.active .accent{transform:translate(-50%, -90px) translateY(0)}
   .slash{width:118px}
   .role{margin-bottom:40px}
+  /* Touch targets ≥44px su tutti i link mono */
+  .works a{padding:12px 0}
+  .meta-links a{padding:10px 4px}
+  .nav__list a{padding:14px 0}
+  .work-page__back{margin-top:64px}
+  .work-page__back a{display:inline-block; padding:10px 0}
+}
+
+/* ---------- Phone piccolo (iPhone SE class) ---------------- */
+@media (max-width:480px){
+  .container{padding-inline:20px}
+  .nav{padding-inline:20px}
+  .page, .work-page{padding:56px 0 96px}
+  .page__head, .work-page__head{margin-bottom:36px}
 }

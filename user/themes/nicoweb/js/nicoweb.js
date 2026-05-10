@@ -19,6 +19,22 @@
     });
   }
 
+  // ---- Scroll meter (VU-flavored progress bar in inner pages) --------------
+  const meter = document.querySelector('.scroll-meter');
+  if (meter) {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const max = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+      const pct = Math.min(100, Math.max(0, (window.scrollY / max) * 100));
+      meter.style.setProperty('--scroll', pct.toFixed(2) + '%');
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+  }
+
   // ---- Reveal on scroll -----------------------------------------------------
   const reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && reveals.length) {

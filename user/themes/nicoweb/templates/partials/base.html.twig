@@ -7,6 +7,7 @@
     <title>{{ page.title ~ (page.title != site.title ? ' — ' ~ site.title : '') }}</title>
     <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ url('theme://fonts/space-grotesk-500.woff2', true) }}">
     <link rel="stylesheet" href="{{ url('theme://css/nicoweb.css', true) }}">
+    <script defer src="{{ url('theme://js/nicoweb.js', true) }}"></script>
     <link rel="icon" type="image/svg+xml" href="{{ url('theme://images/favicon.svg', true) }}">
     {% block head %}{% endblock %}
 </head>
@@ -15,7 +16,10 @@
 
     {% block chrome %}
       {# Header non mostrato in home; mostrato sulle pagine interne. #}
-      {% if page.slug != 'home' %}{% include 'partials/header.html.twig' %}{% endif %}
+      {% if page.slug != 'home' %}
+        <div class="scroll-meter" aria-hidden="true"></div>
+        {% include 'partials/header.html.twig' %}
+      {% endif %}
     {% endblock %}
 
     <main id="main">

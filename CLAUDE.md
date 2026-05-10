@@ -62,3 +62,36 @@ The prod stack is now standalone (binds `:80`/`:443` directly). The historical `
 - Twig escaping is on (`autoescape: true`); use `|raw` only on trusted markdown output (see `base.html.twig`).
 - When adding fields to a page's frontmatter, also add them to the matching `user/themes/nicoweb/blueprints/*.yaml` so they're editable from `/admin`.
 - The home page intentionally hides chrome (`{% if page.slug != 'home' %}` in `partials/base.html.twig`); other pages get header + footer.
+
+## Theme: visual language
+
+Minimal black + warm-white (`#000` / `#f4f1ea`), single warm-tan accent (`--accent: #d4a373`) used **only** for `:focus-visible`, `aria-current="page"` nav indicator, and primary CTA hover. **Do not** broaden the accent to body text or general links — it's a punctuation color.
+
+Two self-hosted families under `user/themes/nicoweb/fonts/` (woff2, OFL): Space Grotesk (400/500/700) and JetBrains Mono (400/500). The 500 weight is preloaded in `base.html.twig`. **No external font hosts** — adding `<link>` to googleapis is a regression.
+
+Mono uppercase labels (`.mono` class, or `font-family:var(--mono)` + `text-transform:uppercase`) standardise on `letter-spacing: .24em` (some smaller mono labels in `.kv__row dt` keep `.16em` for legibility at the smaller size).
+
+Page-enter and inter-page cross-fades come from CSS `@view-transition { navigation: auto }` — no JS animation library involved.
+
+Body has a 5%-opacity SVG noise tile in `background-image` for analog warmth — keep `background-color: var(--bg)` + `background-image:` separate (don't collapse to `background:` shorthand or the noise disappears).
+
+### "VU meter" scroll progress
+
+Inner pages render a 1px `<div class="scroll-meter">` at the top, fixed, in `--accent`. The width is driven by a custom property `--scroll` set on the element by `nicoweb.js` from a passive scroll listener. CSS hides it on the home page (`body[data-page="home"]`) so the audio intro stays clean. This is intentional sound-engineering visual signature — don't remove it without replacing.
+
+### `.reveal` opt-in
+
+Any element with `class="reveal"` fades in on scroll via IntersectionObserver in `nicoweb.js`. Useful for content-author opt-in inside markdown (`<div class="reveal">…</div>`); not auto-applied to chrome.
+
+### Responsive breakpoints
+
+Three media query bands, in this order in `nicoweb.css`:
+- `min-width:781px and max-width:1024px` — tablet portrait, slightly tighter padding/title clamps.
+- `max-width:780px` — phone/tablet small. Touch targets bumped to ≥44px on all mono links.
+- `max-width:480px` — phone-small (iPhone SE class). Container padding 20px, page padding compressed.
+
+Touch defaults: `-webkit-tap-highlight-color:transparent` globally + `a:active { opacity:.5 }` for tap feedback. `.intro` and `.home-screen` use `min-height:100dvh` plus `env(safe-area-inset-*)` padding so the audio intro hint isn't clipped by iOS Safari's dynamic toolbar / notch.
+
+## JS
+
+Single file: `user/themes/nicoweb/js/nicoweb.js`, loaded with `defer` from `base.html.twig`. Vanilla, no deps. Handles: mobile nav toggle, scroll meter, reveal-on-scroll, audio players (markup not yet wired into templates), portfolio filters (markup not yet wired). The home audio drone is a separate inline script in `home.html.twig` because it's home-specific and reads frontmatter into JS literals.
