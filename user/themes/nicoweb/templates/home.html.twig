@@ -60,9 +60,21 @@
 
   let started = false;
 
+  const SEEN_KEY = 'nicoweb-intro-seen';
+
+  // Skip diretto se l'utente ha già visto l'intro in questa sessione
+  // (es. arriva qui cliccando il brand dall'header di una pagina interna).
+  if (sessionStorage.getItem(SEEN_KEY) === '1') {
+    intro.style.display = 'none';
+    home.classList.add('visible');
+    home.setAttribute('aria-hidden', 'false');
+    return;
+  }
+
   const reveal = () => {
     if (started) return;
     started = true;
+    sessionStorage.setItem(SEEN_KEY, '1');
     symbol.classList.add('active');
 
     // Drone audio (Web Audio API).
