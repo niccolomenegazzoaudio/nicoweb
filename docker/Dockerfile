@@ -29,6 +29,8 @@ RUN rm -rf /app/public.legacy /app/.git /app/deploy /app/docker /app/docker-comp
 EXPOSE 80 443
 
 # Healthcheck: il default dell'immagine colpisce :2019 (admin API), che
-# disabilitiamo. Sostituisco con una HEAD su / che copre Caddy + PHP.
-HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD wget -q --spider http://localhost/ || exit 1
+# disabilitiamo. Sostituisco con curl HTTPS sul loopback. Caddy in prod fa
+# redir 80→443; un wget BusyBox non sa disabilitare la verifica del cert,
+# perciò curl con -k (loopback, cert non match localhost) è la scelta giusta.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD curl -fsko /dev/null https://localhost/ || curl -fso /dev/null http://localhost/ || exit 1
