@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -740 770 770" fill="currentColor" aria-hidden="true">
+  <!-- Glifo "O" estratto da Space Grotesk Regular (UPM 1000, baseline a y=0).
+       Stesse curve Bézier del font del brand: zero approssimazioni geometriche. -->
+  <g transform="scale(1, -1)">
+    <path d="M334 -14Q209 -14 134.5 58.5Q60 131 60 270V430Q60 569 134.5 641.5Q209 714 334 714Q460 714 534.5 641.5Q609 569 609 430V270Q609 131 534.5 58.5Q460 -14 334 -14ZM334 61Q425 61 475.0 115.5Q525 170 525 267V433Q525 530 475.0 584.5Q425 639 334 639Q244 639 194.0 584.5Q144 530 144 433V267Q144 170 194.0 115.5Q244 61 334 61Z"/>
+    <!-- Barra hairline (non-scaling-stroke = 1px reale a qualsiasi dimensione,
+         echo del .slash 1px del simbolo intro originale). -->
+    <line x1="40" y1="20" x2="630" y2="680" stroke="currentColor" stroke-width="1" stroke-linecap="square" vector-effect="non-scaling-stroke"/>
+  </g>
+</svg>

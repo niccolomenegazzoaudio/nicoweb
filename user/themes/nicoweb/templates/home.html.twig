@@ -19,13 +19,19 @@
   <div class="intro-name" aria-hidden="true">
     <span class="intro-name__pre">{{ intro.name_pre|default('Niccol') }}</span>
     <div class="symbol" id="symbol">
-      <div class="o-letter">{{ intro.letter|default('O') }}</div>
+      {# Glifo Space Grotesk 400 estratto dal woff2 (path Bézier reali, non
+         un'ellisse approssimata): coerente con il font del resto del sito. #}
+      <svg class="o-mark" viewBox="60 -728 549 742" fill="currentColor" aria-hidden="true">
+        <g transform="scale(1, -1)">
+          <path d="M334 -14Q209 -14 134.5 58.5Q60 131 60 270V430Q60 569 134.5 641.5Q209 714 334 714Q460 714 534.5 641.5Q609 569 609 430V270Q609 131 534.5 58.5Q460 -14 334 -14ZM334 61Q425 61 475.0 115.5Q525 170 525 267V433Q525 530 475.0 584.5Q425 639 334 639Q244 639 194.0 584.5Q144 530 144 433V267Q144 170 194.0 115.5Q244 61 334 61Z"/>
+        </g>
+      </svg>
       <div class="slash"></div>
       <div class="accent">{{ intro.accent|default('̀')|raw }}</div>
     </div>
     <span class="intro-name__post">{{ intro.name_post|default(' Menegazzo') }}</span>
   </div>
-  <p class="intro__hint">tap to begin</p>
+  <p class="intro__hint">tap to get in phase</p>
 </div>
 
 {# Home "vera" che vive sotto l'intro. Quando l'intro sparisce è già qui. #}
