@@ -34,14 +34,6 @@ html,body{margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
   background:var(--bg);
-  /* "Display tecnico" — bande orizzontali sottilissime, fisse rispetto al
-     viewport: il testo scorre, la trama resta. Echo di un display da regia. */
-  background-image: repeating-linear-gradient(
-    to bottom,
-    #000 0px, #000 3px,
-    #060606 3px, #060606 4px
-  );
-  background-attachment: fixed;
   color:var(--text);
   font-family:var(--sans);
   font-size:17px; line-height:1.6;

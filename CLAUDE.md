@@ -76,7 +76,7 @@ Mono uppercase labels (`.mono` class, or `font-family:var(--mono)` + `text-trans
 
 Page-enter and inter-page cross-fades come from CSS `@view-transition { navigation: auto }` — no JS animation library involved.
 
-Body has a `repeating-linear-gradient` of 3-px-on / 1-px-off horizontal bands (`#000` ↔ `#060606`) at `background-attachment: fixed` — sound-engineering "display tecnico" texture, scroll-static. Keep `background-color: var(--bg)` + `background-image:` separate (don't collapse to `background:` shorthand or the bands disappear).
+Body background is **flat black**, no texture / pattern / gradient. Past iterations tried an SVG noise tile and a `repeating-linear-gradient` of horizontal bands; both were rejected. Don't reintroduce a `background-image` on `body` without explicit user request.
 
 ### "VU meter" scroll progress
 
