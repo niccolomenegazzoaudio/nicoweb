@@ -27,7 +27,7 @@
   </div>
 
   <div class="intro__test" role="group" aria-label="Test modalità drone">
-    <p class="intro__hint">scegli il drone · tap per ascoltare · ricliccabile</p>
+    <p class="intro__hint">scegli il drone · ricliccabile · shimmer 440 / 660 Hz su tutti</p>
     <div class="intro__modes">
       <button type="button" class="intro__mode" data-mode="beat" aria-label="Battimento 220 e 220.8 Hz">
         <span class="intro__mode-name">battimento</span>
@@ -211,9 +211,48 @@
     g2.gain.setValueAtTime(peak * g2Sign, t);
     g2.gain.linearRampToValueAtTime(0, t + DURATION);
 
+    // ===== Shimmer =====
+    // Due voci pitchate (ottava + dodicesima) che si "accendono" sopra il
+    // fondamento, modulate da un LFO lento. Attraversano lo stesso lowpass,
+    // quindi sbocciano insieme allo sweep del filtro. Mono-centered: il
+    // fondamento ha già la sua dinamica stereo via i panner.
+    const sh1 = ctx.createOscillator();
+    const sh2 = ctx.createOscillator();
+    sh1.type = 'sine'; sh2.type = 'sine';
+    sh1.frequency.value = FREQ_A * 2;   // 440 Hz
+    sh2.frequency.value = FREQ_A * 3;   // 660 Hz
+
+    const shGain = ctx.createGain();
+    sh1.connect(shGain); sh2.connect(shGain);
+    shGain.connect(filter);
+
+    // Envelope shimmer: 0 → peak su 1.5s, sustain, → 0 su DURATION
+    const shPeak = 0.05;
+    shGain.gain.setValueAtTime(0, t);
+    shGain.gain.linearRampToValueAtTime(shPeak, t + 1.5);
+    shGain.gain.setValueAtTime(shPeak, t + 1.5);
+    shGain.gain.linearRampToValueAtTime(0, t + DURATION);
+
+    // LFO ~0.3 Hz che modula shGain.gain (sommato all'AudioParam automation),
+    // depth gated dalla stessa envelope per evitare flip di polarità a fine fade.
+    const lfo = ctx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.value = 0.3;
+    const lfoGain = ctx.createGain();
+    lfoGain.gain.setValueAtTime(0, t);
+    lfoGain.gain.linearRampToValueAtTime(shPeak * 0.7, t + 1.5);
+    lfoGain.gain.setValueAtTime(shPeak * 0.7, t + 1.5);
+    lfoGain.gain.linearRampToValueAtTime(0, t + DURATION);
+    lfo.connect(lfoGain);
+    lfoGain.connect(shGain.gain);
+
     o1.start(t); o2.start(t);
+    sh1.start(t); sh2.start(t); lfo.start(t);
     o1.stop(t + DURATION + 0.05);
     o2.stop(t + DURATION + 0.05);
+    sh1.stop(t + DURATION + 0.05);
+    sh2.stop(t + DURATION + 0.05);
+    lfo.stop(t + DURATION + 0.05);
 
     o2.onended = () => {
       if (currentCtx === ctx) {
