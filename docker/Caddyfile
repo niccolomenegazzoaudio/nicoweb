@@ -43,7 +43,7 @@
             /backup/* /logs/* /tmp/* /cache/* /bin/* /tests/* \
             /system/src/* /system/blueprints/* /system/config/* \
             /system/install.php \
-            /vendor/*/src/* /vendor/*/tests/* \
+            /vendor/composer/* /vendor/*/src/* /vendor/*/tests/* \
             /user/accounts/* /user/config/* /user/data/* /user/env/* \
             /composer.json /composer.lock /CLAUDE.md
         respond @forbidden 404
@@ -51,7 +51,9 @@
         # Blocca esplicitamente file con estensione "sensibile" ovunque
         # (config YAML, source PHP, markdown di sistema): copre i casi
         # bordo dei due path-matcher sopra senza dover elencare tutto.
-        @sensitive path_regexp \.(twig|yaml|yml|md|sh|bat|cgi|pl|py|lock|ini|env)$
+        # `json` incluso per evitare leak di /vendor/.../composer.json e
+        # /vendor/composer/installed.json (fingerprint dei pacchetti).
+        @sensitive path_regexp \.(twig|yaml|yml|md|sh|bat|cgi|pl|py|lock|ini|env|json)$
         respond @sensitive 404
 
         # 3) Asset statici cacheabili dentro temi/plugin/user
