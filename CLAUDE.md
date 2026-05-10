@@ -21,6 +21,8 @@ Production deploy is automatic: every push to `main` runs `.github/workflows/dep
 
 Manual deploy from a workstation: `./deploy/deploy.sh` (uses the SSH alias `arm_php`, target `/home/ubuntu/nicoweb`).
 
+**Auto-push workflow.** This repo treats `git push origin main` as the publish step: every change ends with `commit + push` so it goes live. When working here, finish each task by committing the working tree and pushing to `main` without asking — Francesco wants the loop tight. Standard caveats still apply (never `--amend` published commits, never skip hooks, never force-push, stop and warn if a sensitive file like `.env` / `user/accounts/` / `user/config/plugins/email.yaml` slipped into the diff). If you change a page slug, update the smoke-test list in `.github/workflows/deploy.yml` in the same commit, or the deploy fails.
+
 Grav CLI (rarely needed; admin UI covers most things):
 ```bash
 bin/grav clear-cache
