@@ -76,7 +76,7 @@ Mono uppercase labels (`.mono` class, or `font-family:var(--mono)` + `text-trans
 
 Page-enter and inter-page cross-fades come from CSS `@view-transition { navigation: auto }` — no JS animation library involved.
 
-Body has a 5%-opacity SVG noise tile in `background-image` for analog warmth — keep `background-color: var(--bg)` + `background-image:` separate (don't collapse to `background:` shorthand or the noise disappears).
+Body has a `repeating-linear-gradient` of 3-px-on / 1-px-off horizontal bands (`#000` ↔ `#060606`) at `background-attachment: fixed` — sound-engineering "display tecnico" texture, scroll-static. Keep `background-color: var(--bg)` + `background-image:` separate (don't collapse to `background:` shorthand or the bands disappear).
 
 ### "VU meter" scroll progress
 

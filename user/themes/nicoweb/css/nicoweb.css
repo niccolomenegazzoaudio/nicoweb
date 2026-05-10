@@ -34,8 +34,14 @@ html,body{margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
   background:var(--bg);
-  background-image:
-    url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+  /* "Display tecnico" — bande orizzontali sottilissime, fisse rispetto al
+     viewport: il testo scorre, la trama resta. Echo di un display da regia. */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    #000 0px, #000 3px,
+    #060606 3px, #060606 4px
+  );
+  background-attachment: fixed;
   color:var(--text);
   font-family:var(--sans);
   font-size:17px; line-height:1.6;
