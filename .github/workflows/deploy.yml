@@ -90,8 +90,11 @@ jobs:
       - name: Sync user/ into running container
         # Il volume nominato nicoweb_user:/app/user persiste tra rebuild, quindi
         # le modifiche a user/pages, user/themes, user/config NON arriverebbero
-        # in prod via solo "compose up". Qui forziamo il sync col tar pipe in
-        # docker exec, escludendo dati runtime e password email.
+        # in prod via solo "compose up". Qui forziamo il sync con due step:
+        #   1) pre-clean: cancella tutto in pages/ e themes/ dentro al container
+        #      (così rimuoviamo file che il repo non ha più)
+        #   2) tar pipe: rimette nel container quello che è oggi nel repo,
+        #      preservando data/accounts e la password SMTP.
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
@@ -101,6 +104,10 @@ jobs:
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" bash -se <<EOF
             set -euo pipefail
             cd '$DEPLOY_PATH'
+            # Pre-clean: pages e themes sono dev-driven (il repo è source of truth).
+            # data, accounts, config/plugins/email.yaml restano intatti.
+            docker exec nicoweb sh -c 'rm -rf /app/user/pages/* /app/user/themes/*'
+            # Estrae il repo dentro al container, escludendo i path runtime.
             tar --exclude='user/data' \\
                 --exclude='user/accounts' \\
                 --exclude='user/config/plugins/email.yaml' \\

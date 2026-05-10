@@ -21,7 +21,7 @@
   --accent:    #d4a373;            /* warm tan, used for focus/active/CTA */
   --sans:      "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono:      "JetBrains Mono", ui-monospace, monospace;
-  --maxw:      900px;
+  --maxw:      1200px;
   --ease:      cubic-bezier(.2,.7,.2,1);
 }
 
