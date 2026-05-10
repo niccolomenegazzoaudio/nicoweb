@@ -142,8 +142,8 @@ body.intro-active{ overflow:hidden; }
    Le due metà del nome partono invisibili; quando il simbolo si attiva
    (vedi .intro.revealed) sfumano in fade-in attorno alla O. */
 .intro-name{
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--sans); font-weight:300; line-height:1;
+  display:flex; align-items:baseline; justify-content:center;
+  font-family:var(--sans); font-weight:400; line-height:1;
   letter-spacing:-.02em;
   color:var(--text);
   white-space:nowrap;
@@ -162,14 +162,19 @@ body.intro-active{ overflow:hidden; }
   transform:translateY(0);
 }
 
-/* Tutto il simbolo (box, slash, accento) è dimensionato in em rispetto al
-   font-size del .symbol. Animando solo quel font-size, il box si rimpicciolisce
-   come un blocco unico fino a coincidere con il font del nome circostante. */
+/* Il symbol ora è inline-block con dentro un'"o" testuale (Space Grotesk 400),
+   quindi advance e baseline sono naturali. Animando solo il font-size del
+   symbol, l'o si rimpicciolisce fino a coincidere — stesso glifo, stessa
+   metrica — con le minuscole di "Niccol" / " Menegazzo".
+   align-items:baseline sulla riga garantisce l'allineamento tipografico. */
 .symbol{
   position:relative;
+  display:inline-block;
   font-size:180px;
-  width:1em; height:1em;
-  display:flex; align-items:center; justify-content:center;
+  font-family:var(--sans);
+  font-weight:400;
+  letter-spacing:-.02em;
+  line-height:1;
   color:var(--text);
   flex:0 0 auto;
   transition:font-size 2.4s var(--ease) .5s;
@@ -177,9 +182,8 @@ body.intro-active{ overflow:hidden; }
 .intro.revealed .symbol{
   font-size:clamp(1rem, 4.2vw, 2.75rem);
 }
-.o-mark{
-  display:block;
-  width:100%; height:100%;
+.o-glyph{
+  display:inline-block;
 }
 /* L'o minuscola sta nella metà inferiore del box em (top a 30%, bottom a 81%,
    centro a ~55.5%): slash e accento sono ancorati a quella geometria, non
