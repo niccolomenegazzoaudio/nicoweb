@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ page.header.description ?: site.metadata.description }}">
     <title>{{ page.title ~ (page.title != site.title ? ' — ' ~ site.title : '') }}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ url('theme://fonts/space-grotesk-500.woff2', true) }}">
     <link rel="stylesheet" href="{{ url('theme://css/nicoweb.css', true) }}">
     <link rel="icon" type="image/svg+xml" href="{{ url('theme://images/favicon.svg', true) }}">
     {% block head %}{% endblock %}

@@ -1,0 +1,13 @@
+Both font families bundled in this directory are licensed under the SIL Open Font
+License, Version 1.1 (https://scripts.sil.org/OFL).
+
+— Space Grotesk (space-grotesk-*.woff2)
+  Copyright 2021 The Space Grotesk Project Authors
+  https://github.com/floriankarsten/space-grotesk
+
+— JetBrains Mono (jetbrains-mono-*.woff2)
+  Copyright 2020 The JetBrains Mono Project Authors
+  https://github.com/JetBrains/JetBrainsMono
+
+The OFL allows redistribution and embedding in works under the conditions of the
+license. The full license text is available at the URL above.

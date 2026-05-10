@@ -17,4 +17,18 @@
       </ul>
     </nav>
   </div>
+  <script>
+  (() => {
+    const h = document.currentScript.closest('.site-header');
+    const btn = h.querySelector('.nav__toggle');
+    const close = () => { h.classList.remove('is-open'); btn.setAttribute('aria-expanded','false'); };
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = h.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open);
+    });
+    document.addEventListener('click', e => { if (!h.contains(e.target)) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  })();
+  </script>
 </header>

@@ -3,15 +3,19 @@
    Minimal black aesthetic, modern sans-serif.
    ============================================================= */
 
+@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/space-grotesk-400.woff2") format("woff2")}
+@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:500;font-display:swap;src:url("../fonts/space-grotesk-500.woff2") format("woff2")}
+@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:700;font-display:swap;src:url("../fonts/space-grotesk-700.woff2") format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/jetbrains-mono-400.woff2") format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:500;font-display:swap;src:url("../fonts/jetbrains-mono-500.woff2") format("woff2")}
+
 :root{
   --bg:        #000;
-  --bg-2:      #0a0a0a;
   --line:      rgba(255,255,255,.10);
   --line-2:    rgba(255,255,255,.18);
   --text:      #f4f1ea;
   --muted:     rgba(244,241,234,.55);
   --muted-2:   rgba(244,241,234,.35);
-  --accent:    #f4f1ea;            /* warm white, no chroma */
   --sans:      "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono:      "JetBrains Mono", ui-monospace, monospace;
   --maxw:      900px;
@@ -50,8 +54,7 @@ p{margin:0}
 /* ---------- Header / Nav (interne, non in home) ------------- */
 .site-header{
   position:sticky; top:0; z-index:20;
-  background:rgba(0,0,0,.7);
-  backdrop-filter:blur(14px);
+  background:var(--bg);
   border-bottom:1px solid var(--line);
 }
 .nav{display:flex; align-items:center; justify-content:space-between; padding:18px 28px; max-width:var(--maxw); margin:0 auto}
@@ -119,7 +122,7 @@ body[data-page="home"]{ overflow:hidden; }
   top:50%; left:50%;
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(1);
   transform-origin:center;
-  transition:transform 5s ease, opacity 5s ease;
+  transition:transform 5s var(--ease), opacity 5s var(--ease);
 }
 .accent{
   position:absolute; left:50%; top:50%;
@@ -127,7 +130,7 @@ body[data-page="home"]{ overflow:hidden; }
   font-size:140px; font-weight:300; line-height:1;
   transform:translate(-50%, -117px) translateY(20px);
   opacity:0;
-  transition:transform 5s ease, opacity 5s ease;
+  transition:transform 5s var(--ease), opacity 5s var(--ease);
 }
 .symbol.active .slash{
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(0);
@@ -164,9 +167,9 @@ body[data-page="home"]{ overflow:hidden; }
   margin:0;
 }
 .role{
-  margin:14px 0 56px;
+  margin:14px 0 44px;
   font-family:var(--mono);
-  font-size:.78rem; letter-spacing:.32em;
+  font-size:.78rem; letter-spacing:.24em;
   text-transform:uppercase; color:var(--muted);
 }
 .works ul{
@@ -174,18 +177,23 @@ body[data-page="home"]{ overflow:hidden; }
   display:grid; gap:20px;
 }
 .works a{
-  font-family:var(--mono); font-size:.92rem; letter-spacing:.32em;
+  font-family:var(--mono); font-size:.92rem; letter-spacing:.24em;
   color:var(--text);
   display:inline-block; padding:6px 0;
+  background-image:linear-gradient(currentColor,currentColor);
+  background-repeat:no-repeat;
+  background-position:0 100%;
+  background-size:0 1px;
+  transition:background-size .35s var(--ease), opacity .25s var(--ease);
 }
 .works a:hover{
   opacity:1;
-  border-bottom:1px solid var(--text);
+  background-size:100% 1px;
 }
 .meta-links{margin-top:56px}
 .meta-links ul{list-style:none; padding:0; margin:0; display:flex; gap:24px; justify-content:center; flex-wrap:wrap}
 .meta-links a{
-  font-family:var(--mono); font-size:.7rem; letter-spacing:.28em;
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.24em;
   text-transform:uppercase; color:var(--muted);
 }
 .meta-links a:hover{color:var(--text); opacity:1}
@@ -205,14 +213,16 @@ body[data-page="home"]{ overflow:hidden; }
 
 .work-page__media{margin:0 0 48px; padding:0}
 .work-page__media img,
-.work-page__media video{width:100%; height:auto; border:1px solid var(--line)}
+.work-page__media video{width:100%; height:auto}
 .work-page__media audio{width:100%}
 .work-page__media figcaption{margin-top:10px; font-size:.85rem}
 
 .work-page__body, .page__body{
-  font-size:1.05rem; line-height:1.75;
+  font-size:1.05rem; line-height:1.65;
   max-width:62ch;
 }
+
+.page__head .eyebrow{ margin:0 0 10px; letter-spacing:.24em; }
 .work-page__body p+p, .page__body p+p{margin-top:1em}
 .work-page__body strong, .page__body strong{font-weight:500}
 .work-page__body em, .page__body em{font-style:italic}
@@ -317,13 +327,6 @@ form button[type="submit"]:hover{border-color:var(--text); background:var(--text
   flex-wrap:wrap; gap:12px;
 }
 .footer__bottom a:hover{color:var(--text); opacity:1}
-
-/* ---------- Reveal (subtle) ------------------------------- */
-.reveal{
-  opacity:0; transform:translateY(6px);
-  transition:opacity .8s var(--ease), transform .8s var(--ease);
-}
-.reveal.is-visible{opacity:1; transform:none}
 
 /* ---------- Mobile tweaks ---------------------------------- */
 @media (max-width:780px){
