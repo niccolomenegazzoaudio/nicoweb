@@ -60,11 +60,13 @@
 
   let started = false;
 
-  const SEEN_KEY = 'nicoweb-intro-seen';
-
-  // Skip diretto se l'utente ha già visto l'intro in questa sessione
-  // (es. arriva qui cliccando il brand dall'header di una pagina interna).
-  if (sessionStorage.getItem(SEEN_KEY) === '1') {
+  // Skip dell'intro SOLO quando il visitatore arriva da una pagina interna
+  // (es. clic sul brand). Atterraggi diretti dall'address bar / link esterni
+  // / refresh della home → l'intro suona ogni volta.
+  const fromInternal = document.referrer
+    && new URL(document.referrer, location.href).origin === location.origin
+    && new URL(document.referrer, location.href).pathname !== location.pathname;
+  if (fromInternal) {
     intro.style.display = 'none';
     home.classList.add('visible');
     home.setAttribute('aria-hidden', 'false');
@@ -74,7 +76,6 @@
   const reveal = () => {
     if (started) return;
     started = true;
-    sessionStorage.setItem(SEEN_KEY, '1');
     symbol.classList.add('active');
 
     // Drone audio (Web Audio API).
