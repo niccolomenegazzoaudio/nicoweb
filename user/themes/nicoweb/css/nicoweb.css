@@ -162,31 +162,42 @@ body.intro-active{ overflow:hidden; }
   transform:translateY(0);
 }
 
+/* Tutto il simbolo (box, slash, accento) è dimensionato in em rispetto al
+   font-size del .symbol. Animando solo quel font-size, il box si rimpicciolisce
+   come un blocco unico fino a coincidere con il font del nome circostante. */
 .symbol{
   position:relative;
-  width:180px; height:180px;
+  font-size:180px;
+  width:1em; height:1em;
   display:flex; align-items:center; justify-content:center;
   color:var(--text);
   flex:0 0 auto;
+  transition:font-size 2.4s var(--ease) .5s;
+}
+.intro.revealed .symbol{
+  font-size:clamp(1rem, 4.2vw, 2.75rem);
 }
 .o-mark{
   display:block;
   width:100%; height:100%;
 }
+/* L'o minuscola sta nella metà inferiore del box em (top a 30%, bottom a 81%,
+   centro a ~55.5%): slash e accento sono ancorati a quella geometria, non
+   al centro geometrico del symbol. */
 .slash{
   position:absolute;
-  width:150px; height:1px;
+  width:.7em; height:1px;
   background:var(--text);
-  top:50%; left:50%;
+  top:55.5%; left:50%;
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(1);
   transform-origin:center;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
 }
 .accent{
-  position:absolute; left:50%; top:50%;
+  position:absolute; left:50%; top:0;
   font-family:var(--sans);
-  font-size:140px; font-weight:300; line-height:1;
-  transform:translate(-50%, -117px) translateY(20px);
+  font-size:.5em; font-weight:400; line-height:1;
+  transform:translate(-50%, .12em) translateY(.18em);
   opacity:0;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
 }
@@ -195,7 +206,7 @@ body.intro-active{ overflow:hidden; }
   opacity:0;
 }
 .symbol.active .accent{
-  transform:translate(-50%, -117px) translateY(0);
+  transform:translate(-50%, .12em) translateY(0);
   opacity:1;
 }
 .intro__hint{
@@ -492,10 +503,9 @@ body.intro-active .scroll-meter{display:none}
 /* ---------- Mobile tweaks ---------------------------------- */
 @media (max-width:780px){
   body{font-size:17px}
-  .symbol{width:140px; height:140px}
-  .accent{font-size:108px; transform:translate(-50%, -90px) translateY(20px)}
-  .symbol.active .accent{transform:translate(-50%, -90px) translateY(0)}
-  .slash{width:118px}
+  /* Tutto il simbolo è em-based: cambia solo il controller font-size.
+     slash/accento si adeguano da soli (e così l'animazione di rimpicciolimento). */
+  .symbol{font-size:140px}
   /* Touch targets ≥44px sui link mono */
   .nav__list a{padding:14px 0}
   .work-page__back{margin-top:64px}

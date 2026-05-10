@@ -19,11 +19,13 @@
   <div class="intro-name" aria-hidden="true">
     <span class="intro-name__pre">{{ intro.name_pre|default('Niccol') }}</span>
     <div class="symbol" id="symbol">
-      {# Glifo Space Grotesk 400 estratto dal woff2 (path Bézier reali, non
-         un'ellisse approssimata): coerente con il font del resto del sito. #}
-      <svg class="o-mark" viewBox="60 -728 549 742" fill="currentColor" aria-hidden="true">
+      {# Glifo Space Grotesk 400 minuscolo (lowercase o) estratto dal woff2.
+         viewBox em-quadro (1000×1000) con baseline a y=0: il glifo si posiziona
+         da solo all'altezza tipografica corretta — quando il symbol si rimpicciolisce
+         alla dimensione del nome, l'o coincide con le minuscole di "Niccol" / " Menegazzo". #}
+      <svg class="o-mark" viewBox="-191 -800 1000 1000" fill="currentColor" aria-hidden="true">
         <g transform="scale(1, -1)">
-          <path d="M334 -14Q209 -14 134.5 58.5Q60 131 60 270V430Q60 569 134.5 641.5Q209 714 334 714Q460 714 534.5 641.5Q609 569 609 430V270Q609 131 534.5 58.5Q460 -14 334 -14ZM334 61Q425 61 475.0 115.5Q525 170 525 267V433Q525 530 475.0 584.5Q425 639 334 639Q244 639 194.0 584.5Q144 530 144 433V267Q144 170 194.0 115.5Q244 61 334 61Z"/>
+          <path d="M309 -14Q235 -14 178.5 17.0Q122 48 90.5 104.5Q59 161 59 238V251Q59 327 90.5 384.0Q122 441 178.5 472.0Q235 503 309 503Q383 503 439.5 472.0Q496 441 527.5 384.0Q559 327 559 251V238Q559 161 527.5 104.5Q496 48 439.5 17.0Q383 -14 309 -14ZM309 57Q387 57 433.5 106.5Q480 156 480 240V249Q480 333 433.5 382.5Q387 432 309 432Q232 432 185.0 382.5Q138 333 138 249V240Q138 156 185.0 106.5Q232 57 309 57Z"/>
         </g>
       </svg>
       <div class="slash"></div>
