@@ -1,11 +1,15 @@
 .git/
+.github/
 .gitignore
+.dockerignore
 README.md
+CLAUDE.md
 deploy/
 node_modules/
 *.log
 .DS_Store
 public.legacy/
+index_bk.php
 backup/*
 !backup/.gitkeep
 cache/*
@@ -14,3 +18,9 @@ logs/*
 !logs/.gitkeep
 tmp/*
 !tmp/.gitkeep
+# Account utenti / dati form / sessioni: gestiti su volume in prod, mai
+# baked in image. Senza questo, l'hash della password admin di dev finiva
+# nell'immagine production.
+user/accounts/
+user/data/
+user/sessions/
