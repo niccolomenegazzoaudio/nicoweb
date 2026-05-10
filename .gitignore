@@ -31,3 +31,6 @@ public.legacy/
 # Editor configs
 .idea/
 .vscode/
+
+# Claude Code per-machine settings (overrides, autoMode rules)
+.claude/settings.local.json
