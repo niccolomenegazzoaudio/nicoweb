@@ -1,7 +1,6 @@
 ---
-title: About
-menu: About
-eyebrow: About
+title: Bio
+menu: Bio
 subtitle: "Dieci anni di mix, sound design e palco, con un'unica ossessione: che ogni dettaglio serva la storia."
 facts:
   - { label: 'Base',          value: 'Italia' }

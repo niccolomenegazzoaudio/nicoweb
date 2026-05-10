@@ -17,7 +17,7 @@ docker compose logs -f app
 docker compose down
 ```
 
-Production deploy is automatic: every push to `main` runs `.github/workflows/deploy.yml`, which rsyncs to the `arm_php` host (Oracle ARM, IP `130.61.237.237`) and runs `docker compose -f docker-compose.prod.yml up -d --build`, then smoke-tests the public URL plus the routes `/`, `/la-ferocia`, `/i-miei-stupidi-intenti`, `/la-diva-del-bataclan`, `/about`, `/contact`, `/admin`, `/reference`. If you add a top-level route, update the smoke test list.
+Production deploy is automatic: every push to `main` runs `.github/workflows/deploy.yml`, which rsyncs to the `arm_php` host (Oracle ARM, IP `130.61.237.237`) and runs `docker compose -f docker-compose.prod.yml up -d --build`, then **does a tar-pipe sync of the rsync'd `user/` into the running container** (because the named volume `nicoweb_user:/app/user` doesn't pick up image changes after first creation), and finally smoke-tests the public URL on the routes `/`, `/la-ferocia`, `/i-miei-stupidi-intenti`, `/la-diva-del-bataclan`, `/about`, `/contact`, `/admin`. **Update the smoke test list when you change page slugs** (e.g. when about → bio, contact → contatti, the workflow's smoke test list also needs to change). The tar-pipe step excludes `user/data`, `user/accounts`, `user/config/plugins/email.yaml` so admin-runtime data and the SMTP password are preserved on prod.
 
 Manual deploy from a workstation: `./deploy/deploy.sh` (uses the SSH alias `arm_php`, target `/home/ubuntu/nicoweb`).
 
@@ -39,7 +39,7 @@ There are no tests for the site itself — `composer test` / `composer phpstan` 
   - `templates/home.html.twig` — landing page with a Web Audio drone intro (sine 220/220.8 Hz, panning, lowpass sweep). All knobs (`duration`, `fade`, `freq_a`/`freq_b`, `filter_start`/`filter_end`) are read from `user/pages/01.home/home.md` frontmatter — change the page, not the template.
   - `templates/work.html.twig` — used by the three project pages, picked because each page file is named `work.md`. Renders `header.media` as `<img>`/`<video>`/`<audio>` based on `header.media.type`.
   - `blueprints/*.yaml` — admin UI form definitions for each page template (what fields appear in `/admin`).
-- `user/pages/NN.slug/template.md` — Grav convention. The numeric prefix sets menu order; the filename (minus `.md`) selects the Twig template (`home.md` → `home.html.twig`, `work.md` → `work.html.twig`, etc.). To add a new project, copy one of the `0N.*/work.md` directories and renumber.
+- `user/pages/NN.slug/template.md` — Grav convention. The numeric prefix sets menu order; the filename (minus `.md`) selects the Twig template (`home.md` → `home.html.twig`, `work.md` → `work.html.twig`, `default.md` → `default.html.twig`, `contact.md` → `contact.html.twig`). Current pages: `01.home`, `02.bio` (default template), `03.contatti` (contact template), `04.teatro` / `05.musica` / `06.work-in-progress` (all work template). To add a new section, copy one of the `0N.*/work.md` directories and renumber.
 - `user/config/` — site-level config (title, language, contact). `system.yaml` is committed; admin-edited overrides accumulate here too.
 - `user/accounts/`, `user/data/` — runtime, gitignored. The deploy workflow excludes them so admin-created accounts and form submissions on prod aren't clobbered.
 - `public.legacy/` — the previous static PHP site, kept locally for reference only. Gitignored, not deployed, not served.
@@ -61,6 +61,10 @@ The prod stack is now standalone (binds `:80`/`:443` directly). The historical `
 - Twig escaping is on (`autoescape: true`); use `|raw` only on trusted markdown output (see `base.html.twig`).
 - When adding fields to a page's frontmatter, also add them to the matching `user/themes/nicoweb/blueprints/*.yaml` so they're editable from `/admin`.
 - The home page intentionally hides chrome (`{% if page.slug != 'home' %}` in `partials/base.html.twig`); other pages get header + footer.
+
+### Brand mark in header
+
+The header brand renders "Niccolò Menegazzo" as **non-clickable** plain text. The `Ò` is decomposed into the same DOM structure as the home intro symbol (`<span class="brand__special-o">O<span class="brand__o-accent">̀</span></span>`) so it visually echoes the intro's final state. The accent is colored in `--accent` (warm tan). Don't restore an `<a href="/">` wrapper — the lack of a home link is intentional; users navigate via the menu items (Bio, Contatti, Teatro, Musica, WorkInProgress). The home is reachable via the browser address bar / back button only.
 
 ## Theme: visual language
 
@@ -99,7 +103,7 @@ Single file: `user/themes/nicoweb/js/nicoweb.js`, loaded with `defer` from `base
 
 `user/config/plugins/email.yaml` configures the Grav `email` plugin to send via Gmail SMTP (smtp.gmail.com:587 TLS) using the address `niccolomenegazzoaudio@gmail.com`. The SMTP password field is intentionally **empty in the committed file** — it's an App Password that lives only on prod, set via `/admin → Plugins → Email → SMTP password`. The deploy workflow (`/.github/workflows/deploy.yml`) excludes `user/config/plugins/email.yaml` from rsync so subsequent deploys don't overwrite the production password. To rotate: revoke the App Password in Google account, generate a new one, paste via /admin.
 
-The contact form (`user/pages/06.contact/contact.md`) runs the Grav form `process:` chain → email step → save step. If the email step fails (e.g. password missing or SMTP blocked), the save step still runs, so submissions are never lost — read them at `/admin → Forms → Contact`.
+The contact form (`user/pages/03.contatti/contact.md`) runs the Grav form `process:` chain → email step → save step. If the email step fails (e.g. password missing or SMTP blocked), the save step still runs, so submissions are never lost — read them at `/admin → Forms → Contact` (form name is `contact` regardless of page slug).
 
 ### Email obfuscation pattern
 

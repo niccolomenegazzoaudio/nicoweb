@@ -66,21 +66,30 @@ p{margin:0}
 }
 .nav{display:flex; align-items:center; justify-content:space-between; padding:18px 28px; max-width:var(--maxw); margin:0 auto}
 .brand{
-  display:inline-flex; align-items:center; gap:12px;
   font-family:var(--sans); font-weight:400; font-size:1.15rem; letter-spacing:.02em;
+  color:var(--text);
+  user-select:none;
+  cursor:default;
 }
-.brand__mark{
-  font-family:var(--sans);
-  font-weight:300;
-  font-size:1.7rem;
-  line-height:1;
-  letter-spacing:-.02em;
-  position:relative; top:-1px;
+/* "Special O" che riproduce la O della home intro (decomposta: O + accent grave),
+   al posto del normale Ò di "Niccolò". Statica, non animata. */
+.brand__special-o{
+  position:relative;
   display:inline-block;
-  transition:color .3s var(--ease);
+  font-weight:300;
+  letter-spacing:-.02em;
 }
-.brand:hover{opacity:1}
-.brand:hover .brand__mark{color:var(--accent)}
+.brand__o-accent{
+  position:absolute;
+  left:50%;
+  top:-.55em;
+  transform:translateX(-50%);
+  color:var(--accent);
+  font-weight:300;
+  font-size:.85em;
+  line-height:1;
+  pointer-events:none;
+}
 .nav__list ul{display:flex; gap:6px; list-style:none; margin:0; padding:0}
 .nav__list a{
   display:inline-block; padding:8px 14px;
@@ -466,8 +475,6 @@ body.intro-active .scroll-meter{display:none}
   .accent{font-size:108px; transform:translate(-50%, -90px) translateY(20px)}
   .symbol.active .accent{transform:translate(-50%, -90px) translateY(0)}
   .slash{width:118px}
-  .brand{gap:10px}
-  .brand__mark{font-size:1.5rem}
   /* Touch targets ≥44px sui link mono */
   .nav__list a{padding:14px 0}
   .work-page__back{margin-top:64px}
@@ -480,6 +487,6 @@ body.intro-active .scroll-meter{display:none}
   .nav{padding-inline:20px}
   .page, .work-page{padding:56px 0 96px}
   .page__head, .work-page__head{margin-bottom:36px}
-  .brand{font-size:1rem; gap:8px}
-  .brand__mark{font-size:1.35rem}
+  .brand{font-size:1rem}
+  .brand__o-accent{top:-.5em}
 }

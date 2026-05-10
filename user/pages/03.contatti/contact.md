@@ -1,6 +1,6 @@
 ---
 title: Scrivimi
-menu: Contact
+menu: Contatti
 subtitle: "Studio, palco, post: raccontami il progetto e ti rispondo entro 24 ore lavorative."
 facts:
   - { label: 'Email',         value: '<span class="email-link" data-u="niccolomenegazzoaudio" data-d="gmail.com">scrivimi via email</span>' }

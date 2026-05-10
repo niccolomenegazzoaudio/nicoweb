@@ -123,7 +123,7 @@ jobs:
 
           # Routes principali
           fail=0
-          for path in / /la-ferocia /i-miei-stupidi-intenti /la-diva-del-bataclan /about /contact /admin; do
+          for path in / /bio /contatti /teatro /musica /work-in-progress /admin; do
             code=$(curl -sS -o /dev/null -w "%{http_code}" "$PUBLIC_URL$path")
             echo "  $code  $path"
             [ "$code" = "200" ] || fail=1
