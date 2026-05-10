@@ -156,6 +156,9 @@ body.intro-active{ overflow:hidden; }
   transition:opacity 2.4s var(--ease), transform 2.4s var(--ease);
   transition-delay:.5s;
 }
+/* Spazio tra "Niccolò" e "Menegazzo" via CSS: lo whitespace iniziale dentro
+   un flex item viene strippato, quindi non basta scriverlo nel testo. */
+.intro-name__post{ margin-left:.25em; }
 .intro.revealed .intro-name__pre,
 .intro.revealed .intro-name__post{
   opacity:1;
