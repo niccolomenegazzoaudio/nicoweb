@@ -1,0 +1,119 @@
+{% extends 'partials/base.html.twig' %}
+
+{% set intro = page.header.intro|default({}) %}
+{% set home  = page.header.home|default({}) %}
+{% set drone = intro.drone|default({}) %}
+
+{% set duration = intro.duration|default(5) %}
+{% set fade     = intro.fade|default(1) %}
+{% set freqA    = drone.freq_a|default(220) %}
+{% set freqB    = drone.freq_b|default(220.8) %}
+{% set fStart   = drone.filter_start|default(200) %}
+{% set fEnd     = drone.filter_end|default(2000) %}
+
+{% block content %}
+{# Intro: clic per avviare. Drone sine 220/220.8 Hz, panning -1→0 / +1→0,
+   filtro lowpass {{ fStart }} → {{ fEnd }} Hz su {{ duration }}s, gain 0.25 → 0.
+   Dopo {{ duration }}s fade out, dopo {{ duration + fade }}s viene mostrato il menu. #}
+<div id="intro" class="intro" role="button" tabindex="0" aria-label="Avvia presentazione">
+  <div class="symbol" id="symbol" aria-hidden="true">
+    <div class="o-letter">{{ intro.letter|default('O') }}</div>
+    <div class="slash"></div>
+    <div class="accent">{{ intro.accent|default('̀')|raw }}</div>
+  </div>
+  <p class="intro__hint">tap to begin</p>
+</div>
+
+<section id="home-screen" class="home-screen" aria-hidden="true">
+  <div class="home-content">
+    <h1 class="name">{{ home.name|default(site.title) }}</h1>
+    <p class="role">{{ home.role|default('Sound Designer · Sound Engineer') }}</p>
+
+    <nav class="works" aria-label="Lavori">
+      <ul>
+        {% for p in pages.children.visible if p.slug != 'home' and p.template == 'work' %}
+          <li><a href="{{ p.url }}">{{ p.title|upper }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <nav class="meta-links" aria-label="Pagine secondarie">
+      <ul>
+        {% for p in pages.children.visible if p.slug in ['about','contact'] %}
+          <li><a href="{{ p.url }}">{{ p.menu|default(p.title) }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+</section>
+{% endblock %}
+
+{% block bottom %}
+<script>
+(() => {
+  const intro = document.getElementById('intro');
+  const symbol = document.getElementById('symbol');
+  const home = document.getElementById('home-screen');
+
+  const DURATION = {{ duration }};
+  const FADE     = {{ fade }};
+
+  let started = false;
+
+  const reveal = () => {
+    if (started) return;
+    started = true;
+    symbol.classList.add('active');
+
+    // Drone audio (Web Audio API).
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o1 = ctx.createOscillator(), o2 = ctx.createOscillator();
+      const g1 = ctx.createGain(),       g2 = ctx.createGain();
+      const p1 = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+      const p2 = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+      const filter = ctx.createBiquadFilter();
+
+      o1.type = 'sine'; o2.type = 'sine';
+      o1.frequency.value = {{ freqA }};
+      o2.frequency.value = {{ freqB }};
+      filter.type = 'lowpass';
+      filter.frequency.value = {{ fStart }};
+
+      o1.connect(g1); o2.connect(g2);
+      if (p1 && p2) { g1.connect(p1); g2.connect(p2); p1.connect(filter); p2.connect(filter); }
+      else          { g1.connect(filter); g2.connect(filter); }
+      filter.connect(ctx.destination);
+
+      const t = ctx.currentTime;
+      if (p1 && p2) {
+        p1.pan.setValueAtTime(-1, t); p2.pan.setValueAtTime(1, t);
+        p1.pan.linearRampToValueAtTime(0, t + DURATION);
+        p2.pan.linearRampToValueAtTime(0, t + DURATION);
+      }
+      filter.frequency.setValueAtTime({{ fStart }}, t);
+      filter.frequency.linearRampToValueAtTime({{ fEnd }}, t + DURATION);
+      g1.gain.setValueAtTime(0.25, t); g2.gain.setValueAtTime(0.25, t);
+      g1.gain.linearRampToValueAtTime(0, t + DURATION);
+      g2.gain.linearRampToValueAtTime(0, t + DURATION);
+      o1.start(t); o2.start(t);
+      o1.stop(t + DURATION + 0.05);
+      o2.stop(t + DURATION + 0.05);
+    } catch (e) { /* audio non disponibile, prosegui silenzioso */ }
+
+    // Transizione visiva
+    setTimeout(() => intro.classList.add('out'), DURATION * 1000);
+    setTimeout(() => {
+      intro.style.display = 'none';
+      home.classList.add('visible');
+      home.setAttribute('aria-hidden', 'false');
+    }, (DURATION + FADE) * 1000);
+  };
+
+  intro.addEventListener('click', reveal);
+  intro.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); reveal(); }
+  });
+})();
+</script>
+{% endblock %}

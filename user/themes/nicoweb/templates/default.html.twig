@@ -1,0 +1,38 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+<section class="page">
+  <div class="container">
+    <header class="page__head">
+      <h1 class="page__title">{{ page.title }}</h1>
+      {% if page.header.subtitle %}<p class="page__sub muted">{{ page.header.subtitle }}</p>{% endif %}
+    </header>
+
+    <div class="page__body">
+      {{ page.content|raw }}
+    </div>
+
+    {% if page.header.facts %}
+      <dl class="kv">
+        {% for f in page.header.facts %}
+          <div class="kv__row"><dt>{{ f.label }}</dt><dd>{{ f.value|raw }}</dd></div>
+        {% endfor %}
+      </dl>
+    {% endif %}
+
+    {% if page.header.gear %}
+      <dl class="kv" style="margin-top:18px">
+        {% for g in page.header.gear %}
+          <div class="kv__row"><dt>{{ g.category }}</dt><dd>{{ g.items|join(', ') }}</dd></div>
+        {% endfor %}
+      </dl>
+    {% endif %}
+
+    {% if page.header.clients %}
+      <ul class="clients">
+        {% for c in page.header.clients %}<li>{{ c }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

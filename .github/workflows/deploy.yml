@@ -1,0 +1,115 @@
+# Deploy continuo: ogni push su `main` aggiorna il sito live su arm_php.
+#
+# Cosa fa il workflow:
+#   1. Checkout del codice
+#   2. Apre una sessione SSH verso arm_php usando una deploy key (secret SSH_PRIVATE_KEY)
+#   3. rsync del progetto verso /home/ubuntu/nicoweb (escludendo cache/log/uploads)
+#   4. docker compose -f docker-compose.prod.yml up -d --build (ricostruisce solo quando il Dockerfile o gli asset cambiano grazie al cache di Docker)
+#   5. Smoke test pubblico di niccolomenegazzo.com per verificare che il sito sia 200
+#
+# Secrets richiesti (configurati con `gh secret set`):
+#   SSH_PRIVATE_KEY  — chiave privata della deploy key (ed25519)
+#   SSH_HOST         — IP/host (es. 130.61.237.237)
+#   SSH_USER         — utente SSH (es. ubuntu)
+#   SSH_PORT         — porta SSH (es. 2223)
+#   DEPLOY_PATH      — directory remota (es. /home/ubuntu/nicoweb)
+#   PUBLIC_URL       — URL pubblico per il smoke test (es. https://niccolomenegazzo.com)
+
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: rsync + docker compose up
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add host to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "${{ secrets.SSH_PORT }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: rsync to server
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "mkdir -p '$DEPLOY_PATH'"
+          rsync -avz --delete \
+            -e "ssh -p $SSH_PORT" \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='node_modules/' \
+            --exclude='*.log' \
+            --exclude='.DS_Store' \
+            --exclude='public.legacy/' \
+            --exclude='cache/*' \
+            --exclude='logs/*' \
+            --exclude='tmp/*' \
+            --exclude='backup/*' \
+            --exclude='user/data/' \
+            --exclude='user/accounts/' \
+            ./ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
+
+      - name: docker compose up
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" bash -se <<EOF
+            set -euo pipefail
+            cd '$DEPLOY_PATH'
+            docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
+            docker ps --filter name=nicoweb --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+          EOF
+
+      - name: Smoke test (public)
+        env:
+          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+        run: |
+          # FrankenPHP/Caddy può impiegare 5–20s per riavviare e riprendere TLS
+          for i in $(seq 1 12); do
+            code=$(curl -sS -o /dev/null -w "%{http_code}" "$PUBLIC_URL/" || echo 000)
+            echo "try $i → /  HTTP $code"
+            [ "$code" = "200" ] && break
+            sleep 5
+          done
+          test "$code" = "200" || { echo "Homepage non risponde 200 dopo 60s"; exit 1; }
+
+          # Routes principali
+          fail=0
+          for path in / /la-ferocia /i-miei-stupidi-intenti /la-diva-del-bataclan /about /contact /admin /reference; do
+            code=$(curl -sS -o /dev/null -w "%{http_code}" "$PUBLIC_URL$path")
+            echo "  $code  $path"
+            [ "$code" = "200" ] || fail=1
+          done
+          [ "$fail" = "0" ] || { echo "Almeno una route non è 200"; exit 1; }
+
+          # /reference deve servire l'HTML originale (controllo che ci sia LA FEROCIA)
+          curl -sS "$PUBLIC_URL/reference" | grep -q "LA FEROCIA" \
+            || { echo "/reference non sta servendo il sito originale"; exit 1; }
+
+          echo "✓ Smoke test passato"

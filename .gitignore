@@ -1,0 +1,31 @@
+# Grav runtime
+/cache/*
+!/cache/.gitkeep
+/logs/*
+!/logs/.gitkeep
+/tmp/*
+!/tmp/.gitkeep
+/backup/*
+!/backup/.gitkeep
+
+# Form submissions, popularity data
+/user/data/
+
+# Local admin account (created per-environment via `bin/plugin login newuser`)
+/user/accounts/*
+!/user/accounts/.gitkeep
+
+# Composer / vendor
+# Vendor IS committed for deploys without composer install on the server.
+# Decommenta se preferisci installare con composer in CI invece.
+# /vendor/
+
+# Local dev artifacts
+.DS_Store
+*.log
+node_modules/
+public.legacy/
+
+# Editor configs
+.idea/
+.vscode/

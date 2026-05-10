@@ -1,0 +1,41 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+<article class="work-page">
+  <div class="container">
+    <header class="work-page__head">
+      {% if page.header.year %}<p class="mono muted">{{ page.header.year }}</p>{% endif %}
+      <h1 class="work-page__title">{{ page.title }}</h1>
+      {% if page.header.subtitle %}<p class="work-page__sub">{{ page.header.subtitle }}</p>{% endif %}
+      {% if page.header.role %}<p class="work-page__role mono muted">{{ page.header.role }}</p>{% endif %}
+    </header>
+
+    {% if page.header.media.src %}
+      <figure class="work-page__media">
+        {% if page.header.media.type == 'video' %}
+          <video controls preload="metadata" src="{{ url(page.header.media.src) }}"></video>
+        {% elseif page.header.media.type == 'audio' %}
+          <audio controls preload="metadata" src="{{ url(page.header.media.src) }}"></audio>
+        {% else %}
+          <img src="{{ url(page.header.media.src) }}" alt="{{ page.header.media.caption|default(page.title) }}">
+        {% endif %}
+        {% if page.header.media.caption %}<figcaption class="muted">{{ page.header.media.caption }}</figcaption>{% endif %}
+      </figure>
+    {% endif %}
+
+    <div class="work-page__body">
+      {{ page.content|raw }}
+    </div>
+
+    {% if page.header.credits %}
+      <dl class="credits">
+        {% for c in page.header.credits if c.role or c.name %}
+          <div class="credits__row"><dt>{{ c.role }}</dt><dd>{{ c.name }}</dd></div>
+        {% endfor %}
+      </dl>
+    {% endif %}
+
+    <p class="work-page__back"><a href="/">← Home</a></p>
+  </div>
+</article>
+{% endblock %}

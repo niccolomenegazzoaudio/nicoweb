@@ -1,0 +1,16 @@
+.git/
+.gitignore
+README.md
+deploy/
+node_modules/
+*.log
+.DS_Store
+public.legacy/
+backup/*
+!backup/.gitkeep
+cache/*
+!cache/.gitkeep
+logs/*
+!logs/.gitkeep
+tmp/*
+!tmp/.gitkeep

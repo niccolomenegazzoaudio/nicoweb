@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="{{ grav.language.getActive ?: grav.config.site.default_lang }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ page.header.description ?: site.metadata.description }}">
+    <title>{{ page.title ~ (page.title != site.title ? ' — ' ~ site.title : '') }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url('theme://css/nicoweb.css', true) }}">
+    <link rel="icon" type="image/svg+xml" href="{{ url('theme://images/favicon.svg', true) }}">
+    {% block head %}{% endblock %}
+</head>
+<body data-page="{{ page.slug }}">
+    <a class="skip" href="#main">Salta al contenuto</a>
+
+    {% block chrome %}
+      {# Header non mostrato in home; mostrato sulle pagine interne. #}
+      {% if page.slug != 'home' %}{% include 'partials/header.html.twig' %}{% endif %}
+    {% endblock %}
+
+    <main id="main">
+      {% block content %}{{ page.content|raw }}{% endblock %}
+    </main>
+
+    {% block chrome_footer %}
+      {% if page.slug != 'home' %}{% include 'partials/footer.html.twig' %}{% endif %}
+    {% endblock %}
+
+    {% block bottom %}{% endblock %}
+</body>
+</html>

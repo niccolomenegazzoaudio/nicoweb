@@ -1,0 +1,24 @@
+# Stack di SVILUPPO LOCALE.
+#   docker compose up -d --build
+#   open http://localhost:8080
+#
+# In locale montiamo l'intero progetto come bind-mount (live edits dell'admin
+# Grav scrivono in user/, cache/, logs/ direttamente sull'host).
+# In prod (docker-compose.prod.yml) il codice è incluso nell'immagine.
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: nicoweb:dev
+    container_name: nicoweb
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/app
+      - ./docker/Caddyfile:/etc/frankenphp/Caddyfile:ro
+    environment:
+      # `:80` => bind HTTP-only, niente TLS automatico (perfetto per dev)
+      - SERVER_NAME=:80

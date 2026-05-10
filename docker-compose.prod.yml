@@ -1,0 +1,45 @@
+# Stack di PRODUZIONE su arm_php — file STANDALONE.
+#   docker compose -f docker-compose.prod.yml up -d --build
+#
+# Caratteristiche:
+# - Bind diretto su :80 e :443 (mahoboi non c'è più, niente proxy a monte)
+# - HTTPS automatico via Let's Encrypt: SERVER_NAME elenca i domini
+# - I dati editabili (user/, cache/, logs/, backup/) vivono su volumi nominati
+#   per non essere persi quando l'immagine viene ricostruita
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: nicoweb:prod
+    container_name: nicoweb
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      # Caddy genera/rinnova certificati per questi host. Aggiungi/rimuovi
+      # qui i domini quando cambia il DNS.
+      - SERVER_NAME=niccolomenegazzo.com www.niccolomenegazzo.com
+      - ACME_EMAIL=niccolomenegazzoaudio@gmail.com
+    volumes:
+      # Persistenza Caddy (cert Let's Encrypt + account ACME)
+      - caddy_data:/data
+      - caddy_config:/config
+      # Persistenza Grav: tutto ciò che l'admin può modificare
+      - nicoweb_user:/app/user
+      - nicoweb_cache:/app/cache
+      - nicoweb_logs:/app/logs
+      - nicoweb_tmp:/app/tmp
+      - nicoweb_backup:/app/backup
+
+volumes:
+  caddy_data:
+  caddy_config:
+  nicoweb_user:
+  nicoweb_cache:
+  nicoweb_logs:
+  nicoweb_tmp:
+  nicoweb_backup:

@@ -1,0 +1,56 @@
+title: Lavoro / progetto
+'@extends':
+  type: default
+  context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+      type: tabs
+      fields:
+        meta:
+          type: tab
+          title: Dati progetto
+          fields:
+            header.subtitle:
+              type: text
+              label: Sottotitolo
+            header.year:
+              type: text
+              label: Anno
+            header.role:
+              type: text
+              label: Ruolo (es. Sound design, Mix…)
+
+            header.credits:
+              type: list
+              label: Crediti
+              style: vertical
+              fields:
+                .role:
+                  type: text
+                  label: Ruolo
+                .name:
+                  type: text
+                  label: Nome
+
+        media:
+          type: tab
+          title: Media
+          fields:
+            header.media.type:
+              type: select
+              label: Tipo media
+              default: image
+              options:
+                image: Immagine
+                video: Video
+                audio: Audio
+            header.media.src:
+              type: filepicker
+              label: File
+              folder: 'self@'
+              preview_images: true
+            header.media.caption:
+              type: text
+              label: Didascalia

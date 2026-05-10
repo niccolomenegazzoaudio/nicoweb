@@ -1,0 +1,50 @@
+title: Pagina con about
+'@extends':
+  type: default
+  context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+      type: tabs
+      fields:
+        about:
+          type: tab
+          title: About
+          fields:
+            header.eyebrow:
+              type: text
+              label: Eyebrow
+            header.subtitle:
+              type: textarea
+              label: Sottotitolo
+
+            header.facts:
+              type: list
+              label: Box dati (key/value)
+              style: vertical
+              fields:
+                .label:
+                  type: text
+                  label: Etichetta
+                .value:
+                  type: text
+                  label: Valore
+
+            header.gear:
+              type: list
+              label: Strumenti & gear
+              style: vertical
+              fields:
+                .category:
+                  type: text
+                  label: Categoria (es. DAW)
+                .items:
+                  type: array
+                  label: Voci
+                  value_only: true
+
+            header.clients:
+              type: array
+              label: Clienti
+              value_only: true

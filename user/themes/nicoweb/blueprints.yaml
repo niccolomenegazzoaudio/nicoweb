@@ -1,0 +1,26 @@
+name: Nicoweb
+version: 1.0.0
+description: "Tema portfolio per Nicco — sound design / audio engineering."
+icon: music
+author:
+  name: nicoweb
+homepage: https://niccolomenegazzo.com
+keywords: portfolio, audio, sound-design
+
+form:
+  validation: loose
+  fields:
+    site_settings:
+      type: section
+      title: Impostazioni del sito
+      underline: true
+
+      fields:
+        owner_name:
+          type: text
+          label: Nome del proprietario
+          default: Nicco
+        tagline:
+          type: text
+          label: Tagline
+          default: "Sound Designer · Audio Engineer · Live Sound Technician"

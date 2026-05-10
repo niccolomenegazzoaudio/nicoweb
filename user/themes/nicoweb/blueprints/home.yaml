@@ -1,0 +1,72 @@
+title: Home (intro)
+'@extends':
+  type: default
+  context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+      type: tabs
+      fields:
+        landing:
+          type: tab
+          title: Home
+          fields:
+            header.home.name:
+              type: text
+              label: Nome (visualizzato in home)
+            header.home.role:
+              type: text
+              label: Ruolo (sotto al nome)
+
+        intro:
+          type: tab
+          title: Intro animata
+          fields:
+            header.intro.enabled:
+              type: toggle
+              label: Intro audio-visiva attiva
+              highlight: 1
+              default: true
+              options:
+                1: Sì
+                0: No
+            header.intro.letter:
+              type: text
+              label: Lettera centrale
+              default: 'O'
+            header.intro.accent:
+              type: text
+              label: Accento (entra dall’alto)
+              default: '̀'
+              help: 'Inserisci il segno diacritico desiderato (es. ̀  ̂  ̃  °)'
+            header.intro.duration:
+              type: number
+              label: Durata intro (secondi)
+              default: 5
+            header.intro.fade:
+              type: number
+              label: Fade out (secondi)
+              default: 1
+
+        drone:
+          type: tab
+          title: Drone audio
+          fields:
+            header.intro.drone.freq_a:
+              type: number
+              label: Frequenza canale L (Hz)
+              default: 220
+            header.intro.drone.freq_b:
+              type: number
+              label: Frequenza canale R (Hz)
+              default: 220.8
+              help: 'Differenza di pochi Hz crea il battimento meditativo.'
+            header.intro.drone.filter_start:
+              type: number
+              label: Filtro lowpass — inizio (Hz)
+              default: 200
+            header.intro.drone.filter_end:
+              type: number
+              label: Filtro lowpass — fine (Hz)
+              default: 2000

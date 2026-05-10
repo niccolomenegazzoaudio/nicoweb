@@ -1,0 +1,36 @@
+title: Contatti
+'@extends':
+  type: default
+  context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+      type: tabs
+      fields:
+        intro:
+          type: tab
+          title: Intro
+          fields:
+            header.eyebrow:
+              type: text
+              label: Eyebrow
+            header.subtitle:
+              type: textarea
+              label: Sottotitolo
+
+        info:
+          type: tab
+          title: Info contatti
+          fields:
+            header.facts:
+              type: list
+              label: Dati di contatto
+              style: vertical
+              fields:
+                .label:
+                  type: text
+                  label: Etichetta
+                .value:
+                  type: text
+                  label: Valore (HTML consentito)
