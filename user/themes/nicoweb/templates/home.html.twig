@@ -110,7 +110,28 @@
       o1.connect(g1); o2.connect(g2);
       if (p1 && p2) { g1.connect(p1); g2.connect(p2); p1.connect(filter); p2.connect(filter); }
       else          { g1.connect(filter); g2.connect(filter); }
-      filter.connect(ctx.destination);
+
+      // Reverb tail — ConvolverNode con IR sintetico (rumore bianco
+      // stereo · decay esponenziale ~3.5s). Il filtro va sia direttamente
+      // in destination (dry) sia nel convolver (wet) → quando le sorgenti
+      // si fermano, la coda continua a suonare per qualche secondo.
+      const conv = ctx.createConvolver();
+      const irLen = Math.floor(ctx.sampleRate * 3.5);
+      const ir = ctx.createBuffer(2, irLen, ctx.sampleRate);
+      for (let ch = 0; ch < 2; ch++) {
+        const data = ir.getChannelData(ch);
+        for (let i = 0; i < irLen; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / irLen, 2.2);
+        }
+      }
+      conv.buffer = ir;
+      const wetGain = ctx.createGain();
+      wetGain.gain.value = 0.55;
+
+      filter.connect(ctx.destination);   // dry
+      filter.connect(conv);              // → wet
+      conv.connect(wetGain);
+      wetGain.connect(ctx.destination);
 
       if (p1 && p2) {
         p1.pan.setValueAtTime(-1, t); p2.pan.setValueAtTime(1, t);
@@ -163,6 +184,10 @@
       sh1.stop(t + DURATION + 0.05);
       sh2.stop(t + DURATION + 0.05);
       lfo.stop(t + DURATION + 0.05);
+
+      // Chiudi il context dopo che la coda di riverbero si è esaurita
+      // (DURATION + 4s ≈ poco oltre la fine della IR di ~3.5s).
+      setTimeout(() => { try { ctx.close(); } catch (_) {} }, (DURATION + 4) * 1000);
     } catch (e) { /* audio non disponibile, prosegui silenzioso */ }
 
     setTimeout(() => intro.classList.add('out'), DURATION * 1000);

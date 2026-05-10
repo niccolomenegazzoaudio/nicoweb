@@ -149,21 +149,34 @@ body.intro-active{ overflow:hidden; }
   white-space:nowrap;
   max-width:100%;
 }
+/* Prima del reveal pre/post sono opacity:0 MA `max-width:0; overflow:hidden`
+   così non occupano spazio nel flex row: il simbolo resta perfettamente
+   centrato in pagina. Sul reveal max-width espande e il nome "scrive
+   intorno" alla ò spingendola alla sua posizione naturale. */
 .intro-name__pre, .intro-name__post{
   font-size:clamp(1rem, 4.2vw, 2.75rem);
   opacity:0;
+  max-width:0;
+  overflow:hidden;
   transform:translateY(6px);
-  transition:opacity 2.4s var(--ease), transform 2.4s var(--ease);
+  transition:opacity 2.4s var(--ease), transform 2.4s var(--ease), max-width 2.4s var(--ease);
   transition-delay:.5s;
 }
 /* Spazio tra "Niccolò" e "Menegazzo" via CSS: lo whitespace iniziale dentro
-   un flex item viene strippato, quindi non basta scriverlo nel testo. */
-.intro-name__post{ margin-left:.25em; }
+   un flex item viene strippato, quindi non basta scriverlo nel testo.
+   Margin a 0 quando collassato per non offsettare il simbolo dal centro. */
+.intro-name__post{
+  margin-left:0;
+  transition:opacity 2.4s var(--ease), transform 2.4s var(--ease), max-width 2.4s var(--ease), margin-left 2.4s var(--ease);
+  transition-delay:.5s;
+}
 .intro.revealed .intro-name__pre,
 .intro.revealed .intro-name__post{
   opacity:1;
+  max-width:30ch;
   transform:translateY(0);
 }
+.intro.revealed .intro-name__post{ margin-left:.25em; }
 
 /* Il symbol ora è inline-block con dentro un'"o" testuale (Space Grotesk 400),
    quindi advance e baseline sono naturali. Animando solo il font-size del
@@ -184,6 +197,15 @@ body.intro-active{ overflow:hidden; }
 }
 .intro.revealed .symbol{
   font-size:clamp(1rem, 4.2vw, 2.75rem);
+  /* Pulse dolce sul simbolo durante il drone — periodo 3.3s allineato
+     all'LFO 0.3 Hz dello shimmer, così visivo e audio respirano insieme.
+     transform e font-size sono proprietà diverse: la transizione del
+     font-size (morph) e l'animation della scale (pulse) coesistono. */
+  animation:oPulse 3.3s ease-in-out infinite;
+}
+@keyframes oPulse{
+  0%,100%{ transform:scale(1); }
+  50%    { transform:scale(1.04); }
 }
 .o-glyph{
   display:inline-block;
