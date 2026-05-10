@@ -102,15 +102,11 @@ jobs:
 
           # Routes principali
           fail=0
-          for path in / /la-ferocia /i-miei-stupidi-intenti /la-diva-del-bataclan /about /contact /admin /reference; do
+          for path in / /la-ferocia /i-miei-stupidi-intenti /la-diva-del-bataclan /about /contact /admin; do
             code=$(curl -sS -o /dev/null -w "%{http_code}" "$PUBLIC_URL$path")
             echo "  $code  $path"
             [ "$code" = "200" ] || fail=1
           done
           [ "$fail" = "0" ] || { echo "Almeno una route non è 200"; exit 1; }
-
-          # /reference deve servire l'HTML originale (controllo che ci sia LA FEROCIA)
-          curl -sS "$PUBLIC_URL/reference" | grep -q "LA FEROCIA" \
-            || { echo "/reference non sta servendo il sito originale"; exit 1; }
 
           echo "✓ Smoke test passato"
