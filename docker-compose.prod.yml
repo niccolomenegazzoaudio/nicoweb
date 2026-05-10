@@ -2,10 +2,17 @@
 #   docker compose -f docker-compose.prod.yml up -d --build
 #
 # Caratteristiche:
-# - Bind diretto su :80 e :443 (mahoboi non c'è più, niente proxy a monte)
-# - HTTPS automatico via Let's Encrypt: SERVER_NAME elenca i domini
-# - I dati editabili (user/, cache/, logs/, backup/) vivono su volumi nominati
-#   per non essere persi quando l'immagine viene ricostruita
+# - Bind diretto su :80 e :443 (HTTPS automatico via Let's Encrypt)
+# - SOLO i dati editabili dall'admin sono persistiti come volumi:
+#       user/pages     (contenuti)
+#       user/config    (impostazioni)
+#       user/data      (sottomissioni form, popolarità, ecc.)
+#       user/accounts  (utenti admin)
+#       backup, logs, cache, tmp
+#   Il resto (codice, tema, plugin, vendor) viene dall'immagine: ogni deploy
+#   aggiorna automaticamente CSS/template/Dockerfile senza che servano interventi
+#   manuali sul live.
+# - Caddy (cert ACME, config) persistito per non rifare il challenge ad ogni rebuild.
 
 services:
   app:
@@ -25,21 +32,28 @@ services:
       - SERVER_NAME=niccolomenegazzo.com www.niccolomenegazzo.com
       - ACME_EMAIL=niccolomenegazzoaudio@gmail.com
     volumes:
-      # Persistenza Caddy (cert Let's Encrypt + account ACME)
+      # TLS + ACME
       - caddy_data:/data
       - caddy_config:/config
-      # Persistenza Grav: tutto ciò che l'admin può modificare
-      - nicoweb_user:/app/user
-      - nicoweb_cache:/app/cache
-      - nicoweb_logs:/app/logs
-      - nicoweb_tmp:/app/tmp
-      - nicoweb_backup:/app/backup
+      # Editabile dall'admin — sopravvive ai rebuild dell'immagine
+      - nico_pages:/app/user/pages
+      - nico_config:/app/user/config
+      - nico_data:/app/user/data
+      - nico_accounts:/app/user/accounts
+      # Runtime
+      - nico_cache:/app/cache
+      - nico_logs:/app/logs
+      - nico_tmp:/app/tmp
+      - nico_backup:/app/backup
 
 volumes:
   caddy_data:
   caddy_config:
-  nicoweb_user:
-  nicoweb_cache:
-  nicoweb_logs:
-  nicoweb_tmp:
-  nicoweb_backup:
+  nico_pages:
+  nico_config:
+  nico_data:
+  nico_accounts:
+  nico_cache:
+  nico_logs:
+  nico_tmp:
+  nico_backup:
