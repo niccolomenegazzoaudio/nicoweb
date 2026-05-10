@@ -16,10 +16,14 @@
    ({{ freqA }}/{{ freqB }} Hz · pan -1→0/+1→0 · lowpass {{ fStart }}→{{ fEnd }} Hz · {{ duration }}s)
    Dopo {{ duration }}s fade out di {{ fade }}s; sotto c'è già la home normale. #}
 <div id="intro" class="intro" role="button" tabindex="0" aria-label="Avvia presentazione">
-  <div class="symbol" id="symbol" aria-hidden="true">
-    <div class="o-letter">{{ intro.letter|default('O') }}</div>
-    <div class="slash"></div>
-    <div class="accent">{{ intro.accent|default('̀')|raw }}</div>
+  <div class="intro-name" aria-hidden="true">
+    <span class="intro-name__pre">{{ intro.name_pre|default('Niccol') }}</span>
+    <div class="symbol" id="symbol">
+      <div class="o-letter">{{ intro.letter|default('O') }}</div>
+      <div class="slash"></div>
+      <div class="accent">{{ intro.accent|default('̀')|raw }}</div>
+    </div>
+    <span class="intro-name__post">{{ intro.name_post|default(' Menegazzo') }}</span>
   </div>
   <p class="intro__hint">tap to begin</p>
 </div>
@@ -74,6 +78,7 @@
     if (started) return;
     started = true;
     symbol.classList.add('active');
+    intro.classList.add('revealed');
 
     // Drone audio (Web Audio API).
     try {

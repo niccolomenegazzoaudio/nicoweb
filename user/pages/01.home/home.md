@@ -4,7 +4,7 @@ menu: Home
 visible: true
 intro:
   enabled: true
-  letter: 'O'
+  letter: 'φ'
   accent: '̀'
   duration: 5
   fade: 1

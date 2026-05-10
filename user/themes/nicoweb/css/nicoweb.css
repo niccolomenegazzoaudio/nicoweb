@@ -140,15 +140,42 @@ body.intro-active{ overflow:hidden; }
 .intro.out{ opacity:0; pointer-events:none; }
 .intro:focus-visible{outline:1px solid var(--muted); outline-offset:8px}
 
+/* Wrapper che mette in fila "Niccol" + simbolo O + " Menegazzo".
+   Le due metà del nome partono invisibili; quando il simbolo si attiva
+   (vedi .intro.revealed) sfumano in fade-in attorno alla O. */
+.intro-name{
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--sans); font-weight:300; line-height:1;
+  letter-spacing:-.02em;
+  color:var(--text);
+  white-space:nowrap;
+  max-width:100%;
+}
+.intro-name__pre, .intro-name__post{
+  font-size:clamp(1rem, 4.2vw, 2.75rem);
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity 2.4s var(--ease), transform 2.4s var(--ease);
+  transition-delay:.5s;
+}
+.intro.revealed .intro-name__pre,
+.intro.revealed .intro-name__post{
+  opacity:1;
+  transform:translateY(0);
+}
+
 .symbol{
   position:relative;
   width:180px; height:180px;
   display:flex; align-items:center; justify-content:center;
   color:var(--text);
+  flex:0 0 auto;
 }
 .o-letter{
-  font-family:var(--sans);
-  font-size:180px; font-weight:300; line-height:1;
+  /* Serif italic per ottenere il "math-italic phi" tipo \phi LaTeX:
+     Space Grotesk non ha varianti italic e non vogliamo aggiungere webfont. */
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Hoefler Text",Cambria,Georgia,serif;
+  font-size:180px; font-weight:400; font-style:italic; line-height:1;
   letter-spacing:-.02em;
 }
 .slash{

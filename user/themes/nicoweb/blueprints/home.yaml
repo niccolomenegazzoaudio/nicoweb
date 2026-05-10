@@ -40,6 +40,16 @@ form:
               label: Accento (entra dall’alto)
               default: '̀'
               help: 'Inserisci il segno diacritico desiderato (es. ̀  ̂  ̃  °)'
+            header.intro.name_pre:
+              type: text
+              label: Testo prima della O
+              default: 'Niccol'
+              help: 'Sfuma in fade-in alla sinistra della O quando appare l’accento.'
+            header.intro.name_post:
+              type: text
+              label: Testo dopo la O
+              default: ' Menegazzo'
+              help: 'Sfuma in fade-in a destra della O. Lascia uno spazio iniziale per separare dalla O.'
             header.intro.duration:
               type: number
               label: Durata intro (secondi)
