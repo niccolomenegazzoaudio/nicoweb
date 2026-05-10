@@ -322,9 +322,44 @@ body[data-page="home"]{ overflow:hidden; }
 .clients li::after{content:"·"; margin-left:24px; color:var(--muted-2)}
 .clients li:last-child::after{content:""}
 
+/* ---------- Contact page (specifico) ------------------------ */
+/* H1 ridotto per la contact: editorial scale era pensata per project pages. */
+.page--contact .page__title{ font-size:clamp(2rem, 4.6vw, 3rem); }
+.page--contact .page__sub{ max-width:48ch; }
+.page--contact .page__head{ margin-bottom:64px; }
+
+/* Email obfuscata: reso link da JS (vedi nicoweb.js).
+   Il fallback no-JS mostra solo testo segnaposto, niente address. */
+.email-link{ font-style:italic; color:var(--muted) }
+.email-link a{ font-style:normal; color:var(--text); }
+.ext-arrow{ font-size:.85em; color:var(--muted); margin-left:2px }
+
 /* ---------- Forms (contact) --------------------------------- */
-.grid--contact{display:grid; grid-template-columns:1.2fr .8fr; gap:64px; align-items:start}
-@media (max-width:780px){.grid--contact{grid-template-columns:1fr; gap:32px}}
+.grid--contact{
+  display:grid;
+  grid-template-columns: 1.2fr 1px .8fr;
+  gap: 56px 48px;
+  align-items: start;
+  padding-top: 8px;
+}
+.grid--contact::before{
+  content:"";
+  grid-column:2;
+  align-self:stretch;
+  background:var(--line);
+}
+.contact-form{ grid-column:1 }
+.contact-info{ grid-column:3 }
+.contact-info__note{ margin-top:28px; padding-top:20px; border-top:1px solid var(--line); font-size:.95rem; line-height:1.6 }
+
+@media (max-width:780px){
+  .grid--contact{
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .grid--contact::before{ display:none }
+  .contact-form, .contact-info{ grid-column:1 }
+}
 
 form{display:grid; gap:18px; max-width:520px}
 form .form-input-wrapper, form .form-field{display:grid; gap:6px}
@@ -343,14 +378,16 @@ form input:focus, form textarea:focus, form select:focus{
 }
 form textarea{min-height:140px; resize:vertical; line-height:1.6}
 form button[type="submit"], .button.button{
-  margin-top:14px;
-  padding:12px 22px; border-radius:999px;
-  border:1px solid var(--line-2); background:transparent; color:var(--text);
-  font-family:var(--mono); font-size:.78rem; letter-spacing:.18em; text-transform:uppercase;
-  cursor:pointer; transition:border-color .2s var(--ease), background .2s var(--ease);
+  margin-top:28px;
+  padding:14px 26px; border-radius:999px;
+  border:1px solid var(--text); background:transparent; color:var(--text);
+  font-family:var(--mono); font-size:.78rem; letter-spacing:.24em; text-transform:uppercase;
+  cursor:pointer;
+  transition:border-color .25s var(--ease), background .25s var(--ease), color .25s var(--ease), transform .25s var(--ease);
   width:fit-content;
 }
-form button[type="submit"]:hover{border-color:var(--accent); background:var(--accent); color:var(--bg)}
+form button[type="submit"]:hover{border-color:var(--accent); background:var(--accent); color:var(--bg); transform:translateY(-1px)}
+form button[type="submit"]:active{transform:translateY(0)}
 
 .alert,.form-messages{
   padding:14px 16px; border-radius:0;

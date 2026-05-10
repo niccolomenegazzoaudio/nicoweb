@@ -19,6 +19,17 @@
     });
   }
 
+  // ---- Email obfuscation: assemble mailto link from data attrs ------------
+  // Senza JS i bot non vedono l'indirizzo (vedono solo il testo segnaposto).
+  document.querySelectorAll('.email-link[data-u][data-d]').forEach(el => {
+    const addr = el.dataset.u + '@' + el.dataset.d;
+    el.innerHTML = '';
+    const a = document.createElement('a');
+    a.href = 'mailto:' + addr;
+    a.textContent = addr;
+    el.appendChild(a);
+  });
+
   // ---- Scroll meter (VU-flavored progress bar in inner pages) --------------
   const meter = document.querySelector('.scroll-meter');
   if (meter) {

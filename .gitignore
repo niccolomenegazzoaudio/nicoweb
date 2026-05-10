@@ -7,6 +7,8 @@
 !/tmp/.gitkeep
 /backup/*
 !/backup/.gitkeep
+/assets/*
+!/assets/.gitkeep
 
 # Form submissions, popularity data
 /user/data/

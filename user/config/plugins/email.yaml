@@ -1,0 +1,28 @@
+# Configurazione plugin Email per il form contatti.
+#
+# Setup richiesto sul Google account `niccolomenegazzoaudio@gmail.com`:
+#   1. Attivare 2FA su https://myaccount.google.com/security
+#   2. Generare una App Password su https://myaccount.google.com/apppasswords
+#      (categoria "Mail", device "Other / nicoweb")
+#   3. Inserirla qui sotto al campo `password:` (16 caratteri, niente spazi)
+#      OPPURE inserirla via /admin → Plugins → Email → SMTP password.
+#
+# Importante: questo file contiene credenziali. Vedi `.github/workflows/deploy.yml`
+# che lo esclude dall'rsync per non sovrascriverlo da CI.
+
+enabled: true
+from: niccolomenegazzoaudio@gmail.com
+from_name: 'Niccolò Menegazzo · Portfolio'
+to: niccolomenegazzoaudio@gmail.com
+to_name: 'Niccolò'
+content_type: text/html
+debug: false
+
+mailer:
+  engine: smtp
+  smtp:
+    server: smtp.gmail.com
+    port: 587
+    encryption: tls
+    user: niccolomenegazzoaudio@gmail.com
+    password: ''

@@ -94,4 +94,18 @@ Touch defaults: `-webkit-tap-highlight-color:transparent` globally + `a:active {
 
 ## JS
 
-Single file: `user/themes/nicoweb/js/nicoweb.js`, loaded with `defer` from `base.html.twig`. Vanilla, no deps. Handles: mobile nav toggle, scroll meter, reveal-on-scroll, audio players (markup not yet wired into templates), portfolio filters (markup not yet wired). The home audio drone is a separate inline script in `home.html.twig` because it's home-specific and reads frontmatter into JS literals.
+Single file: `user/themes/nicoweb/js/nicoweb.js`, loaded with `defer` from `base.html.twig`. Vanilla, no deps. Handles: mobile nav toggle, scroll meter, reveal-on-scroll, **email obfuscation reassembly** (`.email-link[data-u][data-d]` → real `mailto:` at runtime), audio players (markup not yet wired into templates), portfolio filters (markup not yet wired). The home audio drone is a separate inline script in `home.html.twig` because it's home-specific and reads frontmatter into JS literals.
+
+## Contact form & email
+
+`user/config/plugins/email.yaml` configures the Grav `email` plugin to send via Gmail SMTP (smtp.gmail.com:587 TLS) using the address `niccolomenegazzoaudio@gmail.com`. The SMTP password field is intentionally **empty in the committed file** — it's an App Password that lives only on prod, set via `/admin → Plugins → Email → SMTP password`. The deploy workflow (`/.github/workflows/deploy.yml`) excludes `user/config/plugins/email.yaml` from rsync so subsequent deploys don't overwrite the production password. To rotate: revoke the App Password in Google account, generate a new one, paste via /admin.
+
+The contact form (`user/pages/06.contact/contact.md`) runs the Grav form `process:` chain → email step → save step. If the email step fails (e.g. password missing or SMTP blocked), the save step still runs, so submissions are never lost — read them at `/admin → Forms → Contact`.
+
+### Email obfuscation pattern
+
+Niccolò's address never appears in raw HTML. Frontmatter renders a placeholder span:
+```yaml
+- { label: 'Email', value: '<span class="email-link" data-u="niccolomenegazzoaudio" data-d="gmail.com">scrivimi via email</span>' }
+```
+At runtime `nicoweb.js` reads `data-u` + `data-d`, builds the address, and replaces the span content with a working `mailto:` anchor. Bots that don't execute JS see only "scrivimi via email" — no address to scrape. **Always use this pattern for displaying the email**; never paste the literal string into a template or content file.

@@ -1,7 +1,7 @@
 {% extends 'partials/base.html.twig' %}
 
 {% block content %}
-<section class="page">
+<section class="page page--contact">
   <div class="container">
     <header class="page__head">
       {% if page.header.eyebrow %}<p class="eyebrow mono muted">{{ page.header.eyebrow }}</p>{% endif %}
@@ -9,11 +9,12 @@
       {% if page.header.subtitle %}<p class="page__sub muted">{{ page.header.subtitle }}</p>{% endif %}
     </header>
 
-    <div class="page__body grid--contact">
-      <div>
+    <div class="grid--contact">
+      <div class="contact-form">
         {% include 'forms/form.html.twig' %}
       </div>
-      <aside>
+
+      <aside class="contact-info">
         {% if page.header.facts %}
           <dl class="kv">
             {% for f in page.header.facts %}
@@ -21,7 +22,7 @@
             {% endfor %}
           </dl>
         {% endif %}
-        {% if page.content %}<div class="muted" style="margin-top:18px">{{ page.content|raw }}</div>{% endif %}
+        {% if page.content %}<div class="contact-info__note muted">{{ page.content|raw }}</div>{% endif %}
       </aside>
     </div>
   </div>
