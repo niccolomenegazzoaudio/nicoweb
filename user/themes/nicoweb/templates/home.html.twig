@@ -44,7 +44,8 @@
 {% if bio %}
 <section class="home-bio">
   <div class="container">
-    <div class="home-bio__body">{{ bio.content|raw }}</div>
+    {# Stessa ricolorazione del grave applicata a tutte le "ò" della bio. #}
+    <div class="home-bio__body">{{ bio.content|replace({'ò': '<span class="grave-o">ò</span>'})|raw }}</div>
   </div>
 </section>
 {% endif %}
