@@ -23,6 +23,7 @@
     <span class="accent" aria-hidden="true"></span>
   </span>
   <p class="intro__hint">tap to get in phase</p>
+  <button type="button" class="intro__skip" id="intro-skip" aria-label="Salta intro">skip</button>
 </div>
 
 {# Home "vera" che vive sotto l'intro. Quando l'intro sparisce è già qui.
@@ -209,6 +210,21 @@
   intro.addEventListener('keydown', (ev) => {
     if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); reveal(); }
   });
+
+  const skipBtn = document.getElementById('intro-skip');
+  if (skipBtn) {
+    const skip = (ev) => {
+      ev.stopPropagation();
+      ev.preventDefault();
+      intro.style.display = 'none';
+      document.body.classList.remove('intro-active');
+      document.body.classList.add('intro-done');
+    };
+    skipBtn.addEventListener('click', skip);
+    skipBtn.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter' || ev.key === ' ') skip(ev);
+    });
+  }
 })();
 </script>
 {% endblock %}

@@ -264,6 +264,25 @@ body.intro-active{ overflow:hidden; }
   transition:opacity 5s var(--ease);
 }
 
+/* Skip discreto in basso a destra: piccolissimo, mono, opacità bassa.
+   Cresce un po' a hover/focus per essere comunque cliccabile senza
+   diventare un elemento di design. */
+.intro__skip{
+  position:absolute; bottom:18px; right:20px;
+  background:transparent; border:0; padding:6px 8px;
+  font-family:var(--mono); font-size:.62rem; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--muted-2);
+  opacity:.35; cursor:pointer;
+  transition:opacity .25s var(--ease);
+}
+.intro__skip:hover,
+.intro__skip:focus-visible{ opacity:.85; outline:none; }
+.intro.revealed .intro__skip{
+  opacity:0;
+  transition:opacity 5s var(--ease);
+  pointer-events:none;
+}
+
 /* Home — sezioni che vivono SOTTO l'intro. Sono già renderizzate quando
    la pagina carica; quando l'intro fade out l'utente le vede al loro posto,
    con header sopra e footer sotto come una pagina normale. */
