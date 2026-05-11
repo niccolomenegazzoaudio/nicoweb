@@ -88,9 +88,10 @@ jobs:
           EOF
 
       - name: Sync user/ into running container
-        # Il volume nominato nicoweb_user:/app/user persiste tra rebuild, quindi
-        # le modifiche a user/pages, user/themes, user/config NON arriverebbero
-        # in prod via solo "compose up". Qui forziamo il sync con due step:
+        # I volumi nominati nico_pages/nico_config/nico_data/nico_accounts persistono
+        # tra rebuild, quindi le modifiche a user/pages e user/themes NON arriverebbero
+        # in prod via solo "compose up" (anche se themes non ha volume, viene da immagine;
+        # ma pages sì, e config va aggiornato senza toccare email.yaml). Forziamo il sync:
         #   1) pre-clean: cancella tutto in pages/ e themes/ dentro al container
         #      (così rimuoviamo file che il repo non ha più)
         #   2) tar pipe: rimette nel container quello che è oggi nel repo,
