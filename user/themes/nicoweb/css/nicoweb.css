@@ -183,15 +183,15 @@ body.intro-active{ overflow:hidden; }
    staccato dalla o. */
 .accent{
   position:absolute;
-  width:.3em; height:14px;
+  width:.42em; height:18px;
   background:var(--accent);
-  /* La barretta è spessa e attaccata alla cima della o (come l'accento
-     del glifo precomposto "Ò"). top:26% mette il centro della barretta
-     appena sopra l'x-height-top della o in Space Grotesk a line-height:1.
-     Colore var(--accent) come il grave del brand nell'header — l'intro
-     resta visivamente coerente con la O del logo. */
-  top:26%; left:54%;
-  transform:translate(-50%, -50%) rotate(-25deg);
+  /* Grave accent vero proprio: la barretta scende da sinistra a destra
+     (rotate +25deg, NON -25deg che è la direzione dell'acuto). Stessa
+     orientazione del glifo `̀` usato in .brand__o-accent nell'header.
+     top:24% / left:54% mette il centro appena sopra l'x-height-top della
+     o, leggermente spostato a destra come nel grave reale di "ò". */
+  top:24%; left:54%;
+  transform:translate(-50%, -50%) rotate(25deg);
   transform-origin:center;
   border-radius:1px;
   opacity:0;
