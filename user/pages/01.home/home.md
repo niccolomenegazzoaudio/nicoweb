@@ -3,21 +3,21 @@ title: 'Niccolò Menegazzo'
 menu: Home
 visible: true
 intro:
-  enabled: true
-  letter: 'φ'
-  accent: '̀'
-  duration: 5
-  fade: 1
-  drone:
-    freq_a: 220
-    # freq_b è il partner detunato del fondamento. Detune ~0.4 Hz =
-    # quasi-controfase: secondo canale invertito (180°) → cancella il
-    # phantom-center in stereo, ma in mono il piccolo battimento evita
-    # il silenzio totale.
-    freq_b: 220.4
-    filter_start: 200
-    filter_end: 2000
+    enabled: '1'
+    letter: φ
+    accent: ̀
+    duration: 5
+    fade: 1
+    drone:
+        freq_a: 220
+        freq_b: 220.4
+        filter_start: 200
+        filter_end: 2000
+    name_pre: Niccol
+    name_post: ' Menegazzo'
 home:
-  name: 'Niccolò Menegazzo'
-  role: 'Sound Designer · Sound Engineer'
+    name: 'Niccolò Menegazzo'
+    role: 'Sound Designer · Sound Engineer ·Technical Manager'
 ---
+
+Mi chiamo Niccolò Menegazzo e sono nato a La Spezia il 7 Luglio 1982. Lavoro come sound designer e audio engineer in Italia e in Europa, collaborando con registi, compagnie teatrali, teatri stabili realtà indipendenti, label, agenzie e artisti.

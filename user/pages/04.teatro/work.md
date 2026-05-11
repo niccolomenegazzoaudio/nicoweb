@@ -1,13 +1,13 @@
 ---
-title: Teatro
-menu: Teatro
-subtitle: 'Spettacoli, mise en espace, sound design teatrale.'
-year: ''
-role: 'Sound design · Live mix'
-credits: []
+title: TEATRO
+subtitle: 'Sound design · Sound Engineer · Technical Manager'
+role: 'Teatro contemporaneo · Prosa contemporanea'
 media:
-  type: image
-  src: ''
-  caption: ''
+    type: image
 ---
-Lavori per la scena: progettazione sonora, regia del suono, mix dal vivo. Aggiungi qui i progetti da `/admin → Pages → Teatro`.
+
+Progetto identità sonore per il teatro contemporaneo e seguo la dimensione tecnica dello spettacolo dal vivo, lavorando sull’equilibrio tra presenza, atmosfera e percezione.
+
+Opero come fonico in tour, per accompagnare i miei progetti fino all’ultimo stadio della riproduzione sonora, garantendone la coerenza in scena.
+
+In una prospettiva che considera lo spettacolo nella sua interezza, seguo anche la direzione tecnica, assicurando coerenza tra le componenti artistiche e produttive.
