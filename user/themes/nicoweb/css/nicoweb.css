@@ -149,7 +149,7 @@ body.intro-active{ overflow:hidden; }
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:288px; height:288px;
+  width:220px; height:220px;
   border:1px solid var(--text);
 }
 
@@ -589,7 +589,7 @@ body.intro-active .scroll-meter{display:none}
   /* Tutto il simbolo è em-based: cambia solo il controller font-size.
      slash/accento si adeguano da soli. La cornice scala in proporzione. */
   .symbol{font-size:140px}
-  .symbol-frame{width:224px; height:224px}
+  .symbol-frame{width:180px; height:180px}
   /* Touch targets ≥44px sui link mono */
   .nav__list a{padding:14px 0}
   .work-page__back{margin-top:64px}
