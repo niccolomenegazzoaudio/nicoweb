@@ -63,22 +63,14 @@
 
   let started = false;
 
-  // Skip dell'intro SOLO quando si arriva da una pagina interna (clic sul brand
-  // dall'header di /contatti, /teatro, ecc.). Atterraggi diretti dall'address
-  // bar / link esterni / refresh / nuova tab → l'intro suona.
-  //
-  // Il referrer da solo non basta: in caso di refresh il browser preserva
-  // il referrer della navigazione che ha caricato la pagina, quindi un F5
-  // sulla home dopo essere arrivati cliccando il brand farebbe credere
-  // erroneamente "vengo da una pagina interna". Il check performance.type
-  // === 'reload' disambigua: refresh esplicito → sempre play.
-  const navType = (performance.getEntriesByType('navigation')[0] || {}).type;
-  const isReload = navType === 'reload';
-  const fromInternal = !isReload
-    && document.referrer
-    && new URL(document.referrer, location.href).origin === location.origin
-    && new URL(document.referrer, location.href).pathname !== location.pathname;
-  if (fromInternal) {
+  // Skip esplicito via query param: il link "Home" nel footer punta a /?skip=1
+  // → arrivando da lì saltiamo l'intro e ripuliamo l'URL così un refresh
+  // successivo torna a suonare l'intro normalmente.
+  // (Niente più euristica referrer+navType: era fragile con Referrer-Policy,
+  // nuove tab, ecc. — un flag esplicito è più affidabile.)
+  const skipFromUrl = new URLSearchParams(location.search).has('skip');
+  if (skipFromUrl) {
+    history.replaceState(null, '', location.pathname);
     intro.style.display = 'none';
     document.body.classList.add('intro-done');
     return;
