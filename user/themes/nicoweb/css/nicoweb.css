@@ -141,51 +141,18 @@ body.intro-active{ overflow:hidden; }
 .intro.out{ opacity:0; pointer-events:none; }
 .intro:focus-visible{outline:1px solid var(--muted); outline-offset:8px}
 
-/* Wrapper che mette in fila "Niccol" + simbolo O + " Menegazzo".
-   Le due metà del nome partono invisibili; quando il simbolo si attiva
-   (vedi .intro.revealed) sfumano in fade-in attorno alla O. */
-.intro-name{
-  display:flex; align-items:baseline; justify-content:center;
-  font-family:var(--sans); font-weight:400; line-height:1;
-  letter-spacing:-.02em;
-  color:var(--text);
-  white-space:nowrap;
-  max-width:100%;
+/* Cornice quadrata bianca attorno alla O. È un wrapper inline-flex
+   centratore: la .symbol vive al suo interno con il suo font-size invariato.
+   La size del frame è in pixel così la O resta della sua misura naturale
+   e non viene rimpicciolita sul reveal (vedi commento su .intro.revealed). */
+.symbol-frame{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:288px; height:288px;
+  border:1px solid var(--text);
 }
-/* Prima del reveal pre/post sono opacity:0 MA `max-width:0; overflow:hidden`
-   così non occupano spazio nel flex row: il simbolo resta perfettamente
-   centrato in pagina. Sul reveal max-width espande e il nome "scrive
-   intorno" alla ò spingendola alla sua posizione naturale. */
-.intro-name__pre, .intro-name__post{
-  font-size:clamp(1rem, 4.2vw, 2.75rem);
-  opacity:0;
-  max-width:0;
-  overflow:hidden;
-  transform:translateY(6px);
-  transition:opacity 2.4s var(--ease), transform 2.4s var(--ease), max-width 2.4s var(--ease);
-  transition-delay:.5s;
-}
-/* Spazio tra "Niccolò" e "Menegazzo" via CSS: lo whitespace iniziale dentro
-   un flex item viene strippato, quindi non basta scriverlo nel testo.
-   Margin a 0 quando collassato per non offsettare il simbolo dal centro. */
-.intro-name__post{
-  margin-left:0;
-  transition:opacity 2.4s var(--ease), transform 2.4s var(--ease), max-width 2.4s var(--ease), margin-left 2.4s var(--ease);
-  transition-delay:.5s;
-}
-.intro.revealed .intro-name__pre,
-.intro.revealed .intro-name__post{
-  opacity:1;
-  max-width:30ch;
-  transform:translateY(0);
-}
-.intro.revealed .intro-name__post{ margin-left:.25em; }
 
-/* Il symbol ora è inline-block con dentro un'"o" testuale (Space Grotesk 400),
-   quindi advance e baseline sono naturali. Animando solo il font-size del
-   symbol, l'o si rimpicciolisce fino a coincidere — stesso glifo, stessa
-   metrica — con le minuscole di "Niccol" / " Menegazzo".
-   align-items:baseline sulla riga garantisce l'allineamento tipografico. */
 .symbol{
   position:relative;
   display:inline-block;
@@ -195,15 +162,11 @@ body.intro-active{ overflow:hidden; }
   letter-spacing:-.02em;
   line-height:1;
   color:var(--text);
-  flex:0 0 auto;
-  transition:font-size 2.4s var(--ease) .5s;
 }
 .intro.revealed .symbol{
-  font-size:clamp(1rem, 4.2vw, 2.75rem);
-  /* Pulse dolce sul simbolo durante il drone — periodo 3.3s allineato
-     all'LFO 0.3 Hz dello shimmer, così visivo e audio respirano insieme.
-     transform e font-size sono proprietà diverse: la transizione del
-     font-size (morph) e l'animation della scale (pulse) coesistono. */
+  /* Niente più shrink al reveal — la O resta della sua dimensione naturale
+     dentro la cornice. Mantieni solo l'oPulse: il simbolo respira al
+     ritmo dell'LFO 0.3 Hz dello shimmer durante il drone. */
   animation:oPulse 3.3s ease-in-out infinite;
 }
 @keyframes oPulse{
@@ -305,6 +268,13 @@ body.intro-active{ overflow:hidden; }
 @keyframes hint{
   0%,100%{ opacity:.35 }
   50%   { opacity:.85 }
+}
+/* Quando l'utente clicca l'intro (`.revealed`), la barretta si scioglie in
+   5s e la hint deve sparire insieme — stessa easing/durata per sincronia. */
+.intro.revealed .intro__hint{
+  opacity:0;
+  animation:none;
+  transition:opacity 5s var(--ease);
 }
 
 /* Home — sezioni che vivono SOTTO l'intro. Sono già renderizzate quando
@@ -617,8 +587,9 @@ body.intro-active .scroll-meter{display:none}
 @media (max-width:780px){
   body{font-size:17px}
   /* Tutto il simbolo è em-based: cambia solo il controller font-size.
-     slash/accento si adeguano da soli (e così l'animazione di rimpicciolimento). */
+     slash/accento si adeguano da soli. La cornice scala in proporzione. */
   .symbol{font-size:140px}
+  .symbol-frame{width:224px; height:224px}
   /* Touch targets ≥44px sui link mono */
   .nav__list a{padding:14px 0}
   .work-page__back{margin-top:64px}

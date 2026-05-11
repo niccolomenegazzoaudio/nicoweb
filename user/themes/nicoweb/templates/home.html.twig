@@ -17,15 +17,13 @@
    modulate da LFO 0.3 Hz · pan -1→0/+1→0 · lowpass {{ fStart }}→{{ fEnd }} Hz · {{ duration }}s)
    Dopo {{ duration }}s fade out di {{ fade }}s; sotto c'è già la home normale. #}
 <div id="intro" class="intro" role="button" tabindex="0" aria-label="Avvia presentazione">
-  <div class="intro-name" aria-hidden="true">
-    <span class="intro-name__pre">{{ intro.name_pre|default('Niccol') }}</span>
+  <span class="symbol-frame" aria-hidden="true">
     <span class="symbol" id="symbol">
       <span class="o-glyph">o</span>
       <span class="slash" aria-hidden="true"></span>
       <span class="accent" aria-hidden="true"><span class="accent__flame">{{ intro.accent|default('ò')|raw }}</span></span>
     </span>
-    <span class="intro-name__post">{{ intro.name_post|default(' Menegazzo') }}</span>
-  </div>
+  </span>
   <p class="intro__hint">tap to get in phase</p>
 </div>
 
