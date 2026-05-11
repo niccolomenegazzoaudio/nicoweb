@@ -298,6 +298,21 @@ body.intro-active{ overflow:hidden; }
   line-height:1.05;
   margin:0;
 }
+/* Stessa tecnica del brand: sovrappongo una seconda copia della "ò"
+   in --accent e la clippo lasciando visibile solo il grave. La forma
+   dell'accento è quella vera del font, ma il colore è il warm-tan. */
+.grave-o{
+  position:relative;
+  display:inline-block;
+}
+.grave-o::after{
+  content:"ò";
+  position:absolute;
+  top:0; left:0;
+  color:var(--accent);
+  clip-path:inset(0 0 75% 0);
+  pointer-events:none;
+}
 .home-hero__role{
   margin-top:16px;
   font-family:var(--mono);

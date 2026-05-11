@@ -34,7 +34,9 @@
 
 <section class="home-hero">
   <div class="container">
-    <h1 class="home-hero__name">{{ home.name|default(site.title) }}</h1>
+    {# Avvolge ogni "ò" del nome in uno span così la CSS può colorarne
+       solo l'accento (stessa tecnica del brand nell'header). #}
+    <h1 class="home-hero__name">{{ (home.name|default(site.title))|replace({'ò': '<span class="grave-o">ò</span>'})|raw }}</h1>
     <p class="home-hero__role">{{ home.role|default('Sound Designer · Sound Engineer') }}</p>
   </div>
 </section>
