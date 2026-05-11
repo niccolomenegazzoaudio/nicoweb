@@ -220,7 +220,7 @@ body.intro-active{ overflow:hidden; }
   position:absolute;
   width:.7em; height:6px;
   background:var(--text);
-  top:62%; left:50%;
+  top:60%; left:50%;
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(1);
   transform-origin:center;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
