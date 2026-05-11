@@ -68,13 +68,14 @@ p{margin:0}
 }
 .nav{display:flex; align-items:center; justify-content:flex-start; padding:18px 28px; max-width:var(--maxw); margin:0 auto; gap:8px}
 
-/* Brand mark: la "ò" precomposta di Space Grotesk come logo a sinistra.
-   A questa dimensione il glifo del font funziona bene (il problema
-   "accento troppo piccolo / staccato" stava solo all'enorme size dell'intro
-   180px, dove abbiamo dovuto disegnarlo in CSS). Qui usiamo direttamente
-   il carattere così matcha perfettamente la "Niccolò Menegazzo" della home.
+/* Brand mark: "o" + accento grave warm-tan disegnato come barretta CSS.
+   Usiamo questa tecnica (invece del glifo ò precomposto) per poter colorare
+   l'accento in --accent — il font non permette di scolpire una sola parte
+   del glifo. Le proporzioni della barretta sono tunate sul grave di Space
+   Grotesk a header-size così otticamente sembra il carattere del font.
    Click → /?skip=1 come il footer. */
 .brand{
+  position:relative;
   display:inline-block;
   font-family:var(--sans);
   font-size:1.6rem;
@@ -85,6 +86,16 @@ p{margin:0}
   margin-right:4px;
 }
 .brand:hover{ opacity:.7 }
+.brand__o{ display:inline-block; line-height:1 }
+.brand__accent{
+  position:absolute;
+  width:.26em; height:.08em;
+  background:var(--accent);
+  top:-.04em; left:.22em;
+  transform:rotate(25deg);
+  transform-origin:center;
+  border-radius:1px;
+}
 .nav__list ul{display:flex; gap:6px; list-style:none; margin:0; padding:0}
 .nav__list a{
   display:inline-block; padding:8px 14px;
