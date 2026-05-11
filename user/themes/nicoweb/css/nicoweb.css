@@ -141,26 +141,6 @@ body.intro-active{ overflow:hidden; }
 .intro.out{ opacity:0; pointer-events:none; }
 .intro:focus-visible{outline:1px solid var(--muted); outline-offset:8px}
 
-/* Cornice quadrata bianca attorno alla O. È un wrapper inline-flex
-   centratore: la .symbol vive al suo interno con il suo font-size invariato.
-   La size del frame è in pixel così la O resta della sua misura naturale
-   e non viene rimpicciolita sul reveal (vedi commento su .intro.revealed).
-   Al caricamento il bordo fa fade-in da transparent (sincrono con il
-   fade-in della .slash, vedi sotto) così frame + barretta si materializzano
-   insieme attorno alla O che è invece visibile da subito. */
-.symbol-frame{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:220px; height:220px;
-  border:1px solid var(--text);
-  animation:frame-fade-in 1.8s ease-out .25s both;
-}
-@keyframes frame-fade-in{
-  0%   { border-color:transparent; }
-  100% { border-color:var(--text); }
-}
-
 .symbol{
   position:relative;
   display:inline-block;
@@ -195,58 +175,46 @@ body.intro-active{ overflow:hidden; }
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(1);
   transform-origin:center;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
-  /* Stesso fade-in del frame: barretta e cornice si materializzano insieme. */
-  animation:slash-fade-in 1.8s ease-out .25s both;
 }
-@keyframes slash-fade-in{
-  0%   { opacity:0; }
-  100% { opacity:1; }
-}
-/* Renderizziamo una "ò" precomposta (stessa font, stessa size del .o-glyph)
-   e ne mostriamo SOLO la parte alta — l'accento grave nella forma originale
-   di Space Grotesk. La "o" sotto il grave viene clippata via overflow:hidden:
-   coincide comunque con la .o-glyph fredda sottostante (stesso baseline,
-   stessa font-size) ma non si vede mai. Così il glifo dell'accento è
-   garantito identico a quello che il font disegna nella precomposta "ò"
-   del page title. */
+/* L'accento grave è disegnato in CSS come barretta angolata (stessa
+   tecnica della .slash), così abbiamo controllo pieno su lunghezza,
+   spessore, angolo e posizione — invece di affidarci a un glifo del
+   font che, a queste size e con clipping, risultava troppo piccolo e
+   staccato dalla o. */
 .accent{
-  position:absolute; left:50%; top:0;
-  font-family:var(--sans);
-  font-size:1em; font-weight:400; line-height:1;
-  height:.22em; overflow:hidden;
-  color:var(--text);
-  transform:translate(-50%, -.04em);
+  position:absolute;
+  width:.28em; height:7px;
+  background:var(--text);
+  top:19%; left:54%;
+  transform:translate(-50%, -50%) rotate(-25deg);
+  transform-origin:center;
+  border-radius:1px;
   opacity:0;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
-}
-.accent__flame{
-  display:inline-block;
 }
 .symbol.active .slash{
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(0);
   opacity:0;
 }
 .symbol.active .accent{
-  transform:translate(-50%, 0);
   opacity:1;
   animation: flame-ignite 2.5s ease-in forwards;
 }
 
-/* Fuoco — solo sull'accento grave, non sulla O. Quando l'utente attiva
-   l'intro (click → .active) la slash svanisce, l'accento emerge e prende
-   fuoco. Usiamo filter:drop-shadow invece di text-shadow perché il glifo
-   è clippato da overflow:hidden — text-shadow verrebbe tagliato col resto,
-   mentre drop-shadow lavora sulla silhouette già clippata (solo il grave). */
+/* Fuoco — solo sull'accento, non sulla O. Quando l'utente attiva l'intro
+   (click → .active) la slash svanisce, l'accento appare e prende fuoco.
+   Animiamo background-color (la barretta è un div) e usiamo filter:
+   drop-shadow per il glow caldo attorno alla silhouette dell'accento. */
 @keyframes flame-ignite{
   0%{
     filter:none;
-    color:var(--text);
+    background-color:var(--text);
   }
   25%{
     filter:
       drop-shadow(0 -1px 5px rgba(255,150,40,.45))
       drop-shadow(0 -3px 11px rgba(255,90,15,.30));
-    color:#ffe6c0;
+    background-color:#ffe6c0;
   }
   60%{
     filter:
@@ -254,7 +222,7 @@ body.intro-active{ overflow:hidden; }
       drop-shadow(0 -5px 18px rgba(255,90,20,.70))
       drop-shadow(0 -11px 30px rgba(255,55,0,.55))
       drop-shadow(0 -18px 46px rgba(255,30,0,.35));
-    color:#fff0d4;
+    background-color:#fff0d4;
   }
   100%{
     filter:
@@ -263,7 +231,7 @@ body.intro-active{ overflow:hidden; }
       drop-shadow(0 -14px 36px rgba(255,60,0,.80))
       drop-shadow(0 -22px 54px rgba(255,40,0,.55))
       drop-shadow(0 -30px 76px rgba(255,30,0,.35));
-    color:#fff0d4;
+    background-color:#fff0d4;
   }
 }
 /* Quando l'intro fade-out, anche la fiamma si placa con essa (opacity
@@ -603,7 +571,6 @@ body.intro-active .scroll-meter{display:none}
   /* Tutto il simbolo è em-based: cambia solo il controller font-size.
      slash/accento si adeguano da soli. La cornice scala in proporzione. */
   .symbol{font-size:140px}
-  .symbol-frame{width:180px; height:180px}
   /* Touch targets ≥44px sui link mono */
   .nav__list a{padding:14px 0}
   .work-page__back{margin-top:64px}
