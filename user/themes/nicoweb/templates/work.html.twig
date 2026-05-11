@@ -35,7 +35,12 @@
       </dl>
     {% endif %}
 
-    <p class="work-page__back"><a href="/">← Home</a></p>
+    {% set parent = page.parent %}
+    {% if parent and parent.template == 'category' %}
+      <p class="work-page__back"><a href="{{ parent.url }}">← {{ parent.title }}</a></p>
+    {% else %}
+      <p class="work-page__back"><a href="/">← Home</a></p>
+    {% endif %}
   </div>
 </article>
 {% endblock %}

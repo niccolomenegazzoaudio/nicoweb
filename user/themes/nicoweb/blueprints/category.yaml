@@ -1,0 +1,20 @@
+title: Sezione (indice spettacoli / eventi)
+'@extends':
+  type: default
+  context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+      type: tabs
+      fields:
+        intro:
+          type: tab
+          title: Intro
+          fields:
+            header.eyebrow:
+              type: text
+              label: Eyebrow
+            header.subtitle:
+              type: textarea
+              label: Sottotitolo / descrizione breve

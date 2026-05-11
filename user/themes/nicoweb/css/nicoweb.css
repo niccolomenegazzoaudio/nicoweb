@@ -290,45 +290,43 @@ body.intro-active{ overflow:hidden; }
 .home-bio__body p+p{ margin-top:1em }
 .home-bio__clients-label{ margin-top:48px; }
 
-.home-works{
-  padding:48px 0 96px;
-  border-top:1px solid var(--line);
-  margin-top:48px;
-}
-.home-works .eyebrow{margin-bottom:28px; display:block}
-.home-works__list{
-  list-style:none; margin:0; padding:0;
+/* Lista figli di una category page (Teatro / Musica → singoli spettacoli/eventi).
+   Stesso linguaggio della vecchia lista home-works ma generica: un row per
+   figlio, con titolo a sinistra, eventuale anno mono, freccia che si sposta
+   a hover. */
+.cat-list{
+  list-style:none; margin:48px 0 0; padding:0;
   display:grid; gap:0;
+  border-top:1px solid var(--line);
 }
-.home-works__list li{
-  border-bottom:1px solid var(--line);
-}
-.home-works__list a{
-  display:flex; align-items:center; justify-content:space-between; gap:16px;
+.cat-list li{ border-bottom:1px solid var(--line); }
+.cat-list a{
+  display:flex; align-items:baseline; gap:16px;
   padding:22px 0;
-  font-family:var(--mono); font-size:.96rem; letter-spacing:.24em;
   color:var(--text);
   transition:padding-left .35s var(--ease), color .25s var(--ease);
 }
-.home-works__list a:hover{
-  opacity:1;
-  padding-left:14px;
-  color:var(--text);
+.cat-list a:hover{ opacity:1; padding-left:14px; color:var(--text); }
+.cat-list__title{
+  font-family:var(--mono); font-size:.96rem; letter-spacing:.24em;
+  flex:1;
 }
-.home-works__list a .ext-arrow{
+.cat-list__meta{
+  font-size:.72rem; letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.cat-list a .ext-arrow{
   color:var(--muted-2);
   transition:transform .3s var(--ease), color .25s var(--ease);
   display:inline-block;
 }
-.home-works__list a:hover .ext-arrow{
-  transform:translateX(6px);
-  color:var(--text);
-}
+.cat-list a:hover .ext-arrow{ transform:translateX(6px); color:var(--text); }
 
 @media (max-width:580px){
   .home-hero{padding:64px 0 24px}
-  .home-works{padding:32px 0 64px; margin-top:32px}
-  .home-works__list a{padding:18px 0; font-size:.86rem}
+  .cat-list{margin-top:32px}
+  .cat-list a{padding:18px 0}
+  .cat-list__title{font-size:.86rem}
 }
 
 /* ---------- Inner pages (about, contact, work) -------------- */

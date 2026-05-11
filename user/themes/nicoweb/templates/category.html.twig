@@ -1,0 +1,32 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+<section class="page page--category">
+  <div class="container">
+    <header class="page__head">
+      {% if page.header.eyebrow %}<p class="eyebrow mono muted">{{ page.header.eyebrow }}</p>{% endif %}
+      <h1 class="page__title">{{ page.title }}</h1>
+      {% if page.header.subtitle %}<p class="page__sub muted">{{ page.header.subtitle }}</p>{% endif %}
+    </header>
+
+    {% if page.content %}
+      <div class="page__body">{{ page.content|raw }}</div>
+    {% endif %}
+
+    {% set items = page.children.visible %}
+    {% if items.count > 0 %}
+      <ul class="cat-list">
+        {% for p in items %}
+          <li>
+            <a href="{{ p.url }}">
+              <span class="cat-list__title">{{ p.title|upper }}</span>
+              {% if p.header.year %}<span class="cat-list__meta mono muted">{{ p.header.year }}</span>{% endif %}
+              <span class="ext-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
