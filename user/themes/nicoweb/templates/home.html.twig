@@ -42,13 +42,6 @@
 <section class="home-bio">
   <div class="container">
     <div class="home-bio__body">{{ bio.content|raw }}</div>
-
-    {% if bio.header.clients %}
-      <p class="eyebrow mono muted home-bio__clients-label">Selezione clienti</p>
-      <ul class="clients">
-        {% for c in bio.header.clients %}<li>{{ c }}</li>{% endfor %}
-      </ul>
-    {% endif %}
   </div>
 </section>
 {% endif %}
