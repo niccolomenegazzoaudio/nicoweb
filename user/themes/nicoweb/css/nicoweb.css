@@ -62,35 +62,7 @@ p{margin:0}
   background:var(--bg);
   border-bottom:1px solid var(--line);
 }
-.nav{display:flex; align-items:center; justify-content:space-between; padding:18px 28px; max-width:var(--maxw); margin:0 auto}
-.brand{
-  font-family:var(--sans); font-weight:400; font-size:1.15rem; letter-spacing:.02em;
-  color:var(--text);
-  text-decoration:none;
-  user-select:none;
-  cursor:pointer;
-  transition:opacity .2s var(--ease);
-}
-.brand:hover{ opacity:.7; }
-/* "Special O" che riproduce la O della home intro (decomposta: O + accent grave),
-   al posto del normale Ò di "Niccolò". Statica, non animata. */
-.brand__special-o{
-  position:relative;
-  display:inline-block;
-  font-weight:300;
-  letter-spacing:-.02em;
-}
-.brand__o-accent{
-  position:absolute;
-  left:50%;
-  top:-.55em;
-  transform:translateX(-50%);
-  color:var(--accent);
-  font-weight:300;
-  font-size:.85em;
-  line-height:1;
-  pointer-events:none;
-}
+.nav{display:flex; align-items:center; justify-content:flex-start; padding:18px 28px; max-width:var(--maxw); margin:0 auto}
 .nav__list ul{display:flex; gap:6px; list-style:none; margin:0; padding:0}
 .nav__list a{
   display:inline-block; padding:8px 14px;
@@ -186,8 +158,7 @@ body.intro-active{ overflow:hidden; }
   width:.42em; height:18px;
   background:var(--accent);
   /* Grave accent vero proprio: la barretta scende da sinistra a destra
-     (rotate +25deg, NON -25deg che è la direzione dell'acuto). Stessa
-     orientazione del glifo `̀` usato in .brand__o-accent nell'header.
+     (rotate +25deg, NON -25deg che è la direzione dell'acuto).
      top:24% / left:54% mette il centro appena sopra l'x-height-top della
      o, leggermente spostato a destra come nel grave reale di "ò". */
   top:24%; left:54%;
@@ -568,6 +539,4 @@ body.intro-active .scroll-meter{display:none}
   .nav{padding-inline:20px}
   .page, .work-page{padding:56px 0 96px}
   .page__head, .work-page__head{margin-bottom:36px}
-  .brand{font-size:1rem}
-  .brand__o-accent{top:-.5em}
 }

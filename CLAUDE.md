@@ -68,11 +68,11 @@ The prod stack is now standalone (binds `:80`/`:443` directly). The historical `
 - When adding fields to a page's frontmatter, also add them to the matching `user/themes/nicoweb/blueprints/*.yaml` so they're editable from `/admin`.
 - The home page intentionally hides chrome (`{% if page.slug != 'home' %}` in `partials/base.html.twig`); other pages get header + footer.
 
-### Brand mark in header
+### Header
 
-The header brand renders "Niccolò Menegazzo" as an `<a href="/">` link back to the home. The `Ò` is decomposed into the same DOM structure as the home intro symbol (`<span class="brand__special-o">O<span class="brand__o-accent">̀</span></span>`) so it visually echoes the intro's final state. The accent is colored in `--accent` (warm tan). Hover effect: `opacity:.7`, no underline. Clicking the brand from any inner page returns to the home without re-playing the intro animation (see the navType+referrer logic in `home.html.twig`); refreshing on the home replays it.
+The header has **no brand mark** — no "Niccolò Menegazzo" text, no logo. Just the nav items left-aligned (`.nav { justify-content: flex-start }`). To get back to the home from an inner page the user uses the URL bar or browser back; there is no in-page home link anymore. This means the navType+referrer "skip intro when coming from internal page" logic in `home.html.twig` is now mostly dead code for normal users — keep it anyway because it still applies if someone hand-crafts an internal link.
 
-The menu lists `Contatti / Teatro / Musica / Work-in-progress` — **no Bio entry**, because the bio content lives on the home now. The `/bio` page itself is still reachable directly (it's `visible:false` so it's just hidden from the menu) and that's where Nicco edits the bio facts/clients/body from `/admin`.
+The menu lists `Teatro / Musica / Work-in-progress` — **no Bio**, **no Contatti**. Both pages still exist and are reachable by direct URL (each is `visible: false` in its frontmatter so it's hidden from the menu only). Bio is the source of truth for home's profilo body content; Contatti hosts the form and is where form submissions land (`/admin → Forms → Contact`).
 
 ## Theme: visual language
 

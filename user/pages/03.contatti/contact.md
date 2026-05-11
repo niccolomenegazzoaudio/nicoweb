@@ -1,6 +1,7 @@
 ---
 title: CONTATTI
 menu: Contatti
+visible: false
 facts:
     -
         label: E-mail
