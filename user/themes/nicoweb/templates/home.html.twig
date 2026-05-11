@@ -41,7 +41,6 @@
 {% if bio %}
 <section class="home-bio">
   <div class="container">
-    <p class="eyebrow mono muted">Profilo</p>
     <div class="home-bio__body">{{ bio.content|raw }}</div>
 
     {% if bio.header.clients %}
@@ -53,17 +52,6 @@
   </div>
 </section>
 {% endif %}
-
-<section class="home-works">
-  <div class="container">
-    <p class="eyebrow mono muted">Lavori</p>
-    <ul class="home-works__list">
-      {% for p in pages.children.visible if p.slug != 'home' and p.template == 'work' %}
-        <li><a href="{{ p.url }}">{{ p.title|upper }}<span class="ext-arrow" aria-hidden="true">→</span></a></li>
-      {% endfor %}
-    </ul>
-  </div>
-</section>
 {% endblock %}
 
 {% block bottom %}
