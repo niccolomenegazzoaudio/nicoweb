@@ -1,4 +1,4 @@
-# Stack di PRODUZIONE su arm_php — file STANDALONE.
+# Stack di PRODUZIONE su arch_php — file STANDALONE.
 #   docker compose -f docker-compose.prod.yml up -d --build
 #
 # Caratteristiche:

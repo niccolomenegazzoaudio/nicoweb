@@ -1,18 +1,18 @@
-# Deploy continuo: ogni push su `main` aggiorna il sito live su arm_php.
+# Deploy continuo: ogni push su `main` aggiorna il sito live su arch_php.
 #
 # Cosa fa il workflow:
 #   1. Checkout del codice
-#   2. Apre una sessione SSH verso arm_php usando una deploy key (secret SSH_PRIVATE_KEY)
-#   3. rsync del progetto verso /home/ubuntu/nicoweb (escludendo cache/log/uploads)
+#   2. Apre una sessione SSH verso arch_php usando una deploy key (secret SSH_PRIVATE_KEY)
+#   3. rsync del progetto verso /home/arch/nicoweb (escludendo cache/log/uploads)
 #   4. docker compose -f docker-compose.prod.yml up -d --build (ricostruisce solo quando il Dockerfile o gli asset cambiano grazie al cache di Docker)
 #   5. Smoke test pubblico di niccolomenegazzo.com per verificare che il sito sia 200
 #
 # Secrets richiesti (configurati con `gh secret set`):
 #   SSH_PRIVATE_KEY  — chiave privata della deploy key (ed25519)
-#   SSH_HOST         — IP/host (es. 130.61.237.237)
-#   SSH_USER         — utente SSH (es. ubuntu)
-#   SSH_PORT         — porta SSH (es. 2223)
-#   DEPLOY_PATH      — directory remota (es. /home/ubuntu/nicoweb)
+#   SSH_HOST         — IP/host (es. 150.230.157.31)
+#   SSH_USER         — utente SSH (es. arch)
+#   SSH_PORT         — porta SSH (es. 22)
+#   DEPLOY_PATH      — directory remota (es. /home/arch/nicoweb)
 #   PUBLIC_URL       — URL pubblico per il smoke test (es. https://niccolomenegazzo.com)
 
 name: Deploy

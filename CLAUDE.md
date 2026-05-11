@@ -17,9 +17,9 @@ docker compose logs -f app
 docker compose down
 ```
 
-Production deploy is automatic: every push to `main` runs `.github/workflows/deploy.yml`, which rsyncs to the `arm_php` host (Oracle ARM, IP `130.61.237.237`) and runs `docker compose -f docker-compose.prod.yml up -d --build`, then **does a tar-pipe sync of the rsync'd `user/` into the running container** (because the named volume `nicoweb_user:/app/user` doesn't pick up image changes after first creation), and finally smoke-tests the public URL on the routes `/`, `/la-ferocia`, `/i-miei-stupidi-intenti`, `/la-diva-del-bataclan`, `/about`, `/contact`, `/admin`. **Update the smoke test list when you change page slugs** (e.g. when about → bio, contact → contatti, the workflow's smoke test list also needs to change). The tar-pipe step excludes `user/data`, `user/accounts`, `user/config/plugins/email.yaml` so admin-runtime data and the SMTP password are preserved on prod.
+Production deploy is automatic: every push to `main` runs `.github/workflows/deploy.yml`, which rsyncs to the `arch_php` host (Oracle x86_64 Arch Linux, IP `150.230.157.31`, SSH user `arch`) and runs `docker compose -f docker-compose.prod.yml up -d --build`, then **does a tar-pipe sync of the rsync'd `user/` into the running container** (because the named volume `nicoweb_user:/app/user` doesn't pick up image changes after first creation), and finally smoke-tests the public URL on the routes `/`, `/la-ferocia`, `/i-miei-stupidi-intenti`, `/la-diva-del-bataclan`, `/about`, `/contact`, `/admin`. **Update the smoke test list when you change page slugs** (e.g. when about → bio, contact → contatti, the workflow's smoke test list also needs to change). The tar-pipe step excludes `user/data`, `user/accounts`, `user/config/plugins/email.yaml` so admin-runtime data and the SMTP password are preserved on prod.
 
-Manual deploy from a workstation: `./deploy/deploy.sh` (uses the SSH alias `arm_php`, target `/home/ubuntu/nicoweb`).
+Manual deploy from a workstation: `./deploy/deploy.sh` (uses the SSH alias `arch_php`, target `/home/arch/nicoweb`).
 
 **Auto-push workflow.** This repo treats `git push origin main` as the publish step: every change ends with `commit + push` so it goes live. When working here, finish each task by committing the working tree and pushing to `main` without asking — Francesco wants the loop tight. Standard caveats still apply (never `--amend` published commits, never skip hooks, never force-push, stop and warn if a sensitive file like `.env` / `user/accounts/` / `user/config/plugins/email.yaml` slipped into the diff). If you change a page slug, update the smoke-test list in `.github/workflows/deploy.yml` in the same commit, or the deploy fails.
 
@@ -49,7 +49,7 @@ There are no tests for the site itself — `composer test` / `composer phpstan` 
 
 ### Containers
 
-`docker/Dockerfile` builds on `dunglas/frankenphp:1-php8.3-alpine` (Caddy + PHP in one process), adds `gd zip exif intl`, copies `docker/php.ini` and `docker/Caddyfile`. Multi-arch — same image runs on local x86 and on ARM64 prod.
+`docker/Dockerfile` builds on `dunglas/frankenphp:1-php8.3-alpine` (Caddy + PHP in one process), adds `gd zip exif intl`, copies `docker/php.ini` and `docker/Caddyfile`. Dev and prod both run x86_64 now (prod = arch_php on Oracle x86_64); the upstream image is multi-arch so it'd still work on ARM if needed.
 
 `docker/Caddyfile` is the routing source of truth: blocks dotfiles, `/system`, `/vendor`, `/user/accounts|config|data|env`, etc.; long-caches static assets; everything else falls through to `index.php`. `SERVER_NAME` is templated by compose:
 - dev (`docker-compose.yml`): `:80` — HTTP only, no TLS.

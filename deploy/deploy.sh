@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
-# Deploy del portfolio su arm_php.
+# Deploy del portfolio su arch_php.
 #
 # Cosa fa:
-#   1. rsync del progetto (senza .git, log, deploy/) verso /home/ubuntu/nicoweb
+#   1. rsync del progetto (senza .git, log, deploy/) verso /home/arch/nicoweb
 #   2. docker compose build + up -d sull'host remoto
 #   3. controllo che il container sia healthy
 #
 # Pre-requisiti sull'host:
 #   - Docker + Compose installati
-#   - rete docker mahoboi_maho-network già presente (la crea il compose di mahoboi)
-#   - Caddyfile di mahoboi aggiornato col site block per il dominio (vedi
-#     deploy/wire-caddy.sh — eseguito una volta sola)
 #
 # Usage:
 #   ./deploy/deploy.sh
@@ -18,8 +15,8 @@
 
 set -euo pipefail
 
-REMOTE_HOST="${REMOTE_HOST:-arm_php}"
-REMOTE_PATH="${REMOTE_PATH:-/home/ubuntu/nicoweb}"
+REMOTE_HOST="${REMOTE_HOST:-arch_php}"
+REMOTE_PATH="${REMOTE_PATH:-/home/arch/nicoweb}"
 LOCAL_DIR="$(cd "$(dirname "$0")/.." && pwd)/"
 DRY_RUN=""
 
@@ -56,9 +53,9 @@ ssh "$REMOTE_HOST" "bash -se" <<EOF
   docker compose -f docker-compose.prod.yml up -d --build
   echo "--- Container status ---"
   docker ps --filter name=nicoweb --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
-  echo "--- Smoke test interno (curl dalla rete maho) ---"
-  docker run --rm --network mahoboi_maho-network alpine sh -c \
-    'apk add --no-cache curl >/dev/null 2>&1 && curl -sS -o /dev/null -w "HTTP %{http_code} (%{time_total}s)\n" http://nicoweb/'
+  echo "--- Smoke test interno (curl al container) ---"
+  docker exec nicoweb sh -c \
+    'curl -sS -o /dev/null -w "HTTP %{http_code} (%{time_total}s)\n" http://localhost/'
 EOF
 
 echo "==> Deploy completato."

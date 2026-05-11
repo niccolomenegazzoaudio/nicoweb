@@ -9,8 +9,8 @@ Live: <https://niccolomenegazzo.com>
 ## Stack
 
 - Grav 1.7 — CMS flat-file (Markdown + YAML + Twig)
-- FrankenPHP — Caddy + PHP 8.3 nello stesso binario, immagine multi-arch
-  (x86_64 + ARM64) — gira identico in dev sul laptop e in prod su Oracle ARM
+- FrankenPHP — Caddy + PHP 8.3 nello stesso binario, gira identico in dev
+  sul laptop e in prod su Oracle Cloud (Arch Linux x86_64)
 - TLS automatico via Let's Encrypt (Caddy)
 - Niente database, niente Composer sul server (vendor/ committato)
 
@@ -59,7 +59,7 @@ docker exec nicoweb bin/plugin login newuser \
   --fullname "Niccolò Menegazzo" --title "Sound Designer"
 ```
 
-In produzione lo stesso comando, ma sul container `nicoweb` su `arm_php`.
+In produzione lo stesso comando, ma sul container `nicoweb` su `arch_php`.
 
 ## Sviluppo locale
 
@@ -77,7 +77,7 @@ Se il caching Twig dà fastidio: `docker exec nicoweb bin/grav cache --all`.
 
 Push su `main` → la GitHub Action in `.github/workflows/deploy.yml`:
 
-1. rsync del codice verso `arm_php:/home/ubuntu/nicoweb/`
+1. rsync del codice verso `arch_php:/home/arch/nicoweb/`
    (esclude `cache/`, `logs/`, `tmp/`, `user/data/`, `user/accounts/`)
 2. `docker compose -f docker-compose.prod.yml up -d --build`
 3. Smoke test pubblico di tutte le route principali

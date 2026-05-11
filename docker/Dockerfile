@@ -1,5 +1,5 @@
-# FrankenPHP (Caddy + PHP) per Grav. Multi-arch (linux/amd64 + linux/arm64),
-# gira sia in dev sia su arm_php (Oracle ARM).
+# FrankenPHP (Caddy + PHP) per Grav. Immagine multi-arch upstream
+# (linux/amd64 + linux/arm64); in dev e su arch_php (Oracle x86_64) pulla amd64.
 FROM dunglas/frankenphp:1-php8.3-alpine
 
 # Estensioni PHP richieste da Grav che non sono già nel base:
