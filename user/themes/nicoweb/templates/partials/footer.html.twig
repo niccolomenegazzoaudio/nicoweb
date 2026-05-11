@@ -1,5 +1,7 @@
 {# Footer interno (non in home: il chrome è nascosto via base.html.twig).
-   Tre colonne flex: copyright · social icons · link Home.
+   Due colonne flex: copyright · social icons.
+   Il ritorno alla home è gestito dal brand ò nell'header (link a /?skip=1),
+   quindi qui non serve un secondo link "Home".
    Le icone si renderizzano solo se l'URL è settato in user/config/site.yaml
    (chiavi social.instagram / social.facebook / social.soundcloud) — vuote = nascoste. #}
 {% set s = site.social|default({}) %}
@@ -37,7 +39,5 @@
       {% endif %}
     </ul>
     {% endif %}
-
-    <small><a href="/?skip=1" class="muted">Home</a></small>
   </div>
 </footer>

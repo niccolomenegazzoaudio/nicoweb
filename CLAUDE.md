@@ -78,7 +78,7 @@ The prod stack is now standalone (binds `:80`/`:443` directly). The historical `
 
 ### Header
 
-The header has **no brand mark** — no "Niccolò Menegazzo" text, no logo. Just the nav items left-aligned (`.nav { justify-content: flex-start }`). To get back to the home from an inner page the user uses the URL bar or browser back; there is no in-page home link anymore. This means the navType+referrer "skip intro when coming from internal page" logic in `home.html.twig` is now mostly dead code for normal users — keep it anyway because it still applies if someone hand-crafts an internal link.
+The header carries a single **`ò` brand mark** on the far left (`.brand` in `partials/header.html.twig`), followed by the nav items, both left-aligned (`.nav { justify-content: flex-start }`). The brand is the same construction as the intro: an `o` glyph plus a CSS-drawn `.brand__accent` bar in `--accent` rotated +25deg, sized in `em` so it scales with the brand font-size. The brand links to `/?skip=1` so clicking it from any inner page goes back to the home **without** replaying the audio intro (same mechanism as the footer Home link).
 
 The menu lists `Teatro / Musica / Work-in-progress` — **no Bio**, **no Contatti**. Both pages still exist and are reachable by direct URL (each is `visible: false` in its frontmatter so it's hidden from the menu only). Bio is the source of truth for home's profilo body content; Contatti hosts the form and is where form submissions land (`/admin → Forms → Contact`).
 
