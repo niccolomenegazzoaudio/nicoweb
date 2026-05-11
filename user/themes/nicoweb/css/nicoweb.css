@@ -213,14 +213,14 @@ body.intro-active{ overflow:hidden; }
 .o-glyph{
   display:inline-block;
 }
-/* La "o" minuscola di Space Grotesk in line-height:1 occupa circa 28%–78%
-   dell'em-box (x-height ~50% di em, baseline ~78%): il centro visivo cade
-   intorno al 53%. Slash e accento sono ancorati a quella geometria. */
+/* L'o minuscola sta nella metà inferiore del box em (top a 30%, bottom a 81%,
+   centro a ~55.5%): slash e accento sono ancorati a quella geometria, non
+   al centro geometrico del symbol. */
 .slash{
   position:absolute;
-  width:.62em; height:1px;
+  width:.7em; height:1px;
   background:var(--text);
-  top:53%; left:50%;
+  top:55.5%; left:50%;
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(1);
   transform-origin:center;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
