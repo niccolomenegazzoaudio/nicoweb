@@ -356,26 +356,26 @@ body.intro-active {
 /* Cornice 1px attorno al simbolo: invisibile finché la pulsazione non si
    stabilizza, poi sfuma in 2s con `transition-delay: 5s` (il tempo che il
    simbolo ci mette a "respirare" tranquillo dopo il click, su richiesta di
-   Nicco). Su ::before perché il border deve essere indipendente dai children
-   (.o-glyph/.slash/.accent) e perché .symbol ha animation: oPulse — un border
-   diretto pulserebbe con la scale; il pseudo posizionato assoluto pulsa
-   col parent, che è il comportamento voluto (la cornice respira col simbolo). */
-.symbol::before {
-    content: "";
+   Nicco). Vive come sibling del .symbol dentro .intro (NON come ::before del
+   .symbol) perché .symbol ha `animation: oPulse` con scale 1↔1.04 e qualsiasi
+   ::before/figlio eredita quel transform → la cornice "lampeggerebbe" col
+   simbolo. Centrata sul viewport via absolute + translate, e visto che il
+   simbolo è il solo flex-item centrato di .intro, le due posizioni coincidono. */
+.intro__frame {
     position: absolute;
-    /* Quadrata, centrata sul simbolo. Il symbol è 180px alto, ~120px largo;
-       230×230 lascia ~25px sopra/sotto e ~55px sx/dx — quadrato non rettangolo. */
-    width: 230px;
-    height: 230px;
     top: 50%;
     left: 50%;
+    /* Quadrata. Il symbol è 180px alto, ~120px largo; 230×230 lascia ~25px
+       sopra/sotto e ~55px sx/dx — quadrato non rettangolo. */
+    width: 230px;
+    height: 230px;
     transform: translate(-50%, -50%);
     border: 1px solid var(--accent);
     opacity: 0;
     pointer-events: none;
     transition: opacity 2s var(--ease);
 }
-.symbol.active::before {
+.intro.revealed .intro__frame {
     opacity: 1;
     transition-delay: 5s;
 }
@@ -466,8 +466,12 @@ body.intro-active {
     }
 }
 /* Quando l'utente clicca l'intro (`.revealed`), la barretta si scioglie in
-   3s e la hint deve sparire insieme — stessa easing/durata per sincronia. */
+   3s e la hint deve sparire insieme — stessa easing/durata per sincronia.
+   `animation: none` ferma il loop `hint`: altrimenti i keyframes (opacity
+   0.35↔0.85 infinite) vincono sulla transition e la hint pulsa invece di
+   dissolversi — Nicco voleva una dissolvenza liscia come quella di "skip". */
 .intro.revealed .intro__hint {
+    animation: none;
     opacity: 0;
     transition: opacity 3s var(--ease);
 }
@@ -959,9 +963,14 @@ body.intro-active .scroll-meter {
         font-size: 17px;
     }
     /* Tutto il simbolo è em-based: cambia solo il controller font-size.
-     slash/accento si adeguano da soli. La cornice scala in proporzione. */
+     slash/accento si adeguano da soli. */
     .symbol {
         font-size: 140px;
+    }
+    /* Cornice in proporzione (180→140 ≈ 0.78 ⇒ 230→180). */
+    .intro__frame {
+        width: 180px;
+        height: 180px;
     }
     /* Touch targets ≥44px sui link mono */
     .nav__list a {
