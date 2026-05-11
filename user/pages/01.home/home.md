@@ -5,7 +5,7 @@ visible: true
 intro:
     enabled: '1'
     letter: φ
-    accent: ̀
+    accent: ò
     duration: 5
     fade: 1
     drone:

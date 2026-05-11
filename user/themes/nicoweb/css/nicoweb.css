@@ -225,76 +225,69 @@ body.intro-active{ overflow:hidden; }
   transform-origin:center;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
 }
+/* Renderizziamo una "ò" precomposta (stessa font, stessa size del .o-glyph)
+   e ne mostriamo SOLO la parte alta — l'accento grave nella forma originale
+   di Space Grotesk. La "o" sotto il grave viene clippata via overflow:hidden:
+   coincide comunque con la .o-glyph fredda sottostante (stesso baseline,
+   stessa font-size) ma non si vede mai. Così il glifo dell'accento è
+   garantito identico a quello che il font disegna nella precomposta "ò"
+   del page title. */
 .accent{
   position:absolute; left:50%; top:0;
   font-family:var(--sans);
-  font-size:.5em; font-weight:400; line-height:1;
-  transform:translate(-50%, .12em) translateY(.18em);
+  font-size:1em; font-weight:400; line-height:1;
+  height:.22em; overflow:hidden;
+  color:var(--text);
+  transform:translate(-50%, -.04em);
   opacity:0;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
 }
-/* Inner span dell'accento — qui vive l'animazione della fiamma (translateY
-   del flicker, text-shadow dell'ignite). Lo separiamo dal posizionamento di
-   .accent perché il suo transform è già usato per centrare/scoprire l'accento. */
 .accent__flame{
   display:inline-block;
-  color:var(--text);
 }
 .symbol.active .slash{
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(0);
   opacity:0;
 }
 .symbol.active .accent{
-  transform:translate(-50%, .12em) translateY(0);
+  transform:translate(-50%, 0);
   opacity:1;
+  animation: flame-ignite 2.5s ease-in forwards;
 }
 
-/* Fuoco — solo sull'accento grave (̀), non sulla O. Quando l'utente attiva
-   l'intro (click → .active) l'accento prende fuoco mentre la slash svanisce
-   e l'accento stesso emerge: il glifo "/" si trasforma in "ò" e quel singolo
-   segno si accende. `flame-ignite`: glow caldo che cresce in 2.5s, in sync
-   con la salita del drone e dello shimmer. `flame-flicker`: micro-oscillazione
-   in Y per il guizzo della fiamma — applicato all'inner .accent__flame così
-   non confligge col transform di posizionamento del wrapper .accent. */
+/* Fuoco — solo sull'accento grave, non sulla O. Quando l'utente attiva
+   l'intro (click → .active) la slash svanisce, l'accento emerge e prende
+   fuoco. Usiamo filter:drop-shadow invece di text-shadow perché il glifo
+   è clippato da overflow:hidden — text-shadow verrebbe tagliato col resto,
+   mentre drop-shadow lavora sulla silhouette già clippata (solo il grave). */
 @keyframes flame-ignite{
   0%{
-    text-shadow:none;
+    filter:none;
     color:var(--text);
   }
   25%{
-    text-shadow:
-      0 -1px 5px rgba(255,150,40,.45),
-      0 -3px 11px rgba(255,90,15,.30);
+    filter:
+      drop-shadow(0 -1px 5px rgba(255,150,40,.45))
+      drop-shadow(0 -3px 11px rgba(255,90,15,.30));
     color:#ffe6c0;
   }
   60%{
-    text-shadow:
-      0 -2px 9px rgba(255,180,70,.85),
-      0 -5px 18px rgba(255,90,20,.70),
-      0 -11px 30px rgba(255,55,0,.55),
-      0 -18px 46px rgba(255,30,0,.35);
+    filter:
+      drop-shadow(0 -2px 9px rgba(255,180,70,.85))
+      drop-shadow(0 -5px 18px rgba(255,90,20,.70))
+      drop-shadow(0 -11px 30px rgba(255,55,0,.55))
+      drop-shadow(0 -18px 46px rgba(255,30,0,.35));
     color:#fff0d4;
   }
   100%{
-    text-shadow:
-      0 -3px 11px rgba(255,190,80,.95),
-      0 -7px 21px rgba(255,100,20,.90),
-      0 -14px 36px rgba(255,60,0,.80),
-      0 -22px 54px rgba(255,40,0,.55),
-      0 -30px 76px rgba(255,30,0,.35);
+    filter:
+      drop-shadow(0 -3px 11px rgba(255,190,80,.95))
+      drop-shadow(0 -7px 21px rgba(255,100,20,.90))
+      drop-shadow(0 -14px 36px rgba(255,60,0,.80))
+      drop-shadow(0 -22px 54px rgba(255,40,0,.55))
+      drop-shadow(0 -30px 76px rgba(255,30,0,.35));
     color:#fff0d4;
   }
-}
-@keyframes flame-flicker{
-  0%,100%{ transform:translateY(0) }
-  20%    { transform:translateY(-.6px) }
-  45%    { transform:translateY(.3px)  }
-  70%    { transform:translateY(-.4px) }
-}
-.symbol.active .accent__flame{
-  animation:
-    flame-ignite 2.5s ease-in forwards,
-    flame-flicker .14s ease-in-out infinite;
 }
 /* Quando l'intro fade-out, anche la fiamma si placa con essa (opacity
    sull'intero overlay) — non servono regole extra. */
