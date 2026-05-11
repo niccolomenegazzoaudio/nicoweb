@@ -183,13 +183,12 @@ body.intro-active{ overflow:hidden; }
    staccato dalla o. */
 .accent{
   position:absolute;
-  width:.28em; height:7px;
+  width:.3em; height:14px;
   background:var(--text);
-  /* La barretta sta appena sopra la o. La o minuscola di Space Grotesk
-     a line-height:1 ha la cima della x-height attorno al 27% del box
-     del symbol; mettiamo la barretta a top:22% così il suo bordo
-     inferiore (dopo la rotazione) tocca/sfiora il tetto della o. */
-  top:22%; left:54%;
+  /* La barretta è spessa e attaccata alla cima della o (come l'accento
+     del glifo precomposto "Ò"). top:26% mette il centro della barretta
+     appena sopra l'x-height-top della o in Space Grotesk a line-height:1. */
+  top:26%; left:54%;
   transform:translate(-50%, -50%) rotate(-25deg);
   transform-origin:center;
   border-radius:1px;
