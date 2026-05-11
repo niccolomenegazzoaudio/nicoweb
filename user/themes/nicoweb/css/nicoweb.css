@@ -180,25 +180,20 @@ body.intro-active{ overflow:hidden; }
   transform-origin:center;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
 }
-/* L'accento grave è disegnato in CSS come barretta angolata (stessa
-   tecnica della .slash), così abbiamo controllo pieno su lunghezza,
-   spessore, angolo e posizione — invece di affidarci a un glifo del
-   font che, a queste size e con clipping, risultava troppo piccolo e
-   staccato dalla o. */
+/* L'accento ora usa la STESSA tecnica del brand nell'header e del nome
+   nella home: una "ò" del font (Space Grotesk) sovrapposta alla "o" del
+   simbolo, clippata a inset(0 0 75% 0) così resta visibile solo il grave.
+   Color animabile (vedi flame-ignite, animiamo `color`) e i drop-shadow
+   funzionano sulla silhouette del glifo come prima. */
 .accent{
   position:absolute;
-  width:.42em; height:18px;
-  background:var(--accent);
-  /* Grave accent vero proprio: la barretta scende da sinistra a destra
-     (rotate +25deg, NON -25deg che è la direzione dell'acuto).
-     top:24% / left:54% mette il centro appena sopra l'x-height-top della
-     o, leggermente spostato a destra come nel grave reale di "ò". */
-  top:24%; left:54%;
-  transform:translate(-50%, -50%) rotate(25deg);
-  transform-origin:center;
-  border-radius:1px;
+  top:0; left:0;
+  /* eredita font-family/size/weight/letter-spacing dal .symbol parent */
+  color:var(--accent);
+  clip-path:inset(0 0 75% 0);
   opacity:0;
-  transition:transform 5s var(--ease), opacity 5s var(--ease);
+  transition:opacity 5s var(--ease);
+  pointer-events:none;
 }
 .symbol.active .slash{
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(0);
@@ -211,18 +206,19 @@ body.intro-active{ overflow:hidden; }
 
 /* Fuoco — solo sull'accento, non sulla O. Quando l'utente attiva l'intro
    (click → .active) la slash svanisce, l'accento appare e prende fuoco.
-   Animiamo background-color (la barretta è un div) e usiamo filter:
-   drop-shadow per il glow caldo attorno alla silhouette dell'accento. */
+   Ora che .accent è il glifo testuale "ò" clippato, animiamo `color`
+   (e non più background-color) e i drop-shadow continuano a funzionare
+   sulla silhouette del grave. */
 @keyframes flame-ignite{
   0%{
     filter:none;
-    background-color:var(--accent);
+    color:var(--accent);
   }
   25%{
     filter:
       drop-shadow(0 -1px 5px rgba(255,150,40,.45))
       drop-shadow(0 -3px 11px rgba(255,90,15,.30));
-    background-color:#ffe6c0;
+    color:#ffe6c0;
   }
   60%{
     filter:
@@ -230,7 +226,7 @@ body.intro-active{ overflow:hidden; }
       drop-shadow(0 -5px 18px rgba(255,90,20,.70))
       drop-shadow(0 -11px 30px rgba(255,55,0,.55))
       drop-shadow(0 -18px 46px rgba(255,30,0,.35));
-    background-color:#fff0d4;
+    color:#fff0d4;
   }
   100%{
     filter:
@@ -239,7 +235,7 @@ body.intro-active{ overflow:hidden; }
       drop-shadow(0 -14px 36px rgba(255,60,0,.80))
       drop-shadow(0 -22px 54px rgba(255,40,0,.55))
       drop-shadow(0 -30px 76px rgba(255,30,0,.35));
-    background-color:#fff0d4;
+    color:#fff0d4;
   }
 }
 /* Quando l'intro fade-out, anche la fiamma si placa con essa (opacity
