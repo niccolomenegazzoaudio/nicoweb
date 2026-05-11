@@ -68,11 +68,12 @@ p{margin:0}
 }
 .nav{display:flex; align-items:center; justify-content:flex-start; padding:18px 28px; max-width:var(--maxw); margin:0 auto; gap:8px}
 
-/* Brand mark: "o" + accento grave warm-tan disegnato come barretta CSS.
-   Usiamo questa tecnica (invece del glifo ò precomposto) per poter colorare
-   l'accento in --accent — il font non permette di scolpire una sola parte
-   del glifo. Le proporzioni della barretta sono tunate sul grave di Space
-   Grotesk a header-size così otticamente sembra il carattere del font.
+/* Brand mark: la "ò" di Space Grotesk con SOLO l'accento in --accent.
+   Tecnica: rendiamo la ò due volte sovrapposte (la seconda via ::after
+   con stessa content "ò"), la copia sopra è colorata --accent e clippata
+   a `inset(0 0 75% 0)` così resta visibile soltanto la metà alta del
+   box-line — cioè il grave. Così la forma dell'accento è esattamente
+   quella del font (non una barretta approssimata), ma colorabile.
    Click → /?skip=1 come il footer. */
 .brand{
   position:relative;
@@ -86,15 +87,13 @@ p{margin:0}
   margin-right:4px;
 }
 .brand:hover{ opacity:.7 }
-.brand__o{ display:inline-block; line-height:1 }
-.brand__accent{
+.brand::after{
+  content:"ò";
   position:absolute;
-  width:.26em; height:.08em;
-  background:var(--accent);
-  top:-.04em; left:.22em;
-  transform:rotate(25deg);
-  transform-origin:center;
-  border-radius:1px;
+  top:4px; left:0;       /* allinea sul testo (padding-top/left di .brand) */
+  color:var(--accent);
+  clip-path:inset(0 0 75% 0);
+  pointer-events:none;
 }
 .nav__list ul{display:flex; gap:6px; list-style:none; margin:0; padding:0}
 .nav__list a{
