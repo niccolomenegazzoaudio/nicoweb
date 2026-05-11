@@ -144,13 +144,21 @@ body.intro-active{ overflow:hidden; }
 /* Cornice quadrata bianca attorno alla O. È un wrapper inline-flex
    centratore: la .symbol vive al suo interno con il suo font-size invariato.
    La size del frame è in pixel così la O resta della sua misura naturale
-   e non viene rimpicciolita sul reveal (vedi commento su .intro.revealed). */
+   e non viene rimpicciolita sul reveal (vedi commento su .intro.revealed).
+   Al caricamento il bordo fa fade-in da transparent (sincrono con il
+   fade-in della .slash, vedi sotto) così frame + barretta si materializzano
+   insieme attorno alla O che è invece visibile da subito. */
 .symbol-frame{
   display:inline-flex;
   align-items:center;
   justify-content:center;
   width:220px; height:220px;
   border:1px solid var(--text);
+  animation:frame-fade-in 1.8s ease-out .25s both;
+}
+@keyframes frame-fade-in{
+  0%   { border-color:transparent; }
+  100% { border-color:var(--text); }
 }
 
 .symbol{
@@ -187,6 +195,12 @@ body.intro-active{ overflow:hidden; }
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(1);
   transform-origin:center;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
+  /* Stesso fade-in del frame: barretta e cornice si materializzano insieme. */
+  animation:slash-fade-in 1.8s ease-out .25s both;
+}
+@keyframes slash-fade-in{
+  0%   { opacity:0; }
+  100% { opacity:1; }
 }
 /* Renderizziamo una "ò" precomposta (stessa font, stessa size del .o-glyph)
    e ne mostriamo SOLO la parte alta — l'accento grave nella forma originale
