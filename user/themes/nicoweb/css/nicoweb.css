@@ -213,14 +213,14 @@ body.intro-active{ overflow:hidden; }
 .o-glyph{
   display:inline-block;
 }
-/* L'o minuscola sta nella metà inferiore del box em (top a 30%, bottom a 81%,
-   centro a ~55.5%): slash e accento sono ancorati a quella geometria, non
-   al centro geometrico del symbol. */
+/* La "o" minuscola di Space Grotesk in line-height:1 occupa circa 28%–78%
+   dell'em-box (x-height ~50% di em, baseline ~78%): il centro visivo cade
+   intorno al 53%. Slash e accento sono ancorati a quella geometria. */
 .slash{
   position:absolute;
-  width:.7em; height:1px;
+  width:.62em; height:1px;
   background:var(--text);
-  top:55.5%; left:50%;
+  top:53%; left:50%;
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(1);
   transform-origin:center;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
@@ -233,6 +233,13 @@ body.intro-active{ overflow:hidden; }
   opacity:0;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
 }
+/* Inner span dell'accento — qui vive l'animazione della fiamma (translateY
+   del flicker, text-shadow dell'ignite). Lo separiamo dal posizionamento di
+   .accent perché il suo transform è già usato per centrare/scoprire l'accento. */
+.accent__flame{
+  display:inline-block;
+  color:var(--text);
+}
 .symbol.active .slash{
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(0);
   opacity:0;
@@ -242,12 +249,13 @@ body.intro-active{ overflow:hidden; }
   opacity:1;
 }
 
-/* Fuoco — la O si accende quando l'utente attiva l'intro (click → .active).
-   `flame-ignite`: glow caldo che cresce in 2.5s, sincronizzato con la
-   salita del drone e dello shimmer. `flame-flicker`: micro-oscillazione
-   in Y per dare il guizzo della fiamma. La fiamma si propaga anche
-   all'accento grave (figlio del symbol) tramite ::after sul .o-glyph
-   non serve — il text-shadow del glyph illumina già lo spazio attorno. */
+/* Fuoco — solo sull'accento grave (̀), non sulla O. Quando l'utente attiva
+   l'intro (click → .active) l'accento prende fuoco mentre la slash svanisce
+   e l'accento stesso emerge: il glifo "/" si trasforma in "ò" e quel singolo
+   segno si accende. `flame-ignite`: glow caldo che cresce in 2.5s, in sync
+   con la salita del drone e dello shimmer. `flame-flicker`: micro-oscillazione
+   in Y per il guizzo della fiamma — applicato all'inner .accent__flame così
+   non confligge col transform di posizionamento del wrapper .accent. */
 @keyframes flame-ignite{
   0%{
     text-shadow:none;
@@ -283,7 +291,7 @@ body.intro-active{ overflow:hidden; }
   45%    { transform:translateY(.3px)  }
   70%    { transform:translateY(-.4px) }
 }
-.symbol.active .o-glyph{
+.symbol.active .accent__flame{
   animation:
     flame-ignite 2.5s ease-in forwards,
     flame-flicker .14s ease-in-out infinite;
