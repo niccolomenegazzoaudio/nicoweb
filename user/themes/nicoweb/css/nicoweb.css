@@ -185,7 +185,11 @@ body.intro-active{ overflow:hidden; }
   position:absolute;
   width:.28em; height:7px;
   background:var(--text);
-  top:19%; left:54%;
+  /* La barretta sta appena sopra la o. La o minuscola di Space Grotesk
+     a line-height:1 ha la cima della x-height attorno al 27% del box
+     del symbol; mettiamo la barretta a top:22% così il suo bordo
+     inferiore (dopo la rotazione) tocca/sfiora il tetto della o. */
+  top:22%; left:54%;
   transform:translate(-50%, -50%) rotate(-25deg);
   transform-origin:center;
   border-radius:1px;
