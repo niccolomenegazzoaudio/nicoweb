@@ -184,10 +184,12 @@ body.intro-active{ overflow:hidden; }
 .accent{
   position:absolute;
   width:.3em; height:14px;
-  background:var(--text);
+  background:var(--accent);
   /* La barretta è spessa e attaccata alla cima della o (come l'accento
      del glifo precomposto "Ò"). top:26% mette il centro della barretta
-     appena sopra l'x-height-top della o in Space Grotesk a line-height:1. */
+     appena sopra l'x-height-top della o in Space Grotesk a line-height:1.
+     Colore var(--accent) come il grave del brand nell'header — l'intro
+     resta visivamente coerente con la O del logo. */
   top:26%; left:54%;
   transform:translate(-50%, -50%) rotate(-25deg);
   transform-origin:center;
@@ -211,7 +213,7 @@ body.intro-active{ overflow:hidden; }
 @keyframes flame-ignite{
   0%{
     filter:none;
-    background-color:var(--text);
+    background-color:var(--accent);
   }
   25%{
     filter:
