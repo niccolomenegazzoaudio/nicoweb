@@ -78,7 +78,7 @@ The prod stack is now standalone (binds `:80`/`:443` directly). The historical `
 
 ### Header
 
-The header carries a single **`ò` brand mark** on the far left (`.brand` in `partials/header.html.twig`), followed by the nav items, both left-aligned (`.nav { justify-content: flex-start }`). The brand is the same construction as the intro: an `o` glyph plus a CSS-drawn `.brand__accent` bar in `--accent` rotated +25deg, sized in `em` so it scales with the brand font-size. The brand links to `/?skip=1` so clicking it from any inner page goes back to the home **without** replaying the audio intro (same mechanism as the footer Home link).
+The header carries a single **`ò` brand mark** on the far left (`.brand` in `partials/header.html.twig`), followed by the nav items, both left-aligned (`.nav { justify-content: flex-start }`). At header size (~1.6rem) the precomposed `ò` glyph from Space Grotesk works fine — we just render the character directly so the brand matches the "Niccolò Menegazzo" name in the home hero. (The CSS-drawn accent trick is reserved for the intro's 180px symbol, where the font's grave looked too small and detached — see `.accent` in `home.html.twig`.) The brand links to `/?skip=1` so clicking it from any inner page goes back to the home **without** replaying the audio intro (same mechanism as the footer Home link).
 
 The menu lists `Teatro / Musica / Work-in-progress` — **no Bio**, **no Contatti**. Both pages still exist and are reachable by direct URL (each is `visible: false` in its frontmatter so it's hidden from the menu only). Bio is the source of truth for home's profilo body content; Contatti hosts the form and is where form submissions land (`/admin → Forms → Contact`).
 
