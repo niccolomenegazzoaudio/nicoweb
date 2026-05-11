@@ -3,70 +3,196 @@
    Minimal black aesthetic, modern sans-serif.
    ============================================================= */
 
-@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/space-grotesk-400.woff2") format("woff2")}
-@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:500;font-display:swap;src:url("../fonts/space-grotesk-500.woff2") format("woff2")}
-@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:700;font-display:swap;src:url("../fonts/space-grotesk-700.woff2") format("woff2")}
-@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/jetbrains-mono-400.woff2") format("woff2")}
-@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:500;font-display:swap;src:url("../fonts/jetbrains-mono-500.woff2") format("woff2")}
-
-@view-transition { navigation: auto; }
-
-:root{
-  --bg:        #000;
-  --line:      rgba(255,255,255,.10);
-  --line-2:    rgba(255,255,255,.18);
-  --text:      #f4f1ea;
-  --muted:     rgba(244,241,234,.55);
-  --muted-2:   rgba(244,241,234,.35);
-  --accent:    #d4a373;            /* warm tan, used for focus/active/CTA */
-  --sans:      "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --mono:      "JetBrains Mono", ui-monospace, monospace;
-  --maxw:      1200px;
-  --ease:      cubic-bezier(.2,.7,.2,1);
+@font-face {
+    font-family: "Space Grotesk";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("../fonts/space-grotesk-400.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Space Grotesk";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("../fonts/space-grotesk-500.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Space Grotesk";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("../fonts/space-grotesk-700.woff2") format("woff2");
+}
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("../fonts/jetbrains-mono-400.woff2") format("woff2");
+}
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("../fonts/jetbrains-mono-500.woff2") format("woff2");
 }
 
-@media (prefers-reduced-motion: reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
+@view-transition {
+    navigation: auto;
 }
 
-*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:var(--sans);
-  font-size:17px; line-height:1.6;
-  font-weight:400;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
-  display:flex; flex-direction:column;
-  min-height:100dvh;
+:root {
+    --bg: #000;
+    --line: rgba(255, 255, 255, 0.1);
+    --line-2: rgba(255, 255, 255, 0.18);
+    --text: #f4f1ea;
+    --muted: rgba(244, 241, 234, 0.55);
+    --muted-2: rgba(244, 241, 234, 0.35);
+    --accent: #d4a373; /* warm tan, used for focus/active/CTA */
+    --sans:
+        "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto,
+        sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --maxw: 1200px;
+    --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-body > main{ flex:1 0 auto; }
-body > .site-footer{ flex-shrink:0; }
-:focus-visible{ outline:1px solid var(--accent); outline-offset:4px; border-radius:2px }
-a:active{ opacity:.5 }
-img,svg,video,audio{display:block;max-width:100%}
-a{color:var(--text); text-decoration:none; transition:opacity .25s var(--ease), color .25s var(--ease)}
-a:hover{opacity:.7}
-.muted{color:var(--muted)}
-.mono{font-family:var(--mono); font-size:.78em; letter-spacing:.16em; text-transform:uppercase}
-.container{max-width:var(--maxw); margin-inline:auto; padding-inline:28px}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.skip{position:absolute;left:-9999px;top:0;background:var(--text);color:#000;padding:8px 12px;z-index:99}
-.skip:focus{left:8px;top:8px}
 
-h1,h2,h3,h4{font-weight:500; letter-spacing:-.01em; margin:0; line-height:1.15}
-p{margin:0}
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+html {
+    scroll-behavior: smooth;
+}
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+}
+body > main {
+    flex: 1 0 auto;
+}
+body > .site-footer {
+    flex-shrink: 0;
+}
+:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+a:active {
+    opacity: 0.5;
+}
+img,
+svg,
+video,
+audio {
+    display: block;
+    max-width: 100%;
+}
+a {
+    color: var(--text);
+    text-decoration: none;
+    transition:
+        opacity 0.25s var(--ease),
+        color 0.25s var(--ease);
+}
+a:hover {
+    opacity: 0.7;
+}
+.muted {
+    color: var(--muted);
+}
+.mono {
+    font-family: var(--mono);
+    font-size: 0.78em;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+.container {
+    max-width: var(--maxw);
+    margin-inline: auto;
+    padding-inline: 28px;
+}
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+.skip {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: var(--text);
+    color: #000;
+    padding: 8px 12px;
+    z-index: 99;
+}
+.skip:focus {
+    left: 8px;
+    top: 8px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0;
+    line-height: 1.15;
+}
+p {
+    margin: 0;
+}
 
 /* ---------- Header / Nav (interne, non in home) ------------- */
-.site-header{
-  position:sticky; top:0; z-index:20;
-  background:var(--bg);
-  border-bottom:1px solid var(--line);
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
 }
-.nav{display:flex; align-items:center; justify-content:flex-start; padding:18px 28px; max-width:var(--maxw); margin:0 auto; gap:8px}
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 18px 28px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    gap: 8px;
+}
 
 /* Brand mark: la "ò" di Space Grotesk con SOLO l'accento in --accent.
    Tecnica: rendiamo la ò due volte sovrapposte (la seconda via ::after
@@ -75,110 +201,200 @@ p{margin:0}
    box-line — cioè il grave. Così la forma dell'accento è esattamente
    quella del font (non una barretta approssimata), ma colorabile.
    Click → /?skip=1 come il footer. */
-.brand{
-  position:relative;
-  display:inline-block;
-  font-family:var(--sans);
-  font-size:1.6rem;
-  font-weight:500;
-  line-height:1;
-  color:var(--text);
-  padding:4px 10px 4px 0;
-  margin-right:4px;
+.brand {
+    position: relative;
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--text);
+    padding: 4px 10px 4px 0;
+    margin-right: 4px;
 }
-.brand:hover{ opacity:.7 }
-.brand::after{
-  content:"ò";
-  position:absolute;
-  top:4px; left:0;       /* allinea sul testo (padding-top/left di .brand) */
-  color:var(--accent);
-  clip-path:inset(0 0 75% 0);
-  pointer-events:none;
+.brand:hover {
+    opacity: 0.7;
 }
-.nav__list ul{display:flex; gap:6px; list-style:none; margin:0; padding:0}
-.nav__list a{
-  display:inline-block; padding:8px 14px;
-  font-family:var(--mono); font-size:.78rem; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--muted);
+.brand::after {
+    content: "ò";
+    position: absolute;
+    top: 4px;
+    left: 0; /* allinea sul testo (padding-top/left di .brand) */
+    color: var(--accent);
+    clip-path: inset(0 0 68% 0);
+    pointer-events: none;
 }
-.nav__list a:hover{color:var(--text); opacity:1}
-.nav__list a[aria-current="page"]{color:var(--accent); opacity:1}
+.nav__list ul {
+    display: flex;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.nav__list a {
+    display: inline-block;
+    padding: 8px 14px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.nav__list a:hover {
+    color: var(--text);
+    opacity: 1;
+}
+.nav__list a[aria-current="page"] {
+    color: var(--accent);
+    opacity: 1;
+}
 
-.nav__toggle{display:none; background:none; border:0; color:var(--text); cursor:pointer; padding:8px}
-.nav__toggle .bars{display:block; width:22px; height:1px; background:currentColor; position:relative}
-.nav__toggle .bars::before,.nav__toggle .bars::after{
-  content:""; position:absolute; left:0; right:0; height:1px; background:currentColor;
-  transition:transform .2s var(--ease), top .2s var(--ease);
+.nav__toggle {
+    display: none;
+    background: none;
+    border: 0;
+    color: var(--text);
+    cursor: pointer;
+    padding: 8px;
 }
-.nav__toggle .bars::before{top:-6px}
-.nav__toggle .bars::after{top:6px}
-.nav__toggle[aria-expanded="true"] .bars{background:transparent}
-.nav__toggle[aria-expanded="true"] .bars::before{top:0; transform:rotate(45deg)}
-.nav__toggle[aria-expanded="true"] .bars::after{top:0; transform:rotate(-45deg)}
+.nav__toggle .bars {
+    display: block;
+    width: 22px;
+    height: 1px;
+    background: currentColor;
+    position: relative;
+}
+.nav__toggle .bars::before,
+.nav__toggle .bars::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: currentColor;
+    transition:
+        transform 0.2s var(--ease),
+        top 0.2s var(--ease);
+}
+.nav__toggle .bars::before {
+    top: -6px;
+}
+.nav__toggle .bars::after {
+    top: 6px;
+}
+.nav__toggle[aria-expanded="true"] .bars {
+    background: transparent;
+}
+.nav__toggle[aria-expanded="true"] .bars::before {
+    top: 0;
+    transform: rotate(45deg);
+}
+.nav__toggle[aria-expanded="true"] .bars::after {
+    top: 0;
+    transform: rotate(-45deg);
+}
 
-@media (max-width:780px){
-  .nav__toggle{display:inline-flex}
-  .nav__list{
-    position:absolute; left:0; right:0; top:100%;
-    background:var(--bg);
-    max-height:0; overflow:hidden; transition:max-height .25s var(--ease);
-  }
-  .nav__list ul{flex-direction:column; padding:8px 28px 22px}
-  .nav__list a{display:block; padding:12px 0}
-  .site-header.is-open .nav__list{max-height:60vh}
+@media (max-width: 780px) {
+    .nav__toggle {
+        display: inline-flex;
+    }
+    .nav__list {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        background: var(--bg);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.25s var(--ease);
+    }
+    .nav__list ul {
+        flex-direction: column;
+        padding: 8px 28px 22px;
+    }
+    .nav__list a {
+        display: block;
+        padding: 12px 0;
+    }
+    .site-header.is-open .nav__list {
+        max-height: 60vh;
+    }
 }
 
 /* ---------- HOME — intro overlay sopra la home vera --------- */
 /* Mentre l'intro è on-screen blocca lo scroll della home sotto. */
-body.intro-active{ overflow:hidden; }
+body.intro-active {
+    overflow: hidden;
+}
 
 /* L'intro è un overlay sopra TUTTO (anche header sticky a z-index 20) */
-.intro{
-  position:fixed; inset:0;
-  min-height:100dvh;
-  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-  display:flex; align-items:center; justify-content:center; flex-direction:column;
-  cursor:pointer; z-index:100;
-  transition:opacity 1s ease;
-  background:var(--bg);
+.intro {
+    position: fixed;
+    inset: 0;
+    min-height: 100dvh;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right)
+        env(safe-area-inset-bottom) env(safe-area-inset-left);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+    z-index: 100;
+    transition: opacity 1s ease;
+    background: var(--bg);
 }
-.intro.out{ opacity:0; pointer-events:none; }
-.intro:focus-visible{outline:1px solid var(--muted); outline-offset:8px}
+.intro.out {
+    opacity: 0;
+    pointer-events: none;
+}
+.intro:focus-visible {
+    outline: 1px solid var(--muted);
+    outline-offset: 8px;
+}
 
-.symbol{
-  position:relative;
-  display:inline-block;
-  font-size:180px;
-  font-family:var(--sans);
-  font-weight:400;
-  letter-spacing:-.02em;
-  line-height:1;
-  color:var(--text);
+.symbol {
+    position: relative;
+    display: inline-block;
+    font-size: 180px;
+    font-family: var(--sans);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--text);
 }
-.intro.revealed .symbol{
-  /* Niente più shrink al reveal — la O resta della sua dimensione naturale
+.intro.revealed .symbol {
+    /* Niente più shrink al reveal — la O resta della sua dimensione naturale
      dentro la cornice. Mantieni solo l'oPulse: il simbolo respira al
      ritmo dell'LFO 0.3 Hz dello shimmer durante il drone. */
-  animation:oPulse 3.3s ease-in-out infinite;
+    animation: oPulse 3.3s ease-in-out infinite;
 }
-@keyframes oPulse{
-  0%,100%{ transform:scale(1); }
-  50%    { transform:scale(1.04); }
+@keyframes oPulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.04);
+    }
 }
-.o-glyph{
-  display:inline-block;
+.o-glyph {
+    display: inline-block;
 }
 /* L'o minuscola sta nella metà inferiore del box em (top a 30%, bottom a 81%,
    centro a ~55.5%): slash e accento sono ancorati a quella geometria, non
    al centro geometrico del symbol. */
-.slash{
-  position:absolute;
-  width:.7em; height:3px;
-  background:var(--text);
-  top:62%; left:52%;
-  transform:translate(-50%, -50%) rotate(-45deg) scaleX(1);
-  transform-origin:center;
-  transition:transform 5s var(--ease), opacity 5s var(--ease);
+.slash {
+    position: absolute;
+    width: 0.7em;
+    height: 3px;
+    background: var(--text);
+    top: 62%;
+    left: 52%;
+    transform: translate(-50%, -50%) rotate(-45deg) scaleX(1);
+    transform-origin: center;
+    transition:
+        transform 5s var(--ease),
+        opacity 5s var(--ease);
 }
 /* Stessa tecnica del brand: glifo "ò" del font sovrapposto e clippato
    così resta visibile solo il grave. Niente fuoco / glow / drop-shadow:
@@ -186,362 +402,633 @@ body.intro-active{ overflow:hidden; }
    compensare la distanza grande-fra-grave-e-o che il font ha by-design,
    visivamente eccessiva a 180px — l'accento sembra "appoggiato" sulla
    o invece di galleggiare in alto. */
-.accent{
-  position:absolute;
-  top:6%; left:0;
-  color:var(--accent);
-  clip-path:inset(0 0 75% 0);
-  opacity:0;
-  transition:opacity 5s var(--ease);
-  pointer-events:none;
+.accent {
+    position: absolute;
+    top: 6%;
+    left: 0;
+    color: var(--accent);
+    clip-path: inset(0 0 75% 0);
+    opacity: 0;
+    transition: opacity 5s var(--ease);
+    pointer-events: none;
 }
-.symbol.active .slash{
-  transform:translate(-50%, -50%) rotate(-45deg) scaleX(0);
-  opacity:0;
+.symbol.active .slash {
+    transform: translate(-50%, -50%) rotate(-45deg) scaleX(0);
+    opacity: 0;
 }
-.symbol.active .accent{
-  opacity:1;
+.symbol.active .accent {
+    opacity: 1;
 }
 /* Quando l'intro fade-out, anche la fiamma si placa con essa (opacity
    sull'intero overlay) — non servono regole extra. */
-.intro__hint{
-  position:absolute; bottom:96px; left:0; right:0;
-  text-align:center;
-  font-family:var(--mono); font-size:.72rem; letter-spacing:.3em;
-  /* letter-spacing aggiunge lo spazio anche dopo l'ultima lettera, quindi
+.intro__hint {
+    position: absolute;
+    bottom: 96px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    /* letter-spacing aggiunge lo spazio anche dopo l'ultima lettera, quindi
      text-align:center sposterebbe il testo a sinistra. text-indent:.3em
      compensa quello spazio fantasma e restituisce il vero centro ottico. */
-  text-indent:.3em;
-  text-transform:uppercase; color:var(--muted-2);
-  animation:hint 3s ease-in-out infinite;
+    text-indent: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    animation: hint 3s ease-in-out infinite;
 }
-@keyframes hint{
-  0%,100%{ opacity:.35 }
-  50%   { opacity:.85 }
+@keyframes hint {
+    0%,
+    100% {
+        opacity: 0.35;
+    }
+    50% {
+        opacity: 0.85;
+    }
 }
 /* Quando l'utente clicca l'intro (`.revealed`), la barretta si scioglie in
    5s e la hint deve sparire insieme — stessa easing/durata per sincronia. */
-.intro.revealed .intro__hint{
-  opacity:0;
-  animation:none;
-  transition:opacity 5s var(--ease);
+.intro.revealed .intro__hint {
+    opacity: 0;
+    animation: none;
+    transition: opacity 5s var(--ease);
 }
 
 /* Skip discreto in basso a destra: piccolissimo, mono, opacità bassa.
    Cresce un po' a hover/focus per essere comunque cliccabile senza
    diventare un elemento di design. */
-.intro__skip{
-  position:absolute; bottom:18px; right:20px;
-  background:transparent; border:0; padding:6px 8px;
-  font-family:var(--mono); font-size:.62rem; letter-spacing:.24em;
-  text-transform:uppercase; color:var(--muted-2);
-  opacity:.35; cursor:pointer;
-  transition:opacity .25s var(--ease);
+.intro__skip {
+    position: absolute;
+    bottom: 18px;
+    right: 20px;
+    background: transparent;
+    border: 0;
+    padding: 6px 8px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    opacity: 0.35;
+    cursor: pointer;
+    transition: opacity 0.25s var(--ease);
 }
 .intro__skip:hover,
-.intro__skip:focus-visible{ opacity:.85; outline:none; }
-.intro.revealed .intro__skip{
-  opacity:0;
-  transition:opacity 5s var(--ease);
-  pointer-events:none;
+.intro__skip:focus-visible {
+    opacity: 0.85;
+    outline: none;
+}
+.intro.revealed .intro__skip {
+    opacity: 0;
+    transition: opacity 5s var(--ease);
+    pointer-events: none;
 }
 
 /* Home — sezioni che vivono SOTTO l'intro. Sono già renderizzate quando
    la pagina carica; quando l'intro fade out l'utente le vede al loro posto,
    con header sopra e footer sotto come una pagina normale. */
-.home-hero{
-  padding:88px 0 32px;
+.home-hero {
+    padding: 88px 0 32px;
 }
-.home-hero__name{
-  font-size:clamp(2.4rem, 6.5vw, 4.6rem);
-  font-weight:500; letter-spacing:-.018em;
-  line-height:1.05;
-  margin:0;
+.home-hero__name {
+    font-size: clamp(2.4rem, 6.5vw, 4.6rem);
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    line-height: 1.05;
+    margin: 0;
 }
 /* Stessa tecnica del brand: sovrappongo una seconda copia della "ò"
    in --accent e la clippo lasciando visibile solo il grave. La forma
    dell'accento è quella vera del font, ma il colore è il warm-tan. */
-.grave-o{
-  position:relative;
-  display:inline-block;
+.grave-o {
+    position: relative;
+    display: inline-block;
 }
-.grave-o::after{
-  content:"ò";
-  position:absolute;
-  top:0; left:0;
-  color:var(--accent);
-  clip-path:inset(0 0 75% 0);
-  pointer-events:none;
+.grave-o::after {
+    content: "ò";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: var(--accent);
+    clip-path: inset(0 0 68% 0);
+    pointer-events: none;
 }
-.home-hero__role{
-  margin-top:16px;
-  font-family:var(--mono);
-  font-size:.82rem; letter-spacing:.24em;
-  text-transform:uppercase; color:var(--muted);
+.home-hero__role {
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted);
 }
 
-.home-bio{
-  padding:32px 0 16px;
+.home-bio {
+    padding: 32px 0 16px;
 }
-.home-bio .eyebrow{ margin:0 0 22px; display:block; }
-.home-bio__body{
-  font-size:clamp(1.05rem, 1.4vw, 1.25rem);
-  line-height:1.65;
-  max-width:62ch;
-  color:var(--text);
+.home-bio .eyebrow {
+    margin: 0 0 22px;
+    display: block;
 }
-.home-bio__body p+p{ margin-top:1em }
-.home-bio__clients-label{ margin-top:48px; }
+.home-bio__body {
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    line-height: 1.65;
+    max-width: 62ch;
+    color: var(--text);
+}
+.home-bio__body p + p {
+    margin-top: 1em;
+}
+.home-bio__clients-label {
+    margin-top: 48px;
+}
 
 /* Lista figli di una category page (Teatro / Musica → singoli spettacoli/eventi).
    Stesso linguaggio della vecchia lista home-works ma generica: un row per
    figlio, con titolo a sinistra, eventuale anno mono, freccia che si sposta
    a hover. */
-.cat-list{
-  list-style:none; margin:48px 0 0; padding:0;
-  display:grid; gap:0;
-  border-top:1px solid var(--line);
+.cat-list {
+    list-style: none;
+    margin: 48px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--line);
 }
-.cat-list li{ border-bottom:1px solid var(--line); }
-.cat-list a{
-  display:flex; align-items:baseline; gap:16px;
-  padding:22px 0;
-  color:var(--text);
-  transition:padding-left .35s var(--ease), color .25s var(--ease);
+.cat-list li {
+    border-bottom: 1px solid var(--line);
 }
-.cat-list a:hover{ opacity:1; padding-left:14px; color:var(--text); }
-.cat-list__title{
-  font-family:var(--mono); font-size:.96rem; letter-spacing:.24em;
-  flex:1;
+.cat-list a {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 22px 0;
+    color: var(--text);
+    transition:
+        padding-left 0.35s var(--ease),
+        color 0.25s var(--ease);
 }
-.cat-list__meta{
-  font-size:.72rem; letter-spacing:.16em;
-  text-transform:uppercase;
+.cat-list a:hover {
+    opacity: 1;
+    padding-left: 14px;
+    color: var(--text);
 }
-.cat-list a .ext-arrow{
-  color:var(--muted-2);
-  transition:transform .3s var(--ease), color .25s var(--ease);
-  display:inline-block;
+.cat-list__title {
+    font-family: var(--mono);
+    font-size: 0.96rem;
+    letter-spacing: 0.24em;
+    flex: 1;
 }
-.cat-list a:hover .ext-arrow{ transform:translateX(6px); color:var(--text); }
+.cat-list__meta {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+.cat-list a .ext-arrow {
+    color: var(--muted-2);
+    transition:
+        transform 0.3s var(--ease),
+        color 0.25s var(--ease);
+    display: inline-block;
+}
+.cat-list a:hover .ext-arrow {
+    transform: translateX(6px);
+    color: var(--text);
+}
 
-@media (max-width:580px){
-  .home-hero{padding:64px 0 24px}
-  .cat-list{margin-top:32px}
-  .cat-list a{padding:18px 0}
-  .cat-list__title{font-size:.86rem}
+@media (max-width: 580px) {
+    .home-hero {
+        padding: 64px 0 24px;
+    }
+    .cat-list {
+        margin-top: 32px;
+    }
+    .cat-list a {
+        padding: 18px 0;
+    }
+    .cat-list__title {
+        font-size: 0.86rem;
+    }
 }
 
 /* ---------- Inner pages (about, contact, work) -------------- */
-.page, .work-page{ padding:80px 0 120px; }
-.page__head, .work-page__head{ margin-bottom:48px; }
-.page__title, .work-page__title{
-  font-size:clamp(2.4rem, 6.5vw, 4.6rem);
-  font-weight:500; letter-spacing:-.018em;
-  line-height:1.05;
+.page,
+.work-page {
+    padding: 80px 0 120px;
 }
-.page__sub, .work-page__sub{
-  margin-top:16px; max-width:54ch;
-  color:var(--muted); font-size:1.1rem; line-height:1.55;
+.page__head,
+.work-page__head {
+    margin-bottom: 48px;
 }
-.work-page__role{ margin-top:6px; }
+.page__title,
+.work-page__title {
+    font-size: clamp(2.4rem, 6.5vw, 4.6rem);
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    line-height: 1.05;
+}
+.page__sub,
+.work-page__sub {
+    margin-top: 16px;
+    max-width: 54ch;
+    color: var(--muted);
+    font-size: 1.1rem;
+    line-height: 1.55;
+}
+.work-page__role {
+    margin-top: 6px;
+}
 
-.work-page__media{margin:0 0 48px; padding:0}
+.work-page__media {
+    margin: 0 0 48px;
+    padding: 0;
+}
 .work-page__media img,
-.work-page__media video{width:100%; height:auto}
-.work-page__media audio{width:100%}
-.work-page__media figcaption{margin-top:10px; font-size:.85rem}
-
-.work-page__body, .page__body{
-  font-size:1.05rem; line-height:1.65;
-  max-width:62ch;
+.work-page__media video {
+    width: 100%;
+    height: auto;
+}
+.work-page__media audio {
+    width: 100%;
+}
+.work-page__media figcaption {
+    margin-top: 10px;
+    font-size: 0.85rem;
 }
 
-.page__head .eyebrow{ margin:0 0 10px; letter-spacing:.24em; }
-.work-page__body p+p, .page__body p+p{margin-top:1em}
-.work-page__body strong, .page__body strong{font-weight:500}
-.work-page__body em, .page__body em{font-style:italic}
+.work-page__body,
+.page__body {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    max-width: 62ch;
+}
 
-.work-page__back{margin-top:80px; font-family:var(--mono); font-size:.78rem; letter-spacing:.18em; text-transform:uppercase}
-.work-page__back a{color:var(--muted)}
-.work-page__back a:hover{color:var(--text); opacity:1}
+.page__head .eyebrow {
+    margin: 0 0 10px;
+    letter-spacing: 0.24em;
+}
+.work-page__body p + p,
+.page__body p + p {
+    margin-top: 1em;
+}
+.work-page__body strong,
+.page__body strong {
+    font-weight: 500;
+}
+.work-page__body em,
+.page__body em {
+    font-style: italic;
+}
 
-.credits{
-  margin-top:40px; padding:0;
-  border-top:1px solid var(--line);
+.work-page__back {
+    margin-top: 80px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
 }
-.credits__row{
-  display:grid; grid-template-columns:200px 1fr; gap:24px;
-  padding:14px 0;
-  border-bottom:1px solid var(--line);
-  align-items:baseline;
+.work-page__back a {
+    color: var(--muted);
 }
-.credits__row dt{
-  font-family:var(--mono); font-size:.72rem; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--muted); margin:0;
+.work-page__back a:hover {
+    color: var(--text);
+    opacity: 1;
 }
-.credits__row dd{margin:0}
 
-.clients{
-  list-style:none; padding:0; margin:32px 0 0;
-  display:flex; flex-wrap:wrap; gap:8px 24px;
-  font-family:var(--mono); font-size:.78rem; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--muted);
+.credits {
+    margin-top: 40px;
+    padding: 0;
+    border-top: 1px solid var(--line);
 }
-.clients li::after{content:"·"; margin-left:24px; color:var(--muted-2)}
-.clients li:last-child::after{content:""}
+.credits__row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+}
+.credits__row dt {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+}
+.credits__row dd {
+    margin: 0;
+}
+
+.clients {
+    list-style: none;
+    padding: 0;
+    margin: 32px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.clients li::after {
+    content: "·";
+    margin-left: 24px;
+    color: var(--muted-2);
+}
+.clients li:last-child::after {
+    content: "";
+}
 
 /* ---------- Contact page (specifico) ------------------------ */
 /* H1 ridotto per la contact: editorial scale era pensata per project pages. */
-.page--contact .page__title{ font-size:clamp(2rem, 4.6vw, 3rem); }
-.page--contact .page__sub{ max-width:48ch; }
-.page--contact .page__head{ margin-bottom:64px; }
+.page--contact .page__title {
+    font-size: clamp(2rem, 4.6vw, 3rem);
+}
+.page--contact .page__sub {
+    max-width: 48ch;
+}
+.page--contact .page__head {
+    margin-bottom: 64px;
+}
 
 /* Email obfuscata: reso link da JS (vedi nicoweb.js).
    Il fallback no-JS mostra solo testo segnaposto, niente address. */
-.email-link{ font-style:italic; color:var(--muted) }
-.email-link a{ font-style:normal; color:var(--text); }
-.ext-arrow{ font-size:.85em; color:var(--muted); margin-left:2px }
+.email-link {
+    font-style: italic;
+    color: var(--muted);
+}
+.email-link a {
+    font-style: normal;
+    color: var(--text);
+}
+.ext-arrow {
+    font-size: 0.85em;
+    color: var(--muted);
+    margin-left: 2px;
+}
 
 /* ---------- Forms (contact) --------------------------------- */
-.grid--contact{
-  display:grid;
-  grid-template-columns: 1.2fr 1px .8fr;
-  gap: 56px 48px;
-  align-items: start;
-  padding-top: 8px;
+.grid--contact {
+    display: grid;
+    grid-template-columns: 1.2fr 1px 0.8fr;
+    gap: 56px 48px;
+    align-items: start;
+    padding-top: 8px;
 }
-.grid--contact::before{
-  content:"";
-  grid-column:2;
-  align-self:stretch;
-  background:var(--line);
+.grid--contact::before {
+    content: "";
+    grid-column: 2;
+    align-self: stretch;
+    background: var(--line);
 }
-.contact-form{ grid-column:1 }
-.contact-info{ grid-column:3 }
-.contact-info__note{ margin-top:28px; padding-top:20px; border-top:1px solid var(--line); font-size:.95rem; line-height:1.6 }
+.contact-form {
+    grid-column: 1;
+}
+.contact-info {
+    grid-column: 3;
+}
+.contact-info__note {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
 
-@media (max-width:780px){
-  .grid--contact{
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-  .grid--contact::before{ display:none }
-  .contact-form, .contact-info{ grid-column:1 }
+@media (max-width: 780px) {
+    .grid--contact {
+        grid-template-columns: 1fr;
+        gap: 48px;
+    }
+    .grid--contact::before {
+        display: none;
+    }
+    .contact-form,
+    .contact-info {
+        grid-column: 1;
+    }
 }
 
-form{display:grid; gap:18px; max-width:520px}
-form .form-input-wrapper, form .form-field{display:grid; gap:6px}
-form label{font-family:var(--mono); font-size:.7rem; color:var(--muted); letter-spacing:.18em; text-transform:uppercase}
-form input, form textarea, form select{
-  background:transparent;
-  border:0; border-bottom:1px solid var(--line-2);
-  color:var(--text);
-  padding:10px 0;
-  font:inherit; font-size:1rem;
-  border-radius:0;
-  transition:border-color .2s var(--ease);
+form {
+    display: grid;
+    gap: 18px;
+    max-width: 520px;
 }
-form input:focus, form textarea:focus, form select:focus{
-  outline:0; border-bottom-color:var(--text);
+form .form-input-wrapper,
+form .form-field {
+    display: grid;
+    gap: 6px;
 }
-form textarea{min-height:140px; resize:vertical; line-height:1.6}
-form button[type="submit"], .button.button{
-  margin-top:28px;
-  padding:14px 26px; border-radius:999px;
-  border:1px solid var(--text); background:transparent; color:var(--text);
-  font-family:var(--mono); font-size:.78rem; letter-spacing:.24em; text-transform:uppercase;
-  cursor:pointer;
-  transition:border-color .25s var(--ease), background .25s var(--ease), color .25s var(--ease), transform .25s var(--ease);
-  width:fit-content;
+form label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
 }
-form button[type="submit"]:hover{border-color:var(--accent); background:var(--accent); color:var(--bg); transform:translateY(-1px)}
-form button[type="submit"]:active{transform:translateY(0)}
+form input,
+form textarea,
+form select {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--line-2);
+    color: var(--text);
+    padding: 10px 0;
+    font: inherit;
+    font-size: 1rem;
+    border-radius: 0;
+    transition: border-color 0.2s var(--ease);
+}
+form input:focus,
+form textarea:focus,
+form select:focus {
+    outline: 0;
+    border-bottom-color: var(--text);
+}
+form textarea {
+    min-height: 140px;
+    resize: vertical;
+    line-height: 1.6;
+}
+form button[type="submit"],
+.button.button {
+    margin-top: 28px;
+    padding: 14px 26px;
+    border-radius: 999px;
+    border: 1px solid var(--text);
+    background: transparent;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+        border-color 0.25s var(--ease),
+        background 0.25s var(--ease),
+        color 0.25s var(--ease),
+        transform 0.25s var(--ease);
+    width: fit-content;
+}
+form button[type="submit"]:hover {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--bg);
+    transform: translateY(-1px);
+}
+form button[type="submit"]:active {
+    transform: translateY(0);
+}
 
-.alert,.form-messages{
-  padding:14px 16px; border-radius:0;
-  border:1px solid var(--line-2);
-  font-size:.95rem;
-  margin-bottom:16px;
+.alert,
+.form-messages {
+    padding: 14px 16px;
+    border-radius: 0;
+    border: 1px solid var(--line-2);
+    font-size: 0.95rem;
+    margin-bottom: 16px;
 }
 
 /* ---------- Footer (interne) -------------------------------- */
-.site-footer{
-  border-top:1px solid var(--line);
-  padding:32px 0 28px;
-  margin-top:80px;
+.site-footer {
+    border-top: 1px solid var(--line);
+    padding: 32px 0 28px;
+    margin-top: 80px;
 }
-.footer__bottom{
-  display:flex; align-items:center; justify-content:space-between;
-  font-family:var(--mono); font-size:.72rem; letter-spacing:.18em;
-  text-transform:uppercase; color:var(--muted);
-  flex-wrap:wrap; gap:12px;
+.footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-wrap: wrap;
+    gap: 12px;
 }
-.footer__bottom a:hover{color:var(--text); opacity:1}
+.footer__bottom a:hover {
+    color: var(--text);
+    opacity: 1;
+}
 
 /* Social icons — outline 1.5px monolinea, currentColor; ereditano `muted` dal
    parent .footer__bottom e diventano `text` su hover (stessa regola sopra). */
-.footer__social{
-  list-style:none; margin:0; padding:0;
-  display:flex; align-items:center; gap:6px;
+.footer__social {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
-.footer__social a{
-  display:inline-flex; align-items:center; justify-content:center;
-  width:44px; height:44px;
-  color:inherit;
+.footer__social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: inherit;
 }
-.footer__social svg{ width:20px; height:20px; display:block }
+.footer__social svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
 
 /* ---------- Scroll meter (top of inner pages, VU-flavored) -- */
 /* Una sottile barra di scroll progress nell'accento warm-tan. */
 /* Solo dove c'è chrome (non in home: body[data-page="home"] disattiva). */
-.scroll-meter{
-  position:fixed; top:0; left:0; right:0;
-  height:1px; z-index:30;
-  background:var(--line);
-  pointer-events:none;
+.scroll-meter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    z-index: 30;
+    background: var(--line);
+    pointer-events: none;
 }
-.scroll-meter::after{
-  content:"";
-  display:block;
-  height:100%;
-  width:var(--scroll, 0%);
-  background:var(--accent);
-  transform-origin:left center;
+.scroll-meter::after {
+    content: "";
+    display: block;
+    height: 100%;
+    width: var(--scroll, 0%);
+    background: var(--accent);
+    transform-origin: left center;
 }
 /* Durante l'intro la scroll-bar e il meter non hanno senso (sotto è bloccato). */
-body.intro-active .scroll-meter{display:none}
+body.intro-active .scroll-meter {
+    display: none;
+}
 
 /* ---------- Reveal-on-scroll (opt-in via class="reveal") ---- */
-.reveal{
-  opacity:0; transform:translateY(6px);
-  transition:opacity .8s var(--ease), transform .8s var(--ease);
+.reveal {
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+        opacity 0.8s var(--ease),
+        transform 0.8s var(--ease);
 }
-.reveal.is-visible{opacity:1; transform:none}
+.reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
 
 /* ---------- Tablet (portrait & landscape mid) -------------- */
-@media (min-width:781px) and (max-width:1024px){
-  .container{padding-inline:24px}
-  .nav{padding-inline:24px}
-  .page__title, .work-page__title{ font-size:clamp(2.4rem, 6vw, 3.8rem) }
+@media (min-width: 781px) and (max-width: 1024px) {
+    .container {
+        padding-inline: 24px;
+    }
+    .nav {
+        padding-inline: 24px;
+    }
+    .page__title,
+    .work-page__title {
+        font-size: clamp(2.4rem, 6vw, 3.8rem);
+    }
 }
 
 /* ---------- Mobile tweaks ---------------------------------- */
-@media (max-width:780px){
-  body{font-size:17px}
-  /* Tutto il simbolo è em-based: cambia solo il controller font-size.
+@media (max-width: 780px) {
+    body {
+        font-size: 17px;
+    }
+    /* Tutto il simbolo è em-based: cambia solo il controller font-size.
      slash/accento si adeguano da soli. La cornice scala in proporzione. */
-  .symbol{font-size:140px}
-  /* Touch targets ≥44px sui link mono */
-  .nav__list a{padding:14px 0}
-  .work-page__back{margin-top:64px}
-  .work-page__back a{display:inline-block; padding:10px 0}
+    .symbol {
+        font-size: 140px;
+    }
+    /* Touch targets ≥44px sui link mono */
+    .nav__list a {
+        padding: 14px 0;
+    }
+    .work-page__back {
+        margin-top: 64px;
+    }
+    .work-page__back a {
+        display: inline-block;
+        padding: 10px 0;
+    }
 }
 
 /* ---------- Phone piccolo (iPhone SE class) ---------------- */
-@media (max-width:480px){
-  .container{padding-inline:20px}
-  .nav{padding-inline:20px}
-  .page, .work-page{padding:56px 0 96px}
-  .page__head, .work-page__head{margin-bottom:36px}
+@media (max-width: 480px) {
+    .container {
+        padding-inline: 20px;
+    }
+    .nav {
+        padding-inline: 20px;
+    }
+    .page,
+    .work-page {
+        padding: 56px 0 96px;
+    }
+    .page__head,
+    .work-page__head {
+        margin-bottom: 36px;
+    }
 }
