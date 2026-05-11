@@ -29,13 +29,42 @@
   <p class="intro__hint">tap to get in phase</p>
 </div>
 
-{# Home "vera" che vive sotto l'intro. Quando l'intro sparisce è già qui. #}
+{# Home "vera" che vive sotto l'intro. Quando l'intro sparisce è già qui.
+   La bio è hidden dal menu (visible:false in 02.bio/default.md) ma resta
+   la single source of truth dei contenuti biografici — Nicco la edita da
+   /admin → Pages → Bio e qui la pull-iamo via pages.find. #}
+{% set bio = pages.find('/bio') %}
+
 <section class="home-hero">
   <div class="container">
     <h1 class="home-hero__name">{{ home.name|default(site.title) }}</h1>
     <p class="home-hero__role">{{ home.role|default('Sound Designer · Sound Engineer') }}</p>
   </div>
 </section>
+
+{% if bio %}
+<section class="home-bio">
+  <div class="container">
+    <p class="eyebrow mono muted">Profilo</p>
+    <div class="home-bio__body">{{ bio.content|raw }}</div>
+
+    {% if bio.header.facts %}
+      <dl class="kv">
+        {% for f in bio.header.facts %}
+          <div class="kv__row"><dt>{{ f.label }}</dt><dd>{{ f.value|raw }}</dd></div>
+        {% endfor %}
+      </dl>
+    {% endif %}
+
+    {% if bio.header.clients %}
+      <p class="eyebrow mono muted home-bio__clients-label">Selezione clienti</p>
+      <ul class="clients">
+        {% for c in bio.header.clients %}<li>{{ c }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
 
 <section class="home-works">
   <div class="container">
@@ -65,9 +94,18 @@
   let started = false;
 
   // Skip dell'intro SOLO quando si arriva da una pagina interna (clic sul brand
-  // dall'header di /bio, /contatti, /teatro, ecc.). Atterraggi diretti
-  // dall'address bar / link esterni / refresh / nuova tab → l'intro suona.
-  const fromInternal = document.referrer
+  // dall'header di /contatti, /teatro, ecc.). Atterraggi diretti dall'address
+  // bar / link esterni / refresh / nuova tab → l'intro suona.
+  //
+  // Il referrer da solo non basta: in caso di refresh il browser preserva
+  // il referrer della navigazione che ha caricato la pagina, quindi un F5
+  // sulla home dopo essere arrivati cliccando il brand farebbe credere
+  // erroneamente "vengo da una pagina interna". Il check performance.type
+  // === 'reload' disambigua: refresh esplicito → sempre play.
+  const navType = (performance.getEntriesByType('navigation')[0] || {}).type;
+  const isReload = navType === 'reload';
+  const fromInternal = !isReload
+    && document.referrer
     && new URL(document.referrer, location.href).origin === location.origin
     && new URL(document.referrer, location.href).pathname !== location.pathname;
   if (fromInternal) {

@@ -66,9 +66,12 @@ p{margin:0}
 .brand{
   font-family:var(--sans); font-weight:400; font-size:1.15rem; letter-spacing:.02em;
   color:var(--text);
+  text-decoration:none;
   user-select:none;
-  cursor:default;
+  cursor:pointer;
+  transition:opacity .2s var(--ease);
 }
+.brand:hover{ opacity:.7; }
 /* "Special O" che riproduce la O della home intro (decomposta: O + accent grave),
    al posto del normale Ò di "Niccolò". Statica, non animata. */
 .brand__special-o{
@@ -238,6 +241,55 @@ body.intro-active{ overflow:hidden; }
   transform:translate(-50%, .12em) translateY(0);
   opacity:1;
 }
+
+/* Fuoco — la O si accende quando l'utente attiva l'intro (click → .active).
+   `flame-ignite`: glow caldo che cresce in 2.5s, sincronizzato con la
+   salita del drone e dello shimmer. `flame-flicker`: micro-oscillazione
+   in Y per dare il guizzo della fiamma. La fiamma si propaga anche
+   all'accento grave (figlio del symbol) tramite ::after sul .o-glyph
+   non serve — il text-shadow del glyph illumina già lo spazio attorno. */
+@keyframes flame-ignite{
+  0%{
+    text-shadow:none;
+    color:var(--text);
+  }
+  25%{
+    text-shadow:
+      0 -1px 5px rgba(255,150,40,.45),
+      0 -3px 11px rgba(255,90,15,.30);
+    color:#ffe6c0;
+  }
+  60%{
+    text-shadow:
+      0 -2px 9px rgba(255,180,70,.85),
+      0 -5px 18px rgba(255,90,20,.70),
+      0 -11px 30px rgba(255,55,0,.55),
+      0 -18px 46px rgba(255,30,0,.35);
+    color:#fff0d4;
+  }
+  100%{
+    text-shadow:
+      0 -3px 11px rgba(255,190,80,.95),
+      0 -7px 21px rgba(255,100,20,.90),
+      0 -14px 36px rgba(255,60,0,.80),
+      0 -22px 54px rgba(255,40,0,.55),
+      0 -30px 76px rgba(255,30,0,.35);
+    color:#fff0d4;
+  }
+}
+@keyframes flame-flicker{
+  0%,100%{ transform:translateY(0) }
+  20%    { transform:translateY(-.6px) }
+  45%    { transform:translateY(.3px)  }
+  70%    { transform:translateY(-.4px) }
+}
+.symbol.active .o-glyph{
+  animation:
+    flame-ignite 2.5s ease-in forwards,
+    flame-flicker .14s ease-in-out infinite;
+}
+/* Quando l'intro fade-out, anche la fiamma si placa con essa (opacity
+   sull'intero overlay) — non servono regole extra. */
 .intro__hint{
   position:absolute; bottom:48px; left:0; right:0;
   text-align:center;
@@ -268,6 +320,20 @@ body.intro-active{ overflow:hidden; }
   font-size:.82rem; letter-spacing:.24em;
   text-transform:uppercase; color:var(--muted);
 }
+
+.home-bio{
+  padding:32px 0 16px;
+}
+.home-bio .eyebrow{ margin:0 0 22px; display:block; }
+.home-bio__body{
+  font-size:clamp(1.05rem, 1.4vw, 1.25rem);
+  line-height:1.65;
+  max-width:62ch;
+  color:var(--text);
+}
+.home-bio__body p+p{ margin-top:1em }
+.home-bio__clients-label{ margin-top:48px; }
+.home-bio .kv{ margin-top:48px; }
 
 .home-works{
   padding:48px 0 96px;

@@ -1,6 +1,7 @@
 ---
 title: Bio
 menu: Bio
+visible: false
 facts:
     -
         label: Base
