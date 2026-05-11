@@ -193,12 +193,20 @@
       setTimeout(() => { try { ctx.close(); } catch (_) {} }, (DURATION + 4) * 1000);
     } catch (e) { /* audio non disponibile, prosegui silenzioso */ }
 
-    setTimeout(() => intro.classList.add('out'), DURATION * 1000);
+    // La cornice è full visible a t=7s (CSS: transition-delay 5s + transition 2s).
+    // Su richiesta di Francesco la teniamo a schermo almeno 1s prima del fade-out
+    // dell'intero overlay, così la si vede stabilizzata. Il drone audio comunque
+    // termina a t=DURATION come da specifica (DURATION governa solo l'audio).
+    const CORONA_FULL_AT = 7;
+    const CORONA_HOLD = 1;
+    const OUT_AT = Math.max(DURATION, CORONA_FULL_AT + CORONA_HOLD);
+
+    setTimeout(() => intro.classList.add('out'), OUT_AT * 1000);
     setTimeout(() => {
       intro.style.display = 'none';
       document.body.classList.remove('intro-active');
       document.body.classList.add('intro-done');
-    }, (DURATION + FADE) * 1000);
+    }, (OUT_AT + FADE) * 1000);
   };
 
   intro.addEventListener('click', reveal);

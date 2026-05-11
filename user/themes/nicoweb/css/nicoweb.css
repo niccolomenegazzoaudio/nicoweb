@@ -363,7 +363,13 @@ body.intro-active {
 .symbol::before {
     content: "";
     position: absolute;
-    inset: -25px -20px;
+    /* Quadrata, centrata sul simbolo. Il symbol è 180px alto, ~120px largo;
+       230×230 lascia ~25px sopra/sotto e ~55px sx/dx — quadrato non rettangolo. */
+    width: 230px;
+    height: 230px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     border: 1px solid var(--accent);
     opacity: 0;
     pointer-events: none;
