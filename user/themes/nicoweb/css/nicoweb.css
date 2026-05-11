@@ -218,9 +218,9 @@ body.intro-active{ overflow:hidden; }
    al centro geometrico del symbol. */
 .slash{
   position:absolute;
-  width:.7em; height:6px;
+  width:.7em; height:3px;
   background:var(--text);
-  top:60%; left:50%;
+  top:62%; left:52%;
   transform:translate(-50%, -50%) rotate(-45deg) scaleX(1);
   transform-origin:center;
   transition:transform 5s var(--ease), opacity 5s var(--ease);
