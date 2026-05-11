@@ -44,14 +44,6 @@
     <p class="eyebrow mono muted">Profilo</p>
     <div class="home-bio__body">{{ bio.content|raw }}</div>
 
-    {% if bio.header.facts %}
-      <dl class="kv">
-        {% for f in bio.header.facts %}
-          <div class="kv__row"><dt>{{ f.label }}</dt><dd>{{ f.value|raw }}</dd></div>
-        {% endfor %}
-      </dl>
-    {% endif %}
-
     {% if bio.header.clients %}
       <p class="eyebrow mono muted home-bio__clients-label">Selezione clienti</p>
       <ul class="clients">

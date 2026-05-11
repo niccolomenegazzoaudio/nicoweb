@@ -15,13 +15,6 @@
       </div>
 
       <aside class="contact-info">
-        {% if page.header.facts %}
-          <dl class="kv">
-            {% for f in page.header.facts %}
-              <div class="kv__row"><dt>{{ f.label }}</dt><dd>{{ f.value|raw }}</dd></div>
-            {% endfor %}
-          </dl>
-        {% endif %}
         {% if page.content %}<div class="contact-info__note muted">{{ page.content|raw }}</div>{% endif %}
       </aside>
     </div>

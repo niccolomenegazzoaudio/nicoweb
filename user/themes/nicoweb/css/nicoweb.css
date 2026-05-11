@@ -295,7 +295,6 @@ body.intro-active{ overflow:hidden; }
 }
 .home-bio__body p+p{ margin-top:1em }
 .home-bio__clients-label{ margin-top:48px; }
-.home-bio .kv{ margin-top:48px; }
 
 .home-works{
   padding:48px 0 96px;
@@ -371,44 +370,6 @@ body.intro-active{ overflow:hidden; }
 .work-page__back{margin-top:80px; font-family:var(--mono); font-size:.78rem; letter-spacing:.18em; text-transform:uppercase}
 .work-page__back a{color:var(--muted)}
 .work-page__back a:hover{color:var(--text); opacity:1}
-
-/* ---------- Key/value blocks (about, contact info) ---------- */
-.kv{
-  margin:48px 0 0; padding:0;
-  display:grid; gap:0;
-  border-top:1px solid var(--line);
-}
-.kv__row{
-  display:grid;
-  grid-template-columns:max-content 1fr max-content;
-  gap:14px;
-  padding:18px 0;
-  border-bottom:1px solid var(--line);
-  align-items:baseline;
-}
-.kv__row dt{
-  grid-column:1;
-  font-family:var(--mono); font-size:.72rem; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--muted); margin:0;
-}
-.kv__row dd{
-  grid-column:3;
-  margin:0; font-size:1rem;
-  text-align:right;
-}
-.kv__row::before{
-  content:"";
-  grid-column:2;
-  height:1px;
-  border-bottom:1px dotted var(--line-2);
-  align-self:end;
-  margin-bottom:5px;
-}
-@media (max-width:580px){
-  .kv__row{grid-template-columns:1fr; gap:6px}
-  .kv__row dt, .kv__row dd{grid-column:1; text-align:left}
-  .kv__row::before{display:none}
-}
 
 .credits{
   margin-top:40px; padding:0;
