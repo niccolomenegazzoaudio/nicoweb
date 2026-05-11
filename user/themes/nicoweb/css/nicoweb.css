@@ -203,15 +203,15 @@ p {
     font-weight: 500;
     line-height: 1;
     /* Padding simmetrico per dare aria al glifo dentro la cornice quadrata. */
-    padding: 4px 10px;
+    padding: 3px 8px;
     margin-right: 4px;
-    border: 1px solid var(--text);
+    border: 1px solid var(--accent);
 }
 .brand::after {
     content: "ò";
     position: absolute;
-    top: 4px;
-    left: 10px; /* allinea sul testo (padding-top/left di .brand) */
+    top: 3px;
+    left: 8px; /* allinea sul testo (padding-top/left di .brand) */
     color: var(--accent);
     clip-path: inset(0 0 68% 0);
     pointer-events: none;
@@ -353,20 +353,21 @@ body.intro-active {
     letter-spacing: -0.02em;
     line-height: 1;
 }
-/* Cornice 1px attorno al simbolo: invisibile finché lo slash non si dissolve,
-   poi sfuma in 1s con `transition-delay: 5s` allineato alla fine dello slash.
-   Su ::before perché il border deve essere indipendente dai children
+/* Cornice 1px attorno al simbolo: invisibile finché la pulsazione non si
+   stabilizza, poi sfuma in 2s con `transition-delay: 5s` (il tempo che il
+   simbolo ci mette a "respirare" tranquillo dopo il click, su richiesta di
+   Nicco). Su ::before perché il border deve essere indipendente dai children
    (.o-glyph/.slash/.accent) e perché .symbol ha animation: oPulse — un border
    diretto pulserebbe con la scale; il pseudo posizionato assoluto pulsa
    col parent, che è il comportamento voluto (la cornice respira col simbolo). */
 .symbol::before {
     content: "";
     position: absolute;
-    inset: -28px -22px;
-    border: 1px solid var(--text);
+    inset: -25px -20px;
+    border: 1px solid var(--accent);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 1s var(--ease);
+    transition: opacity 2s var(--ease);
 }
 .symbol.active::before {
     opacity: 1;
@@ -403,8 +404,8 @@ body.intro-active {
     transform: translate(-50%, -50%) rotate(-45deg) scaleX(1);
     transform-origin: center;
     transition:
-        transform 5s var(--ease),
-        opacity 5s var(--ease);
+        transform 3s var(--ease),
+        opacity 3s var(--ease);
 }
 /* Stessa tecnica del brand: glifo "ò" del font sovrapposto e clippato
    così resta visibile solo il grave. Niente fuoco / glow / drop-shadow:
@@ -419,7 +420,7 @@ body.intro-active {
     color: var(--accent);
     clip-path: inset(0 0 75% 0);
     opacity: 0;
-    transition: opacity 5s var(--ease);
+    transition: opacity 3s var(--ease);
     pointer-events: none;
 }
 .symbol.active .slash {
@@ -433,8 +434,8 @@ body.intro-active {
    sull'intero overlay) — non servono regole extra. */
 .intro__hint {
     position: absolute;
-    /* Sopra il simbolo (180px centrato, +28px di cornice top): margine d'aria. */
-    bottom: calc(50% + 140px);
+    /* Sotto il simbolo (180px centrato, +25px di cornice bottom): ~50px d'aria. */
+    top: calc(50% + 155px);
     left: 0;
     right: 0;
     text-align: center;
@@ -459,10 +460,10 @@ body.intro-active {
     }
 }
 /* Quando l'utente clicca l'intro (`.revealed`), la barretta si scioglie in
-   5s e la hint deve sparire insieme — stessa easing/durata per sincronia. */
+   3s e la hint deve sparire insieme — stessa easing/durata per sincronia. */
 .intro.revealed .intro__hint {
     opacity: 0;
-    transition: opacity 5s var(--ease);
+    transition: opacity 3s var(--ease);
 }
 
 /* Skip discreto in basso a destra: piccolissimo, mono, opacità bassa.
@@ -491,7 +492,7 @@ body.intro-active {
 }
 .intro.revealed .intro__skip {
     opacity: 0;
-    transition: opacity 5s var(--ease);
+    transition: opacity 3s var(--ease);
     pointer-events: none;
 }
 
