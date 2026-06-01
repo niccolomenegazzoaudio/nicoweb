@@ -1,12 +1,9 @@
 ---
-title: 'Nome evento / artista (esempio)'
-year: '2025'
-subtitle: 'Tour / festival / sala'
-role: 'FOH · MON'
+title: EX-OTAGO
+role: 'MONITOR ENGINEER'
 media:
     type: image
+media_order: 'Otaghi dal paninaro di Corso de Stefanis 2023.avif'
 ---
 
-Sostituisci questo testo con i dettagli dell'evento: date, location, ruolo svolto, eventuali link.
-
-Questa è una pagina di esempio: duplicala da `/admin → Pages → Musica → Add page` per crearne di nuove.
+![Otaghi%20dal%20paninaro%20di%20Corso%20de%20Stefanis%202023](Otaghi%20dal%20paninaro%20di%20Corso%20de%20Stefanis%202023.avif "Otaghi%20dal%20paninaro%20di%20Corso%20de%20Stefanis%202023")

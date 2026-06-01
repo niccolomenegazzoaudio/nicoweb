@@ -1,0 +1,9 @@
+enabled: true
+streams:
+  schemes:
+    theme:
+      type: ReadOnlyStream
+      prefixes:
+        '': [user/themes/nicoweb]
+owner_name: 'Niccolò Menegazzo'
+tagline: 'Sound Designer · Audio Engineer · Live Sound Technician · Technical Manager'
